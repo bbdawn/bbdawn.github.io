@@ -1,0 +1,82 @@
+---
+layout: page
+---
+
+{% include lang.html %}
+
+{% assign sort_categories = site.categories | sort %}
+
+{% for category in sort_categories %}
+  {% assign category_name = category | first %}
+  {% assign posts_of_category = category | last %}
+  {% assign first_post = posts_of_category | first %}
+
+  {% if category_name == first_post.categories[0] %}
+    {% assign sub_categories = '' | split: '' %}
+
+    {% for post in posts_of_category %}
+      {% assign second_category = post.categories[1] %}
+      {% if second_category %}
+        {% unless sub_categories contains second_category %}
+          {% assign sub_categories = sub_categories | push: second_category %}
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+
+    {% assign sub_categories = sub_categories | sort %}
+    {% assign sub_categories_size = sub_categories | size %}
+
+    <div class="card categories mb-4">
+      <!-- 상위 카테고리 -->
+      <div class="card-header d-flex justify-content-between hide-border-bottom">
+        <span class="ms-2">
+          <i class="far fa-folder-open fa-fw"></i>
+          <span class="mx-2 fw-bold">{{ category_name }}</span>
+          <span class="text-muted small font-weight-light">
+            {{ site.categories[category_name] | size }} posts
+          </span>
+        </span>
+      </div>
+
+      <!-- 하위 카테고리 + 글 목록 -->
+      {% if sub_categories_size > 0 %}
+        <div class="list-group list-group-flush">
+          {% for sub_category in sub_categories %}
+            <div class="list-group-item">
+              <div class="mb-2">
+                <i class="far fa-folder fa-fw"></i>
+                <span class="mx-2 fw-semibold">{{ sub_category }}</span>
+                <span class="text-muted small">
+                  {{ site.categories[sub_category] | size }} posts
+                </span>
+              </div>
+              <ul class="list-unstyled ms-4 mb-0">
+                {% assign sub_posts = site.categories[sub_category] | sort: "date" | reverse %}
+                {% for post in sub_posts %}
+                  <li class="py-1">
+                    <i class="far fa-file-alt fa-fw text-muted small"></i>
+                    <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
+                    <span class="text-muted small">· {{ post.date | date: "%Y-%m-%d" }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+
+      {% else %}
+        <!-- 서브카테고리 없이 바로 글 목록 -->
+        <ul class="list-group list-group-flush">
+          {% assign top_posts = site.categories[category_name] | sort: "date" | reverse %}
+          {% for post in top_posts %}
+            <li class="list-group-item">
+              <i class="far fa-file-alt fa-fw text-muted small"></i>
+              <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
+              <span class="text-muted small">· {{ post.date | date: "%Y-%m-%d" }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endfor %}
