@@ -29,7 +29,7 @@ layout: page
 </script>
 
 {% assign filtered_posts = site.categories[page.filter_category] | sort: "date" | reverse %}
-{% assign subcategory_order = "Features,Projects,Hands-on,Study" | split: "," %}
+{% assign subcategory_order = "Features,Projects,Hands-on,Study,Troubleshooting" | split: "," %}
 
 {% for sub in subcategory_order %}
   {% assign sub_posts = filtered_posts | where: "subcategory", sub %}
@@ -45,6 +45,8 @@ layout: page
           <i class="fas fa-terminal fa-fw"></i>
         {% elsif sub == "Study" %}
           <i class="fas fa-book-open fa-fw"></i>
+        {% elsif sub == "Troubleshooting" %}
+          <i class="fas fa-wrench fa-fw"></i>
         {% else %}
           <i class="far fa-folder-open fa-fw"></i>
         {% endif %}
