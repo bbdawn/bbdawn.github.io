@@ -366,6 +366,10 @@ OpenStack Security Group에서 포트를 열어야 합니다.
 
 ---
 
+![RAG 파이프라인 전체 구성](/assets/img/posts/rag-pipeline-overview.png)
+
+---
+
 ## 기술 스택
 
 | 역할 | 기술 |
