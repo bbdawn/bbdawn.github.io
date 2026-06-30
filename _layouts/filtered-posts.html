@@ -2,6 +2,32 @@
 layout: page
 ---
 
+<style>
+  h1.dynamic-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--link-color);
+    margin-bottom: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  h1.dynamic-title .page-title-icon {
+    font-size: 0.78em;
+    opacity: 0.65;
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var h1 = document.querySelector('h1.dynamic-title');
+    if (!h1) return;
+    var i = document.createElement('i');
+    i.className = '{{ page.icon }} fa-fw page-title-icon';
+    h1.prepend(i);
+  });
+</script>
+
 {% assign filtered_posts = site.categories[page.filter_category] | sort: "date" | reverse %}
 {% assign subcategory_order = "Features,Projects,Hands-on,Study" | split: "," %}
 
