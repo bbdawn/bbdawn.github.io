@@ -1,0 +1,25 @@
+---
+layout: page
+---
+
+{% assign filtered_posts = site.categories[page.filter_category] | sort: "date" | reverse %}
+
+<div class="card categories mb-4">
+  <div class="card-header d-flex justify-content-between hide-border-bottom">
+    <span class="ms-2">
+      <i class="{{ page.icon }} fa-fw"></i>
+      <span class="mx-2 fw-bold">{{ page.title }}</span>
+      <span class="text-muted small font-weight-light">{{ filtered_posts | size }} posts</span>
+    </span>
+  </div>
+
+  <ul class="list-group list-group-flush">
+    {% for post in filtered_posts %}
+      <li class="list-group-item">
+        <i class="far fa-file-alt fa-fw text-muted small"></i>
+        <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
+        <span class="text-muted small">· {{ post.date | date: "%Y-%m-%d" }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
