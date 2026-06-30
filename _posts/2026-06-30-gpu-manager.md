@@ -1,7 +1,7 @@
 ---
 title: "OpenStack GPU 호스트 관리 TUI 도구 개발"
 date: 2026-06-30 08:00:00 +0900
-categories: [Project, OpenStack]
+categories: [Project, GPU]
 tags: [openstack, gpu, mig, go, tui, nvidia, libvirt]
 ---
 

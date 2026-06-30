@@ -1,7 +1,7 @@
 ---
 title: "OpenStack GPU 인스턴스 생성 및 모니터링"
 date: 2026-06-30 01:00:00 +0900
-categories: [Project, OpenStack]
+categories: [Project, GPU]
 tags: [openstack, gpu, mig, dcgm, prometheus, monitoring]
 ---
 
