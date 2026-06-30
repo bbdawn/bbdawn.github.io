@@ -1,8 +1,57 @@
 ---
-# the default layout is 'page'
 icon: fas fa-info-circle
 order: 4
 ---
 
-> Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
-{: .prompt-tip }
+# 이주현
+
+클라우드 인프라 백엔드 개발자입니다.
+
+OpenStack 기반 Private Cloud 플랫폼 개발·운영 경험을 바탕으로, GPU 인스턴스 관리, 네트워크, 로드밸런서 등 인프라 제어 기능을 개발하고 있습니다. 반복되는 운영 문제를 자동화로 해결하는 것에 관심이 많습니다.
+
+---
+
+## 경력
+
+**콘트라베이스 — 최적화팀** `2023.04 ~ 현재`
+
+- OpenStack 기반 Private Cloud 관리 포탈 "Contrabass" 백엔드 개발 및 운영
+- GPU Passthrough / MIG 인스턴스 관리 및 모니터링 기능 개발
+- GPU 운영 자동화 TUI 개발 (mdev orphan 탐지, MIG 프로파일 관리)
+- Octavia 로드밸런서 장애 처리 자동화 TUI 개발
+- 데이터센터 Rack Topology 시각화 기능 개발 (IPMI/SNMP)
+- 국방부 국방지능형플랫폼 GPU 모니터링 기능 개발 및 현장 기술 지원
+
+**플랫폼 공통 개발팀** `2022.12 ~ 2023.03`
+
+- Samsung Cloud Platform PaaS(Kubernetes) 관리 포탈 화면 개발
+
+**MLOps팀** `2022.08 ~ 2022.11`
+
+- MLOps CI/CD 솔루션 "Trumpet.ai" 백엔드 및 프론트엔드 개발
+
+---
+
+## 기술 스택
+
+**Backend**
+`Java` `Spring Boot` `Go`
+
+**Infra**
+`OpenStack` `Terraform` `Ansible` `Linux`
+
+**Monitoring**
+`Prometheus` `DCGM Exporter` `Grafana`
+
+**GPU**
+`NVIDIA A100 / H100 / B300` `GPU Passthrough` `MIG`
+
+**협업**
+`Git` `Jira` `Confluence`
+
+---
+
+## 연락처
+
+- **GitHub**: [github.com/bbdawn](https://github.com/bbdawn)
+- **Email**: leejoohyun_my@naver.com
