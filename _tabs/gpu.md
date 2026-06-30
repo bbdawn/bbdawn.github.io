@@ -2,6 +2,6 @@
 layout: filtered-posts
 title: GPU
 icon: fas fa-microchip
-order: 0
+order: 1
 filter_category: GPU
 ---
