@@ -2,6 +2,7 @@
 title: "Network Access Control"
 date: 2026-06-30 04:01:00 +0900
 categories: [Study, Network]
+subcategory: Features
 tags: [network, iptables, nftables, firewalld, security-group, tcp-wrappers, linux]
 ---
 

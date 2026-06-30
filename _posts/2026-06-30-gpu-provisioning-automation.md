@@ -2,6 +2,7 @@
 title: "GPU 인스턴스 환경 구성, 매번 수동 설치에서 IaC로 자동화하기"
 date: 2026-06-30 11:00:00 +0900
 categories: [Project, GPU]
+subcategory: Hands-on
 tags: [openstack, gpu, terraform, ansible, iac, automation, nvidia, dcgm]
 ---
 

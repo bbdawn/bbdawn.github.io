@@ -2,6 +2,7 @@
 title: "MIG 환경에서 반복되는 mdev orphan 문제, TUI로 자동화하기"
 date: 2026-06-30 09:00:00 +0900
 categories: [Project, GPU]
+subcategory: Projects
 tags: [openstack, gpu, mig, mdev, orphan, automation, go, tui, libvirt]
 ---
 
