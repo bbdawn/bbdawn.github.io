@@ -37,7 +37,17 @@ layout: page
   <div class="card categories mb-4">
     <div class="card-header d-flex justify-content-between hide-border-bottom">
       <span class="ms-2">
-        <i class="far fa-folder-open fa-fw"></i>
+        {% if sub == "Features" %}
+          <i class="fas fa-star fa-fw"></i>
+        {% elsif sub == "Projects" %}
+          <i class="fas fa-code fa-fw"></i>
+        {% elsif sub == "Hands-on" %}
+          <i class="fas fa-terminal fa-fw"></i>
+        {% elsif sub == "Study" %}
+          <i class="fas fa-book-open fa-fw"></i>
+        {% else %}
+          <i class="far fa-folder-open fa-fw"></i>
+        {% endif %}
         <span class="mx-2 fw-bold">{{ sub }}</span>
         <span class="text-muted small font-weight-light">{{ sub_posts | size }} posts</span>
       </span>
