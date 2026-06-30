@@ -4,8 +4,8 @@ layout: page
 
 {% include lang.html %}
 
-{% assign sections     = "GPU,Infra,Openstack › Loadbalancer,Network" | split: "," %}
-{% assign section_names = "GPU,Rack Topology,Load Balancer,Network"   | split: "," %}
+{% assign sections     = "GPU,Infra,Openstack,Network" | split: "," %}
+{% assign section_names = "GPU,Rack Topology,Openstack,Network" | split: "," %}
 
 {% for i in (0..3) %}
   {% assign cat       = sections[i] %}
