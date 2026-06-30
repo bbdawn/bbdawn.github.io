@@ -19,7 +19,7 @@ order: 0
 <div style="margin: 1.5rem 0 2rem;">
 
   <!-- 회사 헤더 -->
-  <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.2rem;">
+  <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.15rem; margin-bottom: 0.2rem;">
     <div>
       <strong style="font-size: 1.05rem; letter-spacing: -0.01em;">오케스트로</strong>
       <a href="https://www.okestro.com/" target="_blank" style="font-size: 0.8rem; margin-left: 6px; opacity: 0.5;">↗</a>
@@ -34,7 +34,7 @@ order: 0
     <!-- 콘트라베이스 최적화팀 -->
     <div style="position: relative; margin-bottom: 1.6rem;">
       <div style="position: absolute; left: -1.42rem; top: 0.4rem; width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.5;"></div>
-      <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.4rem;">
         <span style="font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;">콘트라베이스 최적화팀</span>
         <span style="font-size: 0.82rem; opacity: 0.45;">2023.04 ~ 현재 &nbsp;<span id="dur1"></span></span>
       </div>
@@ -51,7 +51,7 @@ order: 0
     <!-- 플랫폼 공통 개발팀 -->
     <div style="position: relative; margin-bottom: 1.6rem;">
       <div style="position: absolute; left: -1.42rem; top: 0.4rem; width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.3;"></div>
-      <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.4rem;">
         <span style="font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;">플랫폼 공통 개발팀</span>
         <span style="font-size: 0.82rem; opacity: 0.45;">2022.12 ~ 2023.03 (4개월)</span>
       </div>
@@ -63,7 +63,7 @@ order: 0
     <!-- MLOps팀 -->
     <div style="position: relative;">
       <div style="position: absolute; left: -1.42rem; top: 0.4rem; width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.3;"></div>
-      <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.4rem;">
+      <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.4rem;">
         <span style="font-size: 1rem; font-weight: 600; letter-spacing: -0.01em;">MLOps팀</span>
         <span style="font-size: 0.82rem; opacity: 0.45;">2022.08 ~ 2022.11 (3개월)</span>
       </div>
