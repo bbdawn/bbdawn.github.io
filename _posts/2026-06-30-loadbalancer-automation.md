@@ -1,7 +1,7 @@
 ---
 title: "Octavia API로 삭제 안 되는 LB, TUI로 운영 자동화하기"
 date: 2026-06-30 10:00:00 +0900
-categories: [Project, OpenStack]
+categories: [Project, Load Balancer]
 tags: [openstack, octavia, loadbalancer, automation, go, tui, amphora]
 ---
 
