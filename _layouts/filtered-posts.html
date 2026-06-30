@@ -3,7 +3,7 @@ layout: page
 ---
 
 {% assign filtered_posts = site.categories[page.filter_category] | sort: "date" | reverse %}
-{% assign subcategory_order = "Features,Study,Hands-on,Troubleshooting,Projects" | split: "," %}
+{% assign subcategory_order = "Features,Projects,Hands-on,Study" | split: "," %}
 
 {% for sub in subcategory_order %}
   {% assign sub_posts = filtered_posts | where: "subcategory", sub %}
