@@ -1,5 +1,5 @@
 ---
-title: "네트워크 기초"
+title: "[Study] 네트워크 기초"
 date: 2026-06-30 04:00:00 +0900
 categories: [Study, Network]
 subcategory: Study
