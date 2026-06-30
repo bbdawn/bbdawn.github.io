@@ -4,86 +4,32 @@ layout: page
 
 {% include lang.html %}
 
-{% assign sort_categories = site.categories | sort %}
-{% assign subcategory_order = "Features,Study,Hands-on,Troubleshooting,Projects" | split: "," %}
+{% assign sections     = "GPU,Infra,Openstack › Loadbalancer,Network" | split: "," %}
+{% assign section_names = "GPU,Rack Topology,Load Balancer,Network"   | split: "," %}
 
-{% for category in sort_categories %}
-  {% assign category_name = category | first %}
-  {% assign posts_of_category = category | last %}
-  {% assign first_post = posts_of_category | first %}
+{% for i in (0..3) %}
+  {% assign cat       = sections[i] %}
+  {% assign cat_posts = site.categories[cat] | sort: "date" | reverse %}
+  {% if cat_posts.size > 0 %}
 
-  {% if category_name == first_post.categories[0] %}
-    {% assign sub_categories = '' | split: '' %}
-    {% for post in posts_of_category %}
-      {% assign second_category = post.categories[1] %}
-      {% if second_category %}
-        {% unless sub_categories contains second_category %}
-          {% assign sub_categories = sub_categories | push: second_category %}
-        {% endunless %}
-      {% endif %}
-    {% endfor %}
-    {% assign sub_categories = sub_categories | sort %}
-
-<div style="margin-bottom: 2.5rem;">
-
-  <!-- 상위 카테고리 -->
-  <div style="display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--main-border-color, #e5e5e5);">
-    <span style="font-size: 1rem; font-weight: 700;">{{ category_name }}</span>
-    <span style="font-size: 0.78rem; opacity: 0.45;">{{ site.categories[category_name] | size }} posts</span>
+<div class="card categories mb-4">
+  <div class="card-header d-flex align-items-center hide-border-bottom">
+    <span class="ms-1">
+      <i class="far fa-folder-open fa-fw"></i>
+      <span class="mx-2 fw-bold">{{ section_names[i] }}</span>
+      <span class="text-muted small font-weight-light">{{ cat_posts | size }} posts</span>
+    </span>
   </div>
-
-  {% for sub_category in sub_categories %}
-    {% assign sub_posts = site.categories[sub_category] | sort: "date" | reverse %}
-    {% if sub_posts.size > 0 %}
-
-  <!-- 서브 카테고리 -->
-  <div style="margin-bottom: 1.25rem; padding-left: 0.75rem;">
-    <div style="display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.6rem;">
-      <span style="font-size: 0.85rem; font-weight: 600; opacity: 0.75;">{{ sub_category }}</span>
-      <span style="font-size: 0.73rem; opacity: 0.4;">{{ sub_posts | size }}</span>
-    </div>
-
-    {% for sub in subcategory_order %}
-      {% assign grouped = sub_posts | where: "subcategory", sub %}
-      {% if grouped.size > 0 %}
-    <div style="padding-left: 0.75rem; margin-bottom: 0.5rem;">
-      <span style="font-size: 0.7rem; font-weight: 600; opacity: 0.4; text-transform: uppercase; letter-spacing: 0.06em;">{{ sub }}</span>
-      {% for post in grouped %}
-      <div style="padding: 0.2rem 0 0.2rem 0.6rem;">
-        <a href="{{ post.url | relative_url }}" style="font-size: 0.875rem;">{{ post.title }}</a>
-      </div>
-      {% endfor %}
-    </div>
-      {% endif %}
+  <ul class="list-group list-group-flush">
+    {% for post in cat_posts %}
+    <li class="list-group-item">
+      <i class="far fa-file-alt fa-fw text-muted small"></i>
+      <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
+      <span class="text-muted small">· {{ post.date | date: "%Y-%m-%d" }}</span>
+    </li>
     {% endfor %}
-
-    {% assign no_sub = sub_posts | where_exp: "p", "p.subcategory == nil or p.subcategory == empty" %}
-    {% if no_sub.size > 0 %}
-    <div style="padding-left: 0.75rem;">
-      {% for post in no_sub %}
-      <div style="padding: 0.2rem 0;">
-        <a href="{{ post.url | relative_url }}" style="font-size: 0.875rem;">{{ post.title }}</a>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
-
-  </div>
-    {% endif %}
-  {% endfor %}
-
-  <!-- 서브카테고리 없는 글 -->
-  {% assign top_only = posts_of_category | where_exp: "p", "p.categories[1] == nil or p.categories[1] == empty" %}
-  {% if top_only.size > 0 %}
-  <div style="padding-left: 0.75rem;">
-    {% for post in top_only %}
-    <div style="padding: 0.2rem 0;">
-      <a href="{{ post.url | relative_url }}" style="font-size: 0.875rem;">{{ post.title }}</a>
-    </div>
-    {% endfor %}
-  </div>
-  {% endif %}
-
+  </ul>
 </div>
+
   {% endif %}
 {% endfor %}
