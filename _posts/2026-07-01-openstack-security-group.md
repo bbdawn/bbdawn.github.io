@@ -75,24 +75,6 @@ Nova API가 인스턴스에 연결된 모든 포트의 보안그룹을 포트별
 
 Nova API의 인스턴스 보안그룹 응답이 포트별 구분 없이 중복값을 포함하는 문제를 해결하기 위해, **포트 단위로 보안그룹을 구분해 반환하는 API를 개발**했습니다. (2026.03)
 
-### 엔드포인트
-
-```
-GET /v1/contrabass/admin/compute/servers/{serverId}/ports
-```
-
-### 응답 필드
-
-| 필드명 | 자료형 | 설명 |
-|--------|--------|------|
-| `portId` | String | 포트 ID |
-| `portName` | String | 포트 이름 |
-| `securityGroupList` | List | 포트에 적용된 보안그룹 목록 |
-| `securityGroupList.securityGroupId` | String | 보안그룹 ID |
-| `securityGroupList.securityGroupName` | String | 보안그룹 이름 |
-| `fixedIps` | List | 포트에 할당된 고정 IP 목록 |
-| `fixedIps.ipAddress` | String | IP 주소 |
-
 ### 특징
 
 - 인스턴스에 연결된 포트별로 보안그룹을 분리해서 반환
