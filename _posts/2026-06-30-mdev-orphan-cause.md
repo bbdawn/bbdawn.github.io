@@ -1,9 +1,9 @@
 ---
-title: "[Troubleshooting] MIG 환경에서 mdev orphan이 반복되는 이유"
+title: "[Project] MIG 환경에서 mdev orphan이 반복되는 이유"
 date: 2026-06-30 07:00:00 +0900
-categories: [Troubleshooting, GPU]
-subcategory: Troubleshooting
-tags: [openstack, gpu, mig, mdev, orphan, nova, libvirt, troubleshooting]
+categories: [Project, GPU]
+subcategory: Project
+tags: [openstack, gpu, mig, mdev, orphan, nova, libvirt]
 ---
 
 ## 개요
@@ -99,20 +99,8 @@ sysfs에는 존재하지만 libvirt와 Nova 어디에도 연결되지 않은 mde
 
 ---
 
-## 정리 방법
-
-```bash
-# orphan mdev 정리
-mdevctl stop -u <orphan-uuid>
-
-# 정리 후 확인
-ls /sys/bus/mdev/devices/
-```
-
----
-
 ## 정리
 
 mdev orphan의 근본 원인은 **Nova의 VM 삭제 흐름과 실제 GPU 장치 정리 사이의 간극**입니다. Nova는 DB 상태 기준으로 VM을 삭제하지만, GPU 하드웨어 레벨의 mdev 장치 정리는 nova-compute가 직접 수행하기 때문에 중간 단계에서 실패가 발생하면 정리가 누락됩니다.
 
-이 문제가 반복되는 환경에서는 주기적으로 orphan 여부를 점검하고 정리하는 별도 운영 도구가 필요합니다.
+이 문제가 GPU 호스트 전반에 걸쳐 반복되면서, sysfs ↔ libvirt ↔ Nova를 자동으로 비교하고 orphan을 탐지·정리하는 운영 도구의 필요성이 생겼습니다. 이 배경으로 개발한 것이 GPU 호스트 관리 TUI 도구입니다.

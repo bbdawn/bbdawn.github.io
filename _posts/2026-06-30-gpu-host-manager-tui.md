@@ -11,7 +11,6 @@ tags: [openstack, gpu, mig, mdev, orphan, go, tui, nvidia, libvirt]
 MIG 환경에서 mdev orphan 문제가 반복적으로 발생했습니다. 장애 발생 시마다 아래 과정을 Compute 호스트마다 직접 수행해야 했습니다.
 
 ```bash
-# 매번 직접 수행하던 과정
 virsh list --all                         # libvirt VM 목록
 ls /sys/bus/mdev/devices/               # mdev 장치 목록
 # → UUID 수작업 비교 후 orphan 판별
@@ -22,9 +21,7 @@ nvidia-smi mig -lgi                     # GI 목록 확인
 nvidia-smi mig -cgi <profile-id> -C    # GI/CI 생성
 ```
 
-GPU 호스트가 여러 대일 때 각 호스트에 SSH 접속해서 반복해야 했고, mdev UUID와 VM을 매핑하는 과정에서 실수가 발생하기 쉬웠습니다.
-
-이를 단일 TUI 도구로 통합했습니다.
+GPU 호스트가 여러 대일 때 각 호스트에 SSH 접속해서 반복해야 했고, mdev UUID와 VM을 매핑하는 과정에서 실수가 발생하기 쉬웠습니다. sysfs ↔ libvirt ↔ Nova를 자동으로 비교하는 도구가 필요하다는 결론으로 TUI 도구 개발을 시작했습니다.
 
 ---
 
