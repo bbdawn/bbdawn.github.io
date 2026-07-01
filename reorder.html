@@ -53,6 +53,15 @@ sitemap: false
   }
   .sortable-item:hover .edit-title-btn { opacity: 1; }
   .edit-title-btn.is-editing { opacity: 1; color: var(--link-color); }
+  .visibility-btn {
+    flex-shrink: 0; opacity: 0; transition: opacity 0.15s;
+    padding: 0 0.3rem; line-height: 1; border: none; background: none; color: #aaa;
+  }
+  .sortable-item:hover .visibility-btn { opacity: 1; }
+  .visibility-btn.is-hidden { opacity: 1 !important; color: var(--bs-danger, #dc3545); }
+  .sortable-item.post-hidden .post-title-text { opacity: 0.4; text-decoration: line-through; }
+  .sortable-item.post-hidden .drag-handle,
+  .sortable-item.post-hidden .far { opacity: 0.3; }
   .reorder-tabs .nav-link {
     color: var(--text-muted-color, #6c757d); border-bottom: 2px solid transparent;
     border-radius: 0; padding: 0.5rem 1rem; font-weight: 500;
@@ -305,17 +314,26 @@ var SUB_ICONS = {
   "Features":"fas fa-star","Projects":"fas fa-code","Hands-on":"fas fa-terminal",
   "Study":"fas fa-book-open","Troubleshooting":"fas fa-wrench"
 };
-var ORDER_KEY = 'bbdawn-post-order';
-var TITLE_KEY = 'bbdawn-post-titles';
-var TOKEN_KEY = 'bbdawn-github-token';
-var REPO      = 'bbdawn/bbdawn.github.io';
-var API_BASE  = 'https://api.github.com/repos/' + REPO;
+var ORDER_KEY  = 'bbdawn-post-order';
+var TITLE_KEY  = 'bbdawn-post-titles';
+var HIDDEN_KEY = 'bbdawn-hidden-posts';
+var TOKEN_KEY  = 'bbdawn-github-token';
+var REPO       = 'bbdawn/bbdawn.github.io';
+var API_BASE   = 'https://api.github.com/repos/' + REPO;
 
 /* ════════════════════════════════════
    HELPERS
 ════════════════════════════════════ */
 function loadOrders(){ try{return JSON.parse(localStorage.getItem(ORDER_KEY)||'{}');}catch(e){return{};} }
 function loadTitles(){ try{return JSON.parse(localStorage.getItem(TITLE_KEY)||'{}');}catch(e){return{};} }
+function loadHidden(){ try{return JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]');}catch(e){return[];} }
+function saveHidden(arr){ localStorage.setItem(HIDDEN_KEY,JSON.stringify(arr)); }
+function toggleHidden(url){
+  var arr=loadHidden(), idx=arr.indexOf(url);
+  if(idx===-1) arr.push(url); else arr.splice(idx,1);
+  saveHidden(arr);
+  return arr.indexOf(url)!==-1;
+}
 function saveTitles(o){ localStorage.setItem(TITLE_KEY, JSON.stringify(o)); }
 function getToken()  { return localStorage.getItem(TOKEN_KEY) || ''; }
 
@@ -392,7 +410,7 @@ function replaceInputWithSpan(li,url,origTitle,displayTitle,input,btn){
   btn.onclick=function(){startEdit(li,url,origTitle);};
 }
 function renderCategory(cat){
-  var savedAll=loadOrders(),savedCat=savedAll[cat]||{},customTitles=loadTitles();
+  var savedAll=loadOrders(),savedCat=savedAll[cat]||{},customTitles=loadTitles(),hiddenList=loadHidden();
   var container=document.getElementById('postLists'); container.innerHTML='';
   SUB_ORDER.forEach(function(sub){
     var posts=(ALL_POSTS[cat]||{})[sub]; if(!posts||!posts.length) return;
@@ -410,23 +428,37 @@ function renderCategory(cat){
       '<span class="mx-2 fw-bold">'+escHtml(sub)+'</span>'+
       '<span class="text-muted small">'+posts.length+' posts</span></span>'+
       '<span class="hint-text align-self-center me-2">'+
-      '<i class="fas fa-grip-lines fa-fw"></i> 드래그 순서 변경 &nbsp;|&nbsp; '+
-      '<i class="fas fa-pen fa-fw"></i> 제목 수정</span></div>'+
+      '<i class="fas fa-grip-lines fa-fw"></i> 순서 &nbsp;|&nbsp; '+
+      '<i class="fas fa-pen fa-fw"></i> 제목 &nbsp;|&nbsp; '+
+      '<i class="fas fa-eye-slash fa-fw"></i> 비활성화</span></div>'+
       '<ul class="list-group list-group-flush" data-sub="'+escHtml(sub)+'"></ul>';
     var ul=card.querySelector('ul');
     posts.forEach(function(post){
       var displayTitle=customTitles[post.url]||post.title;
+      var isHidden=hiddenList.includes(post.url);
       var li=document.createElement('li');
-      li.className='list-group-item sortable-item'; li.dataset.url=post.url;
+      li.className='list-group-item sortable-item'+(isHidden?' post-hidden':'');
+      li.dataset.url=post.url;
       var grip=document.createElement('i'); grip.className='fas fa-grip-vertical fa-fw drag-handle';
       var fileIco=document.createElement('i'); fileIco.className='far fa-file-alt fa-fw text-muted small flex-shrink-0';
       var span=document.createElement('span');
       span.className='mx-1 post-title-text'+(displayTitle!==post.title?' is-custom':'');
       span.textContent=displayTitle;
-      var btn=document.createElement('button'); btn.className='edit-title-btn'; btn.title='제목 수정';
-      btn.innerHTML='<i class="fas fa-pen fa-xs"></i>';
-      btn.addEventListener('click',function(){startEdit(li,post.url,post.title);});
-      li.append(grip,fileIco,span,btn); ul.appendChild(li);
+      var editBtn=document.createElement('button'); editBtn.className='edit-title-btn'; editBtn.title='제목 수정';
+      editBtn.innerHTML='<i class="fas fa-pen fa-xs"></i>';
+      editBtn.addEventListener('click',function(){startEdit(li,post.url,post.title);});
+      var visBtn=document.createElement('button');
+      visBtn.className='visibility-btn'+(isHidden?' is-hidden':'');
+      visBtn.title=isHidden?'활성화':'비활성화';
+      visBtn.innerHTML='<i class="fas fa-eye'+(isHidden?'-slash':'')+' fa-xs"></i>';
+      visBtn.addEventListener('click',function(){
+        var nowHidden=toggleHidden(post.url);
+        li.classList.toggle('post-hidden',nowHidden);
+        visBtn.classList.toggle('is-hidden',nowHidden);
+        visBtn.title=nowHidden?'활성화':'비활성화';
+        visBtn.innerHTML='<i class="fas fa-eye'+(nowHidden?'-slash':'')+' fa-xs"></i>';
+      });
+      li.append(grip,fileIco,span,editBtn,visBtn); ul.appendChild(li);
     });
     container.appendChild(card);
     Sortable.create(ul,{animation:150,handle:'.drag-handle',ghostClass:'sortable-ghost',chosenClass:'sortable-chosen'});

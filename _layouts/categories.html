@@ -110,5 +110,21 @@ layout: page
       if (t) a.textContent = t;
     });
   });
+
+  /* 비활성화된 포스트 숨김 */
+  var hidden;
+  try { hidden = JSON.parse(localStorage.getItem('bbdawn-hidden-posts') || '[]'); } catch(e) { hidden = []; }
+  if (hidden.length) {
+    hidden.forEach(function (url) {
+      var li = document.querySelector('li[data-url="' + url + '"]');
+      if (li) li.style.display = 'none';
+    });
+    document.querySelectorAll('.card.categories[data-cat]').forEach(function (card) {
+      var hasVisible = Array.from(card.querySelectorAll('li[data-url]')).some(function (li) {
+        return li.style.display !== 'none';
+      });
+      if (!hasVisible) card.style.display = 'none';
+    });
+  }
 })();
 </script>
