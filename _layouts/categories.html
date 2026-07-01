@@ -30,13 +30,12 @@ layout: page
 
 {% include lang.html %}
 
-{% assign sections        = "GPU,Infra,Openstack,Network,Linux" | split: "," %}
-{% assign section_names   = "GPU,Rack Topology,Openstack,Network,Linux" | split: "," %}
-{% assign subcategory_order = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
+{% assign sections      = "GPU,Infra,Openstack,Linux" | split: "," %}
+{% assign section_names = "GPU,Rack Topology,Openstack,Linux" | split: "," %}
 
-{% for i in (0..4) %}
-  {% assign cat      = sections[i] %}
-  {% assign _raw    = site.categories[cat] %}
+{% for i in (0..3) %}
+  {% assign cat   = sections[i] %}
+  {% assign _raw  = site.categories[cat] %}
   {% if _raw %}
     {% assign cat_posts = _raw | sort: "date" | reverse %}
   {% else %}
@@ -52,45 +51,27 @@ layout: page
       <span class="text-muted small font-weight-light">{{ cat_posts | size }} posts</span>
     </span>
   </div>
-
-  {% for sub in subcategory_order %}
-    {% assign sub_posts = cat_posts | where: "subcategory", sub %}
-    {% if sub_posts.size > 0 %}
-    <div class="px-3 pt-2 pb-1">
-      <span class="small text-muted fw-semibold">
-        {% if sub == "Features" %}<i class="fas fa-star fa-fw"></i>
-        {% elsif sub == "Projects" %}<i class="fas fa-code fa-fw"></i>
-        {% elsif sub == "Hands-on" %}<i class="fas fa-terminal fa-fw"></i>
-        {% elsif sub == "Study" %}<i class="fas fa-book-open fa-fw"></i>
-        {% elsif sub == "Troubleshooting" %}<i class="fas fa-wrench fa-fw"></i>
-        {% else %}<i class="far fa-folder-open fa-fw"></i>
-        {% endif %}
-        {{ sub }}
-      </span>
-    </div>
-    <ul class="list-group list-group-flush mb-1" data-sub="{{ sub }}">
-      {% for post in sub_posts %}
-      <li class="list-group-item ps-4" data-url="{{ post.url | relative_url }}">
-        {% if sub == "Features" %}
-          <i class="fas fa-star fa-fw text-muted small"></i>
-        {% elsif sub == "Projects" %}
-          <i class="fas fa-code fa-fw text-muted small"></i>
-        {% elsif sub == "Hands-on" %}
-          <i class="fas fa-terminal fa-fw text-muted small"></i>
-        {% elsif sub == "Study" %}
-          <i class="fas fa-book-open fa-fw text-muted small"></i>
-        {% elsif sub == "Troubleshooting" %}
-          <i class="fas fa-wrench fa-fw text-muted small"></i>
-        {% else %}
-          <i class="far fa-file-alt fa-fw text-muted small"></i>
-        {% endif %}
-        <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-  {% endfor %}
-
+  <ul class="list-group list-group-flush" data-sub="all">
+    {% for post in cat_posts %}
+    <li class="list-group-item" data-url="{{ post.url | relative_url }}">
+      {% assign sub = post.subcategory %}
+      {% if sub == "Features" %}
+        <i class="fas fa-star fa-fw text-muted small"></i>
+      {% elsif sub == "Projects" %}
+        <i class="fas fa-code fa-fw text-muted small"></i>
+      {% elsif sub == "Hands-on" %}
+        <i class="fas fa-terminal fa-fw text-muted small"></i>
+      {% elsif sub == "Study" %}
+        <i class="fas fa-book-open fa-fw text-muted small"></i>
+      {% elsif sub == "Troubleshooting" %}
+        <i class="fas fa-wrench fa-fw text-muted small"></i>
+      {% else %}
+        <i class="far fa-file-alt fa-fw text-muted small"></i>
+      {% endif %}
+      <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
 </div>
 
   {% endif %}
@@ -105,23 +86,28 @@ layout: page
   try { titles = JSON.parse(localStorage.getItem(TITLE_KEY) || '{}'); } catch(e) { titles = {}; }
 
   document.querySelectorAll('.card.categories[data-cat]').forEach(function (card) {
-    var catOrder = orders[card.dataset.cat];
+    var cat      = card.dataset.cat;
+    var catOrder = orders[cat];
+    var ul       = card.querySelector('ul[data-sub="all"]');
+    if (!ul) return;
 
-    card.querySelectorAll('ul[data-sub]').forEach(function (ul) {
-      var subOrder = catOrder && catOrder[ul.dataset.sub];
-
-      if (subOrder && subOrder.length) {
+    if (catOrder) {
+      var flatOrder = [];
+      ['Features','Troubleshooting','Projects','Hands-on','Study'].forEach(function (sub) {
+        if (catOrder[sub]) flatOrder = flatOrder.concat(catOrder[sub]);
+      });
+      if (flatOrder.length) {
         var items = Array.from(ul.querySelectorAll('li[data-url]'));
         var map = {};
         items.forEach(function (li) { map[li.dataset.url] = li; });
-        subOrder.forEach(function (url) { if (map[url]) ul.appendChild(map[url]); });
-        items.forEach(function (li) { if (!subOrder.includes(li.dataset.url)) ul.appendChild(li); });
+        flatOrder.forEach(function (url) { if (map[url]) ul.appendChild(map[url]); });
+        items.forEach(function (li) { if (!flatOrder.includes(li.dataset.url)) ul.appendChild(li); });
       }
+    }
 
-      ul.querySelectorAll('li[data-url] a').forEach(function (a) {
-        var t = titles[a.getAttribute('href')];
-        if (t) a.textContent = t;
-      });
+    ul.querySelectorAll('li[data-url] a').forEach(function (a) {
+      var t = titles[a.getAttribute('href')];
+      if (t) a.textContent = t;
     });
   });
 })();
