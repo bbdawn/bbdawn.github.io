@@ -122,7 +122,6 @@ List<PortResponse> portList = ports.stream()
 | 포트가 External Network에 직접 연결됨 | Floating IP는 Internal Network 포트에만 연동 가능 |
 
 ---
-![스크린샷 2026-07-01 오후 12.58.48.png](/assets/img/posts/1782880670813------------2026-07-01------12-58-48.png)
 
 
 ## 효과
@@ -131,4 +130,4 @@ List<PortResponse> portList = ports.stream()
 - 사용자가 UI에서 연동 가능한 포트만 선택할 수 있도록 안내
 - Neutron API 호출 실패로 인한 불필요한 에러 로그 감소
 
-![스크린샷 2026-07-01 오후 12.58.48.png](/assets/img/posts/1782880670813------------2026-07-01------12-58-48.png)
+
