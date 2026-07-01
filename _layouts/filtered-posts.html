@@ -54,9 +54,9 @@ layout: page
         <span class="text-muted small font-weight-light">{{ sub_posts | size }} posts</span>
       </span>
     </div>
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush" data-sub="{{ sub }}">
       {% for post in sub_posts %}
-        <li class="list-group-item">
+        <li class="list-group-item" data-url="{{ post.url | relative_url }}">
           <i class="far fa-file-alt fa-fw text-muted small"></i>
           <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
         </li>
@@ -65,3 +65,31 @@ layout: page
   </div>
   {% endif %}
 {% endfor %}
+
+<script>
+(function () {
+  var STORAGE_KEY = 'bbdawn-post-order';
+  var category = {{ page.filter_category | jsonify }};
+  var saved;
+  try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return; }
+  var catOrder = saved[category];
+  if (!catOrder) return;
+
+  document.querySelectorAll('.card.categories ul[data-sub]').forEach(function (ul) {
+    var sub = ul.dataset.sub;
+    var subOrder = catOrder[sub];
+    if (!subOrder || !subOrder.length) return;
+
+    var items = Array.from(ul.querySelectorAll('li[data-url]'));
+    var map = {};
+    items.forEach(function (li) { map[li.dataset.url] = li; });
+
+    subOrder.forEach(function (url) {
+      if (map[url]) ul.appendChild(map[url]);
+    });
+    items.forEach(function (li) {
+      if (!subOrder.includes(li.dataset.url)) ul.appendChild(li);
+    });
+  });
+})();
+</script>

@@ -1,0 +1,230 @@
+---
+layout: page
+title: "Post Order Manager"
+permalink: /reorder/
+sitemap: false
+---
+
+<style>
+  .sortable-item {
+    cursor: default;
+    user-select: none;
+  }
+  .drag-handle {
+    cursor: grab;
+    color: #aaa;
+    padding: 0 0.5rem 0 0;
+  }
+  .drag-handle:active { cursor: grabbing; }
+  .sortable-ghost {
+    opacity: 0.35;
+    background: rgba(var(--bs-primary-rgb), 0.08) !important;
+  }
+  .sortable-chosen {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .reorder-tabs .nav-link {
+    color: var(--text-muted-color, #6c757d);
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+  }
+  .reorder-tabs .nav-link.active {
+    color: var(--link-color);
+    border-bottom-color: var(--link-color);
+    background: none;
+  }
+  .reorder-tabs .nav-link:hover {
+    color: var(--link-color);
+  }
+  .save-area {
+    position: sticky;
+    bottom: 1.5rem;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .save-area > * { pointer-events: auto; }
+  .hint-text {
+    font-size: 0.8rem;
+    color: var(--text-muted-color, #6c757d);
+  }
+</style>
+
+{% assign cat_keys   = "GPU,Infra,Openstack,Network" | split: "," %}
+{% assign cat_names  = "GPU,Rack Topology,Openstack,Network" | split: "," %}
+{% assign sub_order  = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
+
+<script>
+var ALL_POSTS = {
+  {% for cat in cat_keys %}
+  {{ cat | jsonify }}: {
+    {% for sub in sub_order %}
+    {{ sub | jsonify }}: [
+      {% assign filtered = site.categories[cat] | where: "subcategory", sub | sort: "date" | reverse %}
+      {% for post in filtered %}
+      {"title": {{ post.title | jsonify }}, "url": {{ post.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+};
+
+var CAT_KEYS  = {{ cat_keys  | jsonify }};
+var CAT_NAMES = {{ cat_names | jsonify }};
+var SUB_ORDER = {{ sub_order | jsonify }};
+
+var SUB_ICONS = {
+  "Features":       "fas fa-star",
+  "Projects":       "fas fa-code",
+  "Hands-on":       "fas fa-terminal",
+  "Study":          "fas fa-book-open",
+  "Troubleshooting":"fas fa-wrench"
+};
+
+var STORAGE_KEY = 'bbdawn-post-order';
+
+function loadSaved() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch(e) { return {}; }
+}
+
+function activeCat() {
+  var el = document.querySelector('.reorder-tabs .nav-link.active');
+  return el ? el.dataset.cat : CAT_KEYS[0];
+}
+
+function renderCategory(cat) {
+  var savedAll = loadSaved();
+  var savedCat = savedAll[cat] || {};
+  var container = document.getElementById('postLists');
+  container.innerHTML = '';
+
+  SUB_ORDER.forEach(function(sub) {
+    var posts = (ALL_POSTS[cat] || {})[sub];
+    if (!posts || !posts.length) return;
+
+    /* apply saved order */
+    var savedSub = savedCat[sub] || [];
+    if (savedSub.length) {
+      var map = {};
+      posts.forEach(function(p) { map[p.url] = p; });
+      var ordered = [];
+      savedSub.forEach(function(url) { if (map[url]) ordered.push(map[url]); });
+      posts.forEach(function(p) { if (!savedSub.includes(p.url)) ordered.push(p); });
+      posts = ordered;
+    }
+
+    var icon = SUB_ICONS[sub] || 'far fa-folder-open';
+    var card = document.createElement('div');
+    card.className = 'card categories mb-4';
+    card.innerHTML =
+      '<div class="card-header d-flex justify-content-between hide-border-bottom">' +
+        '<span class="ms-2">' +
+          '<i class="' + icon + ' fa-fw"></i>' +
+          '<span class="mx-2 fw-bold">' + sub + '</span>' +
+          '<span class="text-muted small">' + posts.length + ' posts</span>' +
+        '</span>' +
+        '<span class="hint-text align-self-center me-2">' +
+          '<i class="fas fa-grip-lines fa-fw"></i> 드래그하여 순서 변경' +
+        '</span>' +
+      '</div>' +
+      '<ul class="list-group list-group-flush" data-sub="' + sub + '"></ul>';
+
+    var ul = card.querySelector('ul');
+    posts.forEach(function(post) {
+      var li = document.createElement('li');
+      li.className = 'list-group-item sortable-item';
+      li.dataset.url = post.url;
+      li.innerHTML =
+        '<i class="fas fa-grip-vertical fa-fw drag-handle"></i>' +
+        '<i class="far fa-file-alt fa-fw text-muted small"></i>' +
+        '<span class="mx-1">' + post.title + '</span>';
+      ul.appendChild(li);
+    });
+
+    container.appendChild(card);
+
+    Sortable.create(ul, {
+      animation: 150,
+      handle: '.drag-handle',
+      ghostClass: 'sortable-ghost',
+      chosenClass: 'sortable-chosen'
+    });
+  });
+}
+
+function saveOrder() {
+  var cat = activeCat();
+  var savedAll = loadSaved();
+  savedAll[cat] = {};
+
+  document.querySelectorAll('#postLists ul[data-sub]').forEach(function(ul) {
+    var sub = ul.dataset.sub;
+    savedAll[cat][sub] = Array.from(ul.querySelectorAll('li[data-url]')).map(function(li) {
+      return li.dataset.url;
+    });
+  });
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedAll));
+
+  var btn = document.getElementById('saveBtn');
+  var orig = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-check fa-fw me-1"></i>저장 완료!';
+  btn.classList.replace('btn-primary', 'btn-success');
+  setTimeout(function() {
+    btn.innerHTML = orig;
+    btn.classList.replace('btn-success', 'btn-primary');
+  }, 2000);
+}
+
+function resetOrder() {
+  var cat = activeCat();
+  var savedAll = loadSaved();
+  delete savedAll[cat];
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedAll));
+  renderCategory(cat);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(l) {
+        l.classList.remove('active');
+      });
+      this.classList.add('active');
+      renderCategory(this.dataset.cat);
+    });
+  });
+  renderCategory(CAT_KEYS[0]);
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<!-- Tab bar -->
+<ul class="nav reorder-tabs mb-4 border-bottom">
+  {% for cat in cat_keys %}
+  <li class="nav-item">
+    <a class="nav-link {% if forloop.first %}active{% endif %}"
+       href="#" data-cat="{{ cat }}">
+      {{ cat_names[forloop.index0] }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+<!-- Post lists (filled by JS) -->
+<div id="postLists"></div>
+
+<!-- Sticky save area -->
+<div class="save-area d-flex gap-2 mt-3">
+  <button id="saveBtn" class="btn btn-primary btn-sm" onclick="saveOrder()">
+    <i class="fas fa-save fa-fw me-1"></i>순서 저장
+  </button>
+  <button class="btn btn-outline-secondary btn-sm" onclick="resetOrder()">
+    <i class="fas fa-undo fa-fw me-1"></i>현재 탭 초기화
+  </button>
+</div>
