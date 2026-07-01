@@ -1,14 +1,154 @@
 ---
-title: "[Project] OpenStack GPU 인스턴스 기반 RAG 파이프라인 구성"
+title: "[Project] GPU 인스턴스 프로비저닝 & RAG 파이프라인 구성 (OpenStack + Terraform + Ansible + Ollama + Qdrant)"
 date: 2026-06-30 11:00:00 +0900
-categories: [Study, GPU]
+categories: [Project, GPU]
 subcategory: Projects
-tags: [openstack, gpu, rag, ollama, qdrant, terraform, ansible, python, llm]
+tags: [openstack, gpu, terraform, ansible, iac, automation, nvidia, dcgm, rag, ollama, qdrant, python, llm]
 ---
 
-## 시나리오: OpenStack 문서 기반 질의응답 시스템
+## 개요
 
-### 전체 그림
+OpenStack 환경에서 GPU 인스턴스를 자동으로 구성하고, 그 위에 RAG(Retrieval-Augmented Generation) 파이프라인까지 구축하는 전체 과정을 정리합니다.
+
+```
+[IaC 자동화]
+  Terraform → GPU/Qdrant 인스턴스 프로비저닝
+  Ansible   → NVIDIA 드라이버 / Ollama / Qdrant 환경 구성
+      ↓
+[RAG 파이프라인]
+  Ollama (GPU 인스턴스) → 임베딩 생성 + LLM 답변
+  Qdrant (일반 인스턴스) → 벡터 저장 + 유사도 검색
+```
+
+---
+
+## 1부: GPU 환경 자동화
+
+### 문제 상황
+
+새로운 GPU 인스턴스를 생성할 때마다 아래 작업을 수동으로 반복해야 했습니다.
+
+```
+GPU 인스턴스 생성 (OpenStack)
+  ↓
+SSH 접속
+  ↓
+NVIDIA 드라이버 설치
+  ↓
+DCGM Exporter 설치 및 설정
+  ↓
+qemu-guest-agent 설치
+  ↓
+각 서비스 시작 및 활성화 확인
+```
+
+GPU 모델, OS 버전, 드라이버 버전에 따라 명령어가 달라져 실수가 생기기 쉬웠고, 여러 인스턴스를 동시에 구성할 때 일관성을 보장하기 어려웠습니다.
+
+### 기존 수동 처리 방식
+
+```bash
+# 매번 직접 SSH 접속 후 순서대로 실행
+ssh ubuntu@<gpu-instance-ip>
+
+# NVIDIA 드라이버 설치
+sudo apt-get install -y nvidia-driver-535
+
+# DCGM 설치
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get install -y datacenter-gpu-manager
+
+# qemu-guest-agent 설치
+sudo apt-get install -y qemu-guest-agent
+sudo systemctl enable --now qemu-guest-agent
+```
+
+### 자동화 방향
+
+**Terraform + Ansible** 조합으로 인스턴스 생성부터 환경 구성까지 전 과정을 자동화했습니다.
+
+```
+Terraform
+  → OpenStack GPU 인스턴스 프로비저닝
+      ↓
+Ansible
+  ├── nvidia role : NVIDIA 드라이버 설치
+  ├── dcgm role   : DCGM Exporter 설치 및 설정
+  └── qemu role   : qemu-guest-agent 설치
+```
+
+### 구현
+
+#### Terraform — 인스턴스 생성
+
+```hcl
+resource "openstack_compute_instance_v2" "gpu" {
+  name      = "gpu-instance"
+  flavor_id = var.gpu_flavor_id
+  image_id  = var.image_id
+  key_pair  = var.key_pair
+
+  network {
+    name = var.network_name
+  }
+}
+```
+
+#### Ansible — 역할 기반 구조
+
+```
+ansible/
+├── roles/
+│   ├── nvidia/   # 드라이버 버전 변수화
+│   ├── dcgm/     # exporter 설정 변수화
+│   └── qemu/     # guest-agent 설치
+├── group_vars/
+│   └── all.yml   # 버전 및 설정값 중앙 관리
+└── site.yml
+```
+
+버전 관리는 `group_vars/all.yml` 한 곳에서만 수정하면 됩니다.
+
+```yaml
+# group_vars/all.yml
+nvidia_driver_version: "535"
+dcgm_version: "3.3.0"
+```
+
+#### 멱등성 보장
+
+몇 번을 실행해도 동일한 결과를 보장합니다. 이미 설치된 경우 건너뜁니다.
+
+```yaml
+- name: NVIDIA 드라이버 설치
+  apt:
+    name: "nvidia-driver-{{ nvidia_driver_version }}"
+    state: present   # 이미 설치돼 있으면 건너뜀
+```
+
+### 주요 특징
+
+| 특징 | 설명 |
+|------|------|
+| 역할 기반 구조 분리 | 각 소프트웨어를 독립 Role로 관리 |
+| 변수화된 설정 | 버전·환경을 변수로 관리 |
+| Handler 자동 재시작 | 설정 변경 시 서비스 자동 재시작 |
+| 멱등성 보장 | 반복 실행해도 동일 결과 |
+
+### 효과
+
+| 항목 | 이전 | 이후 |
+|------|------|------|
+| 인스턴스당 구성 시간 | 20~30분 (수동) | 5분 이내 (자동) |
+| 버전 관리 | 명령어에 직접 입력 | 변수 파일 한 곳에서 관리 |
+| 일관성 | 실수 가능 | 멱등성 보장 |
+| 다중 인스턴스 | 대수만큼 반복 | 병렬 실행 가능 |
+
+---
+
+## 2부: RAG 파이프라인 구성
+
+### 시나리오: OpenStack 문서 기반 질의응답 시스템
 
 ```
 [문서 준비] → [임베딩 생성] → [벡터 DB 저장]
@@ -16,9 +156,7 @@ tags: [openstack, gpu, rag, ollama, qdrant, terraform, ansible, python, llm]
 [사용자 질문] → [질문 임베딩] → [유사 문서 검색] → [LLM 답변]
 ```
 
----
-
-## 환경 구성
+### 환경 구성
 
 OpenStack 인스턴스 2개가 필요합니다.
 
@@ -29,18 +167,14 @@ OpenStack 인스턴스 2개가 필요합니다.
   - 답변 생성              - 유사도 검색
 ```
 
----
-
-## Step 1. GPU 인스턴스 생성
+### Step 1. GPU 인스턴스 생성
 
 기존 `gpu-instance` 기능으로 MIG 인스턴스를 생성합니다.
 
 - MIG 슬라이스 1개 할당
 - RAM 16GB 이상
 
----
-
-## Step 2. Ollama 설치 (GPU 인스턴스)
+### Step 2. Ollama 설치 (GPU 인스턴스)
 
 ```bash
 # Ollama 설치
@@ -56,9 +190,7 @@ ollama pull nomic-embed-text
 ollama pull phi3
 ```
 
----
-
-## Step 3. Qdrant 설치 (일반 인스턴스)
+### Step 3. Qdrant 설치 (일반 인스턴스)
 
 ```bash
 docker run -d \
@@ -71,9 +203,7 @@ docker run -d \
 curl http://localhost:6333
 ```
 
----
-
-## Step 4. 문서 준비
+### Step 4. 문서 준비
 
 OpenStack 공식 문서나 사내 운영 문서를 준비합니다.
 
@@ -85,9 +215,7 @@ docs/
 └── gpu-setup.txt   # GPU 설정 가이드
 ```
 
----
-
-## Step 5. 문서 임베딩 및 저장
+### Step 5. 문서 임베딩 및 저장
 
 ```python
 # embed.py
@@ -143,9 +271,7 @@ for filename in os.listdir("docs/"):
 print("모든 문서 임베딩 완료")
 ```
 
----
-
-## Step 6. 질의응답 (RAG)
+### Step 6. 질의응답 (RAG)
 
 ```python
 # rag.py
@@ -189,9 +315,7 @@ while True:
     print(f"\n답변: {rag(query)}")
 ```
 
----
-
-## Step 7. 모니터링
+### Step 7. 모니터링
 
 ```bash
 # GPU 사용률 확인 (DCGM)
@@ -203,9 +327,7 @@ curl -w "\n응답시간: %{time_total}s\n" \
   -d '{"model": "nomic-embed-text", "prompt": "test"}'
 ```
 
----
-
-## 실행 결과 예시
+### 실행 결과 예시
 
 ```
 질문: OpenStack에서 네트워크 담당 서비스가 뭐야?
@@ -221,9 +343,7 @@ Port, Floating IP, Security Group을 관리합니다.
 
 ---
 
-## Terraform + Ansible 연동
-
-### 전체 흐름
+## 전체 흐름
 
 ```
 Terraform (인프라 프로비저닝)
@@ -231,7 +351,7 @@ Terraform (인프라 프로비저닝)
   → Qdrant 인스턴스 생성
   ↓
 Ansible (환경 구성)
-  → GPU 인스턴스: Ollama + 모델 설치
+  → GPU 인스턴스: NVIDIA 드라이버 + DCGM + Ollama 설치
   → 일반 인스턴스: Docker + Qdrant 설치
   ↓
 Python (RAG 파이프라인)
@@ -322,6 +442,9 @@ output "qdrant_ip" {
 # site.yml
 - hosts: gpu
   roles:
+    - nvidia
+    - dcgm
+    - qemu
     - ollama
 
 - hosts: qdrant
@@ -376,6 +499,8 @@ OpenStack Security Group에서 포트를 열어야 합니다.
 |------|------|
 | IaC | Terraform, Ansible |
 | 인프라 | OpenStack (Nova, Neutron) |
+| GPU | NVIDIA A100, H100, B300 |
+| OS | Ubuntu 22.04 |
 | LLM | Ollama (nomic-embed-text, phi3) |
 | 벡터 DB | Qdrant (Docker) |
 | 언어 | Python |
@@ -386,7 +511,7 @@ OpenStack Security Group에서 포트를 열어야 합니다.
 ## repo 구조
 
 ```
-rag-pipeline/
+iac-rag-pipeline/
 ├── terraform/
 │   ├── main.tf          # GPU/Qdrant 인스턴스 생성
 │   ├── variables.tf
@@ -395,8 +520,13 @@ rag-pipeline/
 │   ├── inventory/
 │   │   └── hosts.ini
 │   ├── roles/
+│   │   ├── nvidia/      # NVIDIA 드라이버 설치
+│   │   ├── dcgm/        # DCGM Exporter 설치
+│   │   ├── qemu/        # qemu-guest-agent 설치
 │   │   ├── ollama/      # Ollama + 모델 설치
 │   │   └── qdrant/      # Docker + Qdrant 설치
+│   ├── group_vars/
+│   │   └── all.yml      # 버전 및 설정값 중앙 관리
 │   └── site.yml
 ├── docs/                # 임베딩할 문서
 ├── embed.py             # 문서 → 벡터 저장
