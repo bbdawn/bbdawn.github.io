@@ -1,5 +1,5 @@
 ---
-title: "[Project] GPU IaC 자동화 + RAG 파이프라인 5편 — Qdrant + RAG 파이프라인 구성"
+title: "[Project] GPU IaC 자동화 + RAG 파이프라인 (5) — Qdrant + RAG 파이프라인 구성"
 date: 2026-06-30 11:40:00 +0900
 categories: [Project, GPU]
 subcategory: Project

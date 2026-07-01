@@ -1,5 +1,5 @@
 ---
-title: "[Project] GPU IaC 자동화 + RAG 파이프라인 4편 — Ollama 설치 및 임베딩"
+title: "[Project] GPU IaC 자동화 + RAG 파이프라인 (4) — Ollama 설치 및 임베딩"
 date: 2026-06-30 11:30:00 +0900
 categories: [Project, GPU]
 subcategory: Project

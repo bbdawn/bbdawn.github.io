@@ -1,5 +1,5 @@
 ---
-title: "[Project] GPU IaC 자동화 + RAG 파이프라인 1편 — 프로젝트 개요"
+title: "[Project] GPU IaC 자동화 + RAG 파이프라인 (1) — 프로젝트 개요"
 date: 2026-06-30 11:00:00 +0900
 categories: [Project, GPU]
 subcategory: Project
@@ -144,8 +144,8 @@ iac-rag-pipeline/
 
 ## 시리즈 구성
 
-- **1편**: 프로젝트 개요 (현재)
-- **2편**: Terraform으로 인스턴스 프로비저닝
-- **3편**: Ansible로 GPU 환경 구성
-- **4편**: Ollama 설치 및 임베딩
-- **5편**: Qdrant + RAG 파이프라인 구성
+- **(1)**: 프로젝트 개요 (현재)
+- **(2)**: Terraform으로 인스턴스 프로비저닝
+- **(3)**: Ansible로 GPU 환경 구성
+- **(4)**: Ollama 설치 및 임베딩
+- **(5)**: Qdrant + RAG 파이프라인 구성

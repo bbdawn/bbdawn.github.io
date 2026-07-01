@@ -1,5 +1,5 @@
 ---
-title: "[Project] GPU IaC 자동화 + RAG 파이프라인 2편 — Terraform으로 인스턴스 프로비저닝"
+title: "[Project] GPU IaC 자동화 + RAG 파이프라인 (2) — Terraform으로 인스턴스 프로비저닝"
 date: 2026-06-30 11:10:00 +0900
 categories: [Project, GPU]
 subcategory: Project

@@ -1,5 +1,5 @@
 ---
-title: "[Project] GPU IaC 자동화 + RAG 파이프라인 3편 — Ansible로 GPU 환경 구성"
+title: "[Project] GPU IaC 자동화 + RAG 파이프라인 (3) — Ansible로 GPU 환경 구성"
 date: 2026-06-30 11:20:00 +0900
 categories: [Project, GPU]
 subcategory: Project
