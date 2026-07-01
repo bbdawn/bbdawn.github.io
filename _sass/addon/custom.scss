@@ -1,0 +1,30 @@
+/* Hide all post dates and reading time site-wide */
+
+/* time element: used exclusively for dates in Chirpy */
+time,
+time.timeago,
+time[datetime],
+time[itemprop~="datePublished"],
+time[itemprop~="dateModified"] {
+  display: none !important;
+}
+
+/* Reading time indicator */
+.reading-time,
+.post-reading-time,
+.readingtime,
+span.read-time {
+  display: none !important;
+}
+
+/* Calendar icon + parent span in post meta */
+#post-meta > span:first-child,
+.post-meta > span:first-child {
+  display: none !important;
+}
+
+/* Date/time in archives list */
+.archive-item time,
+.archive-item .post-date {
+  display: none !important;
+}
