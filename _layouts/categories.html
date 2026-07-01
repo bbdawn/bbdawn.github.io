@@ -30,8 +30,9 @@ layout: page
 
 {% include lang.html %}
 
-{% assign sections     = "GPU,Infra,Openstack,Network" | split: "," %}
-{% assign section_names = "GPU,Rack Topology,Openstack,Network" | split: "," %}
+{% assign sections        = "GPU,Infra,Openstack,Network" | split: "," %}
+{% assign section_names   = "GPU,Rack Topology,Openstack,Network" | split: "," %}
+{% assign subcategory_order = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
 
 {% for i in (0..3) %}
   {% assign cat       = sections[i] %}
@@ -46,26 +47,45 @@ layout: page
       <span class="text-muted small font-weight-light">{{ cat_posts | size }} posts</span>
     </span>
   </div>
-  <ul class="list-group list-group-flush">
-    {% for post in cat_posts %}
-    <li class="list-group-item">
-      {% if post.subcategory == "Features" %}
-        <i class="fas fa-star fa-fw text-muted small"></i>
-      {% elsif post.subcategory == "Projects" %}
-        <i class="fas fa-code fa-fw text-muted small"></i>
-      {% elsif post.subcategory == "Hands-on" %}
-        <i class="fas fa-terminal fa-fw text-muted small"></i>
-      {% elsif post.subcategory == "Study" %}
-        <i class="fas fa-book-open fa-fw text-muted small"></i>
-      {% elsif post.subcategory == "Troubleshooting" %}
-        <i class="fas fa-wrench fa-fw text-muted small"></i>
-      {% else %}
-        <i class="far fa-file-alt fa-fw text-muted small"></i>
-      {% endif %}
-      <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
-    </li>
-    {% endfor %}
-  </ul>
+
+  {% for sub in subcategory_order %}
+    {% assign sub_posts = cat_posts | where: "subcategory", sub %}
+    {% if sub_posts.size > 0 %}
+    <div class="px-3 pt-2 pb-1">
+      <span class="small text-muted fw-semibold">
+        {% if sub == "Features" %}<i class="fas fa-star fa-fw"></i>
+        {% elsif sub == "Projects" %}<i class="fas fa-code fa-fw"></i>
+        {% elsif sub == "Hands-on" %}<i class="fas fa-terminal fa-fw"></i>
+        {% elsif sub == "Study" %}<i class="fas fa-book-open fa-fw"></i>
+        {% elsif sub == "Troubleshooting" %}<i class="fas fa-wrench fa-fw"></i>
+        {% else %}<i class="far fa-folder-open fa-fw"></i>
+        {% endif %}
+        {{ sub }}
+      </span>
+    </div>
+    <ul class="list-group list-group-flush mb-1">
+      {% for post in sub_posts %}
+      <li class="list-group-item ps-4">
+        {% if sub == "Features" %}
+          <i class="fas fa-star fa-fw text-muted small"></i>
+        {% elsif sub == "Projects" %}
+          <i class="fas fa-code fa-fw text-muted small"></i>
+        {% elsif sub == "Hands-on" %}
+          <i class="fas fa-terminal fa-fw text-muted small"></i>
+        {% elsif sub == "Study" %}
+          <i class="fas fa-book-open fa-fw text-muted small"></i>
+        {% elsif sub == "Troubleshooting" %}
+          <i class="fas fa-wrench fa-fw text-muted small"></i>
+        {% else %}
+          <i class="far fa-file-alt fa-fw text-muted small"></i>
+        {% endif %}
+        <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  {% endfor %}
+
 </div>
 
   {% endif %}
