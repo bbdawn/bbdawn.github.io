@@ -1,12 +1,12 @@
 ---
 title: "[Feature] OpenStack GPU 인스턴스 생성 및 모니터링 (3) — 인스턴스 생성 전 호스트 GPU 상태·설정 검증"
-date: 2026-07-02 10:00:00 +0900
+date: 2026-07-01 10:00:00 +0900
 categories: [Project, GPU]
 subcategory: Feature
 tags: [openstack, gpu, mig, passthrough, nova, precheck, validation]
 ---
 
-이전 글([2편]({% post_url 2026-07-02-gpu-flavor-metadata-automation %}))에서 OS/OpenStack Version 조합별로 nova.conf와 Flavor metadata를 자동 생성하는 기능을 다뤘습니다. 이번 글은 실제로 그 설정이 **호스트에 정상 반영되어 있는지**를 인스턴스 생성 전에 확인하는 기능입니다.
+이전 글([2편]({% post_url 2026-07-01-gpu-flavor-metadata-automation %}))에서 OS/OpenStack Version 조합별로 nova.conf와 Flavor metadata를 자동 생성하는 기능을 다뤘습니다. 이번 글은 실제로 그 설정이 **호스트에 정상 반영되어 있는지**를 인스턴스 생성 전에 확인하는 기능입니다.
 
 ## 개발 배경
 
@@ -100,7 +100,7 @@ compute-gpu-04    -          -              GPU 없음
 ## 시리즈 구성
 
 - **(1)**: [프로젝트 개요]({% post_url 2026-06-30-gpu-instance %})
-- **(2)**: [OpenStack Version × Host OS 조합별 nova.conf / Flavor Metadata 자동 생성]({% post_url 2026-07-02-gpu-flavor-metadata-automation %})
+- **(2)**: [OpenStack Version × Host OS 조합별 nova.conf / Flavor Metadata 자동 생성]({% post_url 2026-07-01-gpu-flavor-metadata-automation %})
 - **(3)**: 인스턴스 생성 전 호스트 GPU 상태·설정 검증 (현재)
-- **(4)**: [GPU 인스턴스 검증 도구 설치 — nvidia-driver, DCGM Exporter, gpu-burn]({% post_url 2026-07-02-gpu-instance-verification-tools %})
-- **(5)**: [GPU 모니터링 API 개발 — Prometheus 연동]({% post_url 2026-07-02-gpu-monitoring-api %})
+- **(4)**: [GPU 인스턴스 검증 도구 설치 — nvidia-driver, DCGM Exporter, gpu-burn]({% post_url 2026-07-01-gpu-instance-verification-tools %})
+- **(5)**: [GPU 모니터링 API 개발 — Prometheus 연동]({% post_url 2026-07-01-gpu-monitoring-api %})

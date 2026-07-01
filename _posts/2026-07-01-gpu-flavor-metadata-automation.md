@@ -1,6 +1,6 @@
 ---
 title: "[Feature] OpenStack GPU 인스턴스 생성 및 모니터링 (2) — OpenStack Version × Host OS 조합별 nova.conf / Flavor Metadata 자동 생성"
-date: 2026-07-02 09:00:00 +0900
+date: 2026-07-01 09:00:00 +0900
 categories: [Project, GPU]
 subcategory: Feature
 tags: [openstack, gpu, mig, passthrough, nova, flavor, metadata]
@@ -98,6 +98,6 @@ GPU 모드에 따라 아래와 같은 항목이 자동으로 채워집니다.
 
 - **(1)**: [프로젝트 개요]({% post_url 2026-06-30-gpu-instance %})
 - **(2)**: OpenStack Version × Host OS 조합별 nova.conf / Flavor Metadata 자동 생성 (현재)
-- **(3)**: [인스턴스 생성 전 호스트 GPU 상태·설정 검증]({% post_url 2026-07-02-gpu-instance-host-precheck %})
-- **(4)**: [GPU 인스턴스 검증 도구 설치 — nvidia-driver, DCGM Exporter, gpu-burn]({% post_url 2026-07-02-gpu-instance-verification-tools %})
-- **(5)**: [GPU 모니터링 API 개발 — Prometheus 연동]({% post_url 2026-07-02-gpu-monitoring-api %})
+- **(3)**: [인스턴스 생성 전 호스트 GPU 상태·설정 검증]({% post_url 2026-07-01-gpu-instance-host-precheck %})
+- **(4)**: [GPU 인스턴스 검증 도구 설치 — nvidia-driver, DCGM Exporter, gpu-burn]({% post_url 2026-07-01-gpu-instance-verification-tools %})
+- **(5)**: [GPU 모니터링 API 개발 — Prometheus 연동]({% post_url 2026-07-01-gpu-monitoring-api %})
