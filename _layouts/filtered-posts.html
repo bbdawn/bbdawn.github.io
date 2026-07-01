@@ -28,7 +28,12 @@ layout: page
   });
 </script>
 
-{% assign filtered_posts = site.categories[page.filter_category] | sort: "date" | reverse %}
+{% assign _raw_posts = site.categories[page.filter_category] %}
+{% if _raw_posts %}
+  {% assign filtered_posts = _raw_posts | sort: "date" | reverse %}
+{% else %}
+  {% assign filtered_posts = "" | split: "," %}
+{% endif %}
 {% assign subcategory_order = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
 
 {% for sub in subcategory_order %}
