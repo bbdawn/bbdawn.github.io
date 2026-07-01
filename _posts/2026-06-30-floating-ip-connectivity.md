@@ -1,7 +1,7 @@
 ---
 title: "[Feature] Floating IP 연동 가능 여부 표출"
 date: 2026-06-30 14:00:00 +0900
-categories: [Project, Openstack]
+categories: [Features, Openstack]
 subcategory: Features
 tags: [openstack, neutron, floating-ip, network, router, java, spring]
 ---
@@ -128,3 +128,5 @@ List<PortResponse> portList = ports.stream()
 - 연동 불가 포트를 선택했을 때 발생하던 오류 사전 차단
 - 사용자가 UI에서 연동 가능한 포트만 선택할 수 있도록 안내
 - Neutron API 호출 실패로 인한 불필요한 에러 로그 감소
+
+![스크린샷 2026-07-01 오후 12.58.48.png](/assets/img/posts/1782880670813------------2026-07-01------12-58-48.png)
