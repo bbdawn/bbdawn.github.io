@@ -2,7 +2,7 @@
 title: "[Feature] Floating IP 연동 가능 여부 표출"
 date: 2026-06-30 14:00:00 +0900
 categories: [Features, Openstack]
-subcategory: Features
+subcategory: Feature
 tags: [openstack, neutron, floating-ip, network, router, java, spring]
 ---
 

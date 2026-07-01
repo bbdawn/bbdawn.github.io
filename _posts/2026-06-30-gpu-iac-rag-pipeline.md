@@ -2,7 +2,7 @@
 title: "[Project] GPU 인스턴스 프로비저닝 & RAG 파이프라인 구성 (OpenStack + Terraform + Ansible + Ollama + Qdrant)"
 date: 2026-06-30 11:00:00 +0900
 categories: [Project, GPU]
-subcategory: Projects
+subcategory: Project
 tags: [openstack, gpu, terraform, ansible, iac, automation, nvidia, dcgm, rag, ollama, qdrant, python, llm]
 ---
 

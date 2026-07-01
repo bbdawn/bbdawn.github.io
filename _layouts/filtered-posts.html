@@ -34,7 +34,7 @@ layout: page
 {% else %}
   {% assign filtered_posts = "" | split: "," %}
 {% endif %}
-{% assign subcategory_order = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
+{% assign subcategory_order = "Feature,Troubleshooting,Project,Hands-on,Study" | split: "," %}
 
 {% for sub in subcategory_order %}
   {% assign sub_posts = filtered_posts | where: "subcategory", sub %}
@@ -42,9 +42,9 @@ layout: page
   <div class="card categories mb-4">
     <div class="card-header d-flex justify-content-between hide-border-bottom">
       <span class="ms-2">
-        {% if sub == "Features" %}
+        {% if sub == "Feature" %}
           <i class="fas fa-star fa-fw"></i>
-        {% elsif sub == "Projects" %}
+        {% elsif sub == "Project" %}
           <i class="fas fa-code fa-fw"></i>
         {% elsif sub == "Hands-on" %}
           <i class="fas fa-terminal fa-fw"></i>
@@ -62,9 +62,9 @@ layout: page
     <ul class="list-group list-group-flush" data-sub="{{ sub }}">
       {% for post in sub_posts %}
         <li class="list-group-item" data-url="{{ post.url | relative_url }}">
-          {% if sub == "Features" %}
+          {% if sub == "Feature" %}
             <i class="fas fa-star fa-fw text-muted small"></i>
-          {% elsif sub == "Projects" %}
+          {% elsif sub == "Project" %}
             <i class="fas fa-code fa-fw text-muted small"></i>
           {% elsif sub == "Hands-on" %}
             <i class="fas fa-terminal fa-fw text-muted small"></i>

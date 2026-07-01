@@ -139,7 +139,7 @@ sitemap: false
 
 {% assign cat_keys  = "GPU,Infra,Openstack,Linux" | split: "," %}
 {% assign cat_names = "GPU,Rack Topology,Openstack,Linux" | split: "," %}
-{% assign sub_order = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
+{% assign sub_order = "Feature,Troubleshooting,Project,Hands-on,Study" | split: "," %}
 
 <ul class="nav reorder-tabs mb-4 border-bottom">
   {% for cat in cat_keys %}
@@ -251,8 +251,8 @@ sitemap: false
           <div class="col-sm-4">
             <label class="form-label small fw-bold mb-1">서브카테고리</label>
             <select id="f-sub" class="form-select form-select-sm">
-              <option>Features</option><option>Troubleshooting</option>
-              <option>Projects</option><option>Hands-on</option><option>Study</option>
+              <option>Feature</option><option>Troubleshooting</option>
+              <option>Project</option><option>Hands-on</option><option>Study</option>
             </select>
           </div>
           <div class="col-sm-4">
@@ -311,7 +311,7 @@ var CAT_KEYS  = {{ cat_keys  | jsonify }};
 var CAT_NAMES = {{ cat_names | jsonify }};
 var SUB_ORDER = {{ sub_order | jsonify }};
 var SUB_ICONS = {
-  "Features":"fas fa-star","Projects":"fas fa-code","Hands-on":"fas fa-terminal",
+  "Feature":"fas fa-star","Project":"fas fa-code","Hands-on":"fas fa-terminal",
   "Study":"fas fa-book-open","Troubleshooting":"fas fa-wrench"
 };
 var ORDER_KEY  = 'bbdawn-post-order';
@@ -672,7 +672,7 @@ async function submitPost(){
   var finalSlug=slug||title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
   var filePath='_posts/'+datePrefix+'-'+finalSlug+'.md';
   var tagArr=tags.split(',').map(function(t){return t.trim();}).filter(Boolean);
-  var prefix=sub==='Features'?'Feature':sub==='Projects'?'Project':sub;
+  var prefix=sub==='Feature'?'Feature':sub==='Project'?'Project':sub;
   var fmTitle=title.startsWith('[')?title:'['+prefix+'] '+title;
   var fm=['---',
     'title: '+JSON.stringify(fmTitle),

@@ -2,7 +2,7 @@
 title: "[Feature] 데이터센터 랙 토폴로지 시각화 프로젝트"
 date: 2026-06-30 03:00:00 +0900
 categories: [Project, Infra]
-subcategory: Features
+subcategory: Feature
 tags: [rack, topology, visualization, openstack, snmp, java, spring]
 ---
 

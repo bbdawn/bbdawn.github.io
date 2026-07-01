@@ -2,7 +2,7 @@
 title: "[Feature] Linux 네트워크 접근 제어 1편 — TCP Wrappers"
 date: 2026-07-01 11:00:00 +0900
 categories: [Features, Linux]
-subcategory: Features
+subcategory: Feature
 tags: [linux, tcp-wrappers, hosts.allow, hosts.deny, libwrap, access-control, security]
 ---
 

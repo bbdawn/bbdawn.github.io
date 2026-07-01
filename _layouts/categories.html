@@ -55,9 +55,9 @@ layout: page
     {% for post in cat_posts %}
     <li class="list-group-item" data-url="{{ post.url | relative_url }}">
       {% assign sub = post.subcategory %}
-      {% if sub == "Features" %}
+      {% if sub == "Feature" %}
         <i class="fas fa-star fa-fw text-muted small"></i>
-      {% elsif sub == "Projects" %}
+      {% elsif sub == "Project" %}
         <i class="fas fa-code fa-fw text-muted small"></i>
       {% elsif sub == "Hands-on" %}
         <i class="fas fa-terminal fa-fw text-muted small"></i>
@@ -93,7 +93,7 @@ layout: page
 
     if (catOrder) {
       var flatOrder = [];
-      ['Features','Troubleshooting','Projects','Hands-on','Study'].forEach(function (sub) {
+      ['Feature','Troubleshooting','Project','Hands-on','Study'].forEach(function (sub) {
         if (catOrder[sub]) flatOrder = flatOrder.concat(catOrder[sub]);
       });
       if (flatOrder.length) {

@@ -2,7 +2,7 @@
 title: "[Feature] Linux 네트워크 접근 제어 2편 — iptables / nftables / firewalld"
 date: 2026-07-01 11:30:00 +0900
 categories: [Features, Linux]
-subcategory: Features
+subcategory: Feature
 tags: [linux, iptables, nftables, firewalld, firewall, netfilter, access-control, security]
 ---
 

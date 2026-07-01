@@ -2,7 +2,7 @@
 title: "[Feature] 멀티 공급자(Multi-Provider) 자원 공유"
 date: 2026-06-30 13:00:00 +0900
 categories: [Project, Infra]
-subcategory: Features
+subcategory: Feature
 tags: [rack, topology, multi-provider, snmp, ipmi, openstack, java, spring]
 ---
 

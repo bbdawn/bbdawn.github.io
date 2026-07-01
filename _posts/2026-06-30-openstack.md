@@ -2,7 +2,7 @@
 title: "[Feature] OpenStack 주요 서비스 정리"
 date: 2026-06-30 02:00:00 +0900
 categories: [Study, Openstack]
-subcategory: Features
+subcategory: Feature
 tags: [openstack, neutron, octavia, nova, barbican, keystone]
 ---
 

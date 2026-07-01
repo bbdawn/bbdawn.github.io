@@ -2,7 +2,7 @@
 title: "[Project] Octavia 로드밸런서 TUI 관리 도구 개발"
 date: 2026-06-30 07:00:00 +0900
 categories: [Project, Openstack]
-subcategory: Projects
+subcategory: Project
 tags: [openstack, octavia, loadbalancer, go, tui, amphora]
 ---
 
