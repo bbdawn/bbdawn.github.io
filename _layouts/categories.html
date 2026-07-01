@@ -37,7 +37,7 @@ layout: page
   {% assign cat   = sections[i] %}
   {% assign _raw  = site.categories[cat] %}
   {% if _raw %}
-    {% assign cat_posts = _raw | sort: "date" | reverse %}
+    {% assign cat_posts = _raw | sort: "date" %}
   {% else %}
     {% assign cat_posts = "" | split: "," %}
   {% endif %}

@@ -345,7 +345,7 @@ var ALL_POSTS = {
   {{ cat | jsonify }}: {
     {% for sub in sub_order %}
     {{ sub | jsonify }}: [
-      {% if site.categories[cat] %}{% assign filtered = site.categories[cat] | where: "subcategory", sub | sort: "date" | reverse %}{% else %}{% assign filtered = "" | split: "," %}{% endif %}
+      {% if site.categories[cat] %}{% assign filtered = site.categories[cat] | where: "subcategory", sub | sort: "date" %}{% else %}{% assign filtered = "" | split: "," %}{% endif %}
       {% for post in filtered %}
       {"title": {{ post.title | jsonify }}, "url": {{ post.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
       {% endfor %}
