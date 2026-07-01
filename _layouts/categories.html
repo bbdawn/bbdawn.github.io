@@ -49,7 +49,19 @@ layout: page
   <ul class="list-group list-group-flush">
     {% for post in cat_posts %}
     <li class="list-group-item">
-      <i class="far fa-file-alt fa-fw text-muted small"></i>
+      {% if post.subcategory == "Features" %}
+        <i class="fas fa-star fa-fw text-muted small"></i>
+      {% elsif post.subcategory == "Projects" %}
+        <i class="fas fa-code fa-fw text-muted small"></i>
+      {% elsif post.subcategory == "Hands-on" %}
+        <i class="fas fa-terminal fa-fw text-muted small"></i>
+      {% elsif post.subcategory == "Study" %}
+        <i class="fas fa-book-open fa-fw text-muted small"></i>
+      {% elsif post.subcategory == "Troubleshooting" %}
+        <i class="fas fa-wrench fa-fw text-muted small"></i>
+      {% else %}
+        <i class="far fa-file-alt fa-fw text-muted small"></i>
+      {% endif %}
       <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
     </li>
     {% endfor %}
