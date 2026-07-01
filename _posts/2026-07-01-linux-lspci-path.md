@@ -1,7 +1,7 @@
 ---
 title: "[Study] lspci 경로 인식 문제와 심볼릭 링크 임시 해결"
 date: 2026-07-01 12:00:00 +0900
-categories: [Study, GPU]
+categories: [Linux]
 subcategory: Study
 tags: [linux, lspci, pci, path, symlink, symbolic-link, gpu, troubleshooting]
 ---
