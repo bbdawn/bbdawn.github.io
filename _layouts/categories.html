@@ -30,10 +30,10 @@ layout: page
 
 {% include lang.html %}
 
-{% assign sections      = "GPU,Infra,Openstack,Linux" | split: "," %}
-{% assign section_names = "GPU,Rack Topology,Openstack,Linux" | split: "," %}
+{% assign sections      = "GPU,Infra,Openstack,Linux,Kubernetes" | split: "," %}
+{% assign section_names = "GPU,Rack Topology,Openstack,Linux,Kubernetes" | split: "," %}
 
-{% for i in (0..3) %}
+{% for i in (0..4) %}
   {% assign cat   = sections[i] %}
   {% assign _raw  = site.categories[cat] %}
   {% if _raw %}
