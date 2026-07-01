@@ -105,19 +105,30 @@ openstack compute service list --service nova-compute | grep enabled
 openstack compute service list --service nova-compute
 ```
 
-### 방법 2. Octavia — `soft-anti-affinity`로 정책 완화
+### 방법 2. Octavia — anti-affinity 정책 완화 또는 비활성화
 
-단일 호스트 환경에서 Octavia를 운영해야 하는 경우, `/etc/octavia/octavia.conf`에서 정책을 `soft-anti-affinity`로 변경합니다. 이 정책은 가능하면 다른 호스트에 배치하지만, 불가능하더라도 스케줄링 자체는 실패하지 않습니다.
+단일 호스트 환경에서 Octavia를 운영해야 하는 경우 `/etc/octavia/octavia.conf`를 수정합니다.
+
+**옵션 A — soft-anti-affinity (권장)**: 가능하면 다른 호스트에 배치하되, 불가능해도 스케줄링 자체는 실패하지 않습니다.
 
 ```ini
 [nova]
 anti_affinity_policy = soft-anti-affinity
 ```
 
+**옵션 B — anti-affinity 완전 비활성화**: Active/Standby 모두 동일한 호스트에 올라가는 것을 허용합니다.
+
+```ini
+[nova]
+enable_anti_affinity = False
+```
+
 ```bash
 # 설정 적용 후 Octavia 재시작
-sudo systemctl restart octavia-worker octavia-health-manager
+sudo systemctl restart octavia-worker octavia-health-manager octavia-housekeeping
 ```
+
+> 단일 호스트 환경에서는 Active/Standby가 같은 노드에 올라가므로 호스트 자체 장애에 대한 HA는 보장되지 않습니다. 운영 환경에서는 Compute 노드를 2개 이상 구성하는 것을 권장합니다.
 
 ### 방법 3. 기존 서버 그룹의 VM 정리
 
@@ -147,6 +158,6 @@ openstack server group create --policy affinity <group-name>
 | 상황 | 원인 | 해결 |
 |------|------|------|
 | Compute 호스트 부족 | VM 수 > 호스트 수 | 호스트 추가 |
-| 단일 호스트 Octavia | anti-affinity 강제 | soft-anti-affinity로 변경 |
+| 단일 호스트 Octavia | anti-affinity 강제 | soft-anti-affinity 또는 비활성화 |
 | 불필요한 VM 점유 | 그룹 슬롯 소진 | 기존 VM 정리 |
 | HA 불필요 환경 | 정책 자체가 불필요 | affinity 또는 그룹 미사용 |
