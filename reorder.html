@@ -8,65 +8,86 @@ sitemap: false
 <style>
   /* ── Password overlay ── */
   #pw-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
     background: var(--main-bg, #fff);
   }
   #pw-overlay.hidden { display: none; }
-  .pw-box {
-    text-align: center;
-    padding: 2.5rem 2rem;
-    width: 320px;
-  }
-  .pw-box .lock-icon {
-    font-size: 2rem;
-    color: var(--link-color);
-    margin-bottom: 1rem;
-  }
-  .pw-box h6 {
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.01em;
-  }
-  .pw-input-wrap {
-    display: flex;
-    gap: 0.5rem;
-  }
+  .pw-box { text-align: center; padding: 2.5rem 2rem; width: 320px; }
+  .pw-box .lock-icon { font-size: 2rem; color: var(--link-color); margin-bottom: 1rem; }
+  .pw-box h6 { font-weight: 600; margin-bottom: 1.5rem; letter-spacing: -0.01em; }
+  .pw-input-wrap { display: flex; gap: 0.5rem; }
   #pw-input {
-    flex: 1;
-    border: 1.5px solid var(--border-color, #dee2e6);
-    border-radius: 6px;
-    padding: 0.45rem 0.75rem;
-    font-size: 1.1rem;
-    letter-spacing: 0.2em;
-    background: var(--main-bg, #fff);
-    color: var(--text-color, #333);
-    outline: none;
+    flex: 1; border: 1.5px solid var(--border-color, #dee2e6); border-radius: 6px;
+    padding: 0.45rem 0.75rem; font-size: 1.1rem; letter-spacing: 0.2em;
+    background: var(--main-bg, #fff); color: var(--text-color, #333); outline: none;
     transition: border-color 0.2s;
   }
   #pw-input:focus { border-color: var(--link-color); }
-  #pw-input.shake {
-    animation: shake 0.35s ease;
-    border-color: #dc3545;
-  }
+  #pw-input.shake { animation: shake 0.35s ease; border-color: #dc3545; }
   @keyframes shake {
-    0%,100% { transform: translateX(0); }
-    20%      { transform: translateX(-6px); }
-    40%      { transform: translateX(6px); }
-    60%      { transform: translateX(-4px); }
-    80%      { transform: translateX(4px); }
+    0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)}
+    40%{transform:translateX(6px)}   60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}
   }
-  #pw-error {
-    font-size: 0.8rem;
-    color: #dc3545;
-    margin-top: 0.6rem;
-    min-height: 1.2em;
-  }
+  #pw-error { font-size: 0.8rem; color: #dc3545; margin-top: 0.6rem; min-height: 1.2em; }
   #main-content.hidden { display: none; }
+
+  /* ── Mode switcher ── */
+  .mode-switcher { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color, #dee2e6); }
+
+  /* ── Order/title section ── */
+  .sortable-item { display: flex; align-items: center; cursor: default; user-select: none; }
+  .drag-handle { cursor: grab; color: #aaa; flex-shrink: 0; padding: 0 0.4rem 0 0; }
+  .drag-handle:active { cursor: grabbing; }
+  .sortable-ghost { opacity: 0.35; background: rgba(var(--bs-primary-rgb),.08) !important; }
+  .sortable-chosen { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+  .post-title-text { flex: 1; min-width: 0; }
+  .post-title-text.is-custom { color: var(--link-color); }
+  .post-title-input { flex: 1; min-width: 0; margin: 0 0.25rem; font-size: 0.9rem; }
+  .edit-title-btn {
+    flex-shrink: 0; opacity: 0; transition: opacity 0.15s;
+    padding: 0 0.3rem; line-height: 1; border: none; background: none; color: #aaa;
+  }
+  .sortable-item:hover .edit-title-btn { opacity: 1; }
+  .edit-title-btn.is-editing { opacity: 1; color: var(--link-color); }
+  .reorder-tabs .nav-link {
+    color: var(--text-muted-color, #6c757d); border-bottom: 2px solid transparent;
+    border-radius: 0; padding: 0.5rem 1rem; font-weight: 500;
+  }
+  .reorder-tabs .nav-link.active { color: var(--link-color); border-bottom-color: var(--link-color); background: none; }
+  .reorder-tabs .nav-link:hover { color: var(--link-color); }
+  .save-area { position: sticky; bottom: 1.5rem; z-index: 20; pointer-events: none; }
+  .save-area > * { pointer-events: auto; }
+  .hint-text { font-size: 0.8rem; color: var(--text-muted-color, #6c757d); }
+
+  /* ── Post editor section ── */
+  .editor-toolbar {
+    display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center;
+    padding: 0.4rem 0.5rem; background: var(--sidebar-bg, #f8f8f8);
+    border: 1px solid var(--border-color, #dee2e6); border-radius: 6px 6px 0 0;
+    border-bottom: none;
+  }
+  .editor-toolbar button {
+    border: 1px solid var(--border-color, #dee2e6); border-radius: 4px;
+    background: var(--main-bg, #fff); color: var(--text-color, #333);
+    padding: 0.2rem 0.45rem; font-size: 0.78rem; cursor: pointer; line-height: 1.4;
+    transition: background 0.1s;
+  }
+  .editor-toolbar button:hover { background: var(--link-color); color: #fff; border-color: var(--link-color); }
+  .editor-toolbar .tb-sep { width: 1px; height: 1.4rem; background: var(--border-color, #dee2e6); margin: 0 0.15rem; }
+  #editor-body {
+    border-radius: 0 0 6px 6px !important; font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.85rem; resize: vertical; min-height: 320px;
+  }
+  .post-file-item {
+    display: flex; align-items: center; padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--border-color, #dee2e6); font-size: 0.85rem;
+  }
+  .post-file-item:last-child { border-bottom: none; }
+  .post-file-item:hover { background: rgba(var(--bs-primary-rgb),.04); }
+  .img-uploading { font-size: 0.8rem; color: var(--text-muted-color, #6c757d); }
+  .token-badge { font-size: 0.78rem; }
+  #section-posts.hidden, #section-order.hidden, #editor-panel.hidden { display: none; }
 </style>
 
 <!-- Password overlay -->
@@ -75,9 +96,9 @@ sitemap: false
     <div class="lock-icon"><i class="fas fa-lock"></i></div>
     <h6>관리자 비밀번호를 입력하세요</h6>
     <div class="pw-input-wrap">
-      <input id="pw-input" type="password" maxlength="20"
-             placeholder="••••••" autocomplete="off"
-             oninput="clearPwError()" onkeydown="if(event.key==='Enter')checkPw()">
+      <input id="pw-input" type="password" maxlength="20" placeholder="••••••"
+             autocomplete="off" oninput="clearPwError()"
+             onkeydown="if(event.key==='Enter')checkPw()">
       <button class="btn btn-primary btn-sm" onclick="checkPw()">
         <i class="fas fa-arrow-right"></i>
       </button>
@@ -87,330 +108,25 @@ sitemap: false
 </div>
 
 <div id="main-content" class="hidden">
-<style>
-  .sortable-item {
-    display: flex;
-    align-items: center;
-    cursor: default;
-    user-select: none;
-  }
-  .drag-handle {
-    cursor: grab;
-    color: #aaa;
-    flex-shrink: 0;
-    padding: 0 0.4rem 0 0;
-  }
-  .drag-handle:active { cursor: grabbing; }
-  .sortable-ghost {
-    opacity: 0.35;
-    background: rgba(var(--bs-primary-rgb), 0.08) !important;
-  }
-  .sortable-chosen {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  }
-  .post-title-text {
-    flex: 1;
-    min-width: 0;
-  }
-  .post-title-text.is-custom {
-    color: var(--link-color);
-  }
-  .post-title-input {
-    flex: 1;
-    min-width: 0;
-    margin: 0 0.25rem;
-    font-size: 0.9rem;
-  }
-  .edit-title-btn {
-    flex-shrink: 0;
-    opacity: 0;
-    transition: opacity 0.15s;
-    padding: 0 0.3rem;
-    line-height: 1;
-    border: none;
-    background: none;
-    color: #aaa;
-  }
-  .sortable-item:hover .edit-title-btn { opacity: 1; }
-  .edit-title-btn.is-editing { opacity: 1; color: var(--link-color); }
-  .reorder-tabs .nav-link {
-    color: var(--text-muted-color, #6c757d);
-    border-bottom: 2px solid transparent;
-    border-radius: 0;
-    padding: 0.5rem 1rem;
-    font-weight: 500;
-  }
-  .reorder-tabs .nav-link.active {
-    color: var(--link-color);
-    border-bottom-color: var(--link-color);
-    background: none;
-  }
-  .reorder-tabs .nav-link:hover { color: var(--link-color); }
-  .save-area {
-    position: sticky;
-    bottom: 1.5rem;
-    z-index: 20;
-    pointer-events: none;
-  }
-  .save-area > * { pointer-events: auto; }
-  .hint-text {
-    font-size: 0.8rem;
-    color: var(--text-muted-color, #6c757d);
-  }
-</style>
+
+<!-- Mode switcher -->
+<div class="mode-switcher">
+  <button id="mode-btn-order" class="btn btn-sm btn-primary" onclick="setMode('order')">
+    <i class="fas fa-sort fa-fw me-1"></i>순서 · 제목 관리
+  </button>
+  <button id="mode-btn-posts" class="btn btn-sm btn-outline-secondary" onclick="setMode('posts')">
+    <i class="fas fa-edit fa-fw me-1"></i>글 편집 · 작성
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1: 순서 · 제목 관리
+════════════════════════════════════════════ -->
+<div id="section-order">
 
 {% assign cat_keys  = "GPU,Infra,Openstack,Network" | split: "," %}
 {% assign cat_names = "GPU,Rack Topology,Openstack,Network" | split: "," %}
 {% assign sub_order = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
-
-<script>
-var ALL_POSTS = {
-  {% for cat in cat_keys %}
-  {{ cat | jsonify }}: {
-    {% for sub in sub_order %}
-    {{ sub | jsonify }}: [
-      {% assign filtered = site.categories[cat] | where: "subcategory", sub | sort: "date" | reverse %}
-      {% for post in filtered %}
-      {"title": {{ post.title | jsonify }}, "url": {{ post.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ]{% unless forloop.last %},{% endunless %}
-    {% endfor %}
-  }{% unless forloop.last %},{% endunless %}
-  {% endfor %}
-};
-
-var CAT_KEYS  = {{ cat_keys  | jsonify }};
-var CAT_NAMES = {{ cat_names | jsonify }};
-var SUB_ORDER = {{ sub_order | jsonify }};
-
-var SUB_ICONS = {
-  "Features":        "fas fa-star",
-  "Projects":        "fas fa-code",
-  "Hands-on":        "fas fa-terminal",
-  "Study":           "fas fa-book-open",
-  "Troubleshooting": "fas fa-wrench"
-};
-
-var ORDER_KEY = 'bbdawn-post-order';
-var TITLE_KEY = 'bbdawn-post-titles';
-
-function loadOrders() {
-  try { return JSON.parse(localStorage.getItem(ORDER_KEY) || '{}'); } catch(e) { return {}; }
-}
-function loadTitles() {
-  try { return JSON.parse(localStorage.getItem(TITLE_KEY) || '{}'); } catch(e) { return {}; }
-}
-function saveTitles(obj) {
-  localStorage.setItem(TITLE_KEY, JSON.stringify(obj));
-}
-
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function activeCat() {
-  var el = document.querySelector('.reorder-tabs .nav-link.active');
-  return el ? el.dataset.cat : CAT_KEYS[0];
-}
-
-/* ── Title editing ── */
-function startEdit(li, url, origTitle) {
-  var span = li.querySelector('.post-title-text');
-  var btn  = li.querySelector('.edit-title-btn');
-  var currentVal = span.textContent;
-
-  var input = document.createElement('input');
-  input.type = 'text';
-  input.className = 'form-control form-control-sm post-title-input';
-  input.value = currentVal;
-  span.replaceWith(input);
-  input.focus();
-  input.select();
-
-  btn.innerHTML = '<i class="fas fa-check fa-xs"></i>';
-  btn.classList.add('is-editing');
-  btn.onclick = function() { confirmEdit(li, url, origTitle, input, btn); };
-
-  input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter')  { e.preventDefault(); confirmEdit(li, url, origTitle, input, btn); }
-    if (e.key === 'Escape') { cancelEdit(li, url, origTitle, input, btn); }
-  });
-}
-
-function confirmEdit(li, url, origTitle, input, btn) {
-  var newTitle = input.value.trim() || origTitle;
-  var titles = loadTitles();
-  if (newTitle === origTitle) { delete titles[url]; } else { titles[url] = newTitle; }
-  saveTitles(titles);
-  replaceInputWithSpan(li, url, origTitle, newTitle, input, btn);
-}
-
-function cancelEdit(li, url, origTitle, input, btn) {
-  var titles = loadTitles();
-  var displayed = titles[url] || origTitle;
-  replaceInputWithSpan(li, url, origTitle, displayed, input, btn);
-}
-
-function replaceInputWithSpan(li, url, origTitle, displayTitle, input, btn) {
-  var span = document.createElement('span');
-  span.className = 'mx-1 post-title-text' + (displayTitle !== origTitle ? ' is-custom' : '');
-  span.textContent = displayTitle;
-  input.replaceWith(span);
-
-  btn.innerHTML = '<i class="fas fa-pen fa-xs"></i>';
-  btn.classList.remove('is-editing');
-  btn.onclick = function() { startEdit(li, url, origTitle); };
-}
-
-/* ── Render ── */
-function renderCategory(cat) {
-  var savedAll = loadOrders();
-  var savedCat = savedAll[cat] || {};
-  var customTitles = loadTitles();
-  var container = document.getElementById('postLists');
-  container.innerHTML = '';
-
-  SUB_ORDER.forEach(function(sub) {
-    var posts = (ALL_POSTS[cat] || {})[sub];
-    if (!posts || !posts.length) return;
-
-    var savedSub = savedCat[sub] || [];
-    if (savedSub.length) {
-      var map = {};
-      posts.forEach(function(p) { map[p.url] = p; });
-      var ordered = [];
-      savedSub.forEach(function(url) { if (map[url]) ordered.push(map[url]); });
-      posts.forEach(function(p) { if (!savedSub.includes(p.url)) ordered.push(p); });
-      posts = ordered;
-    }
-
-    var icon = SUB_ICONS[sub] || 'far fa-folder-open';
-    var card = document.createElement('div');
-    card.className = 'card categories mb-4';
-    card.innerHTML =
-      '<div class="card-header d-flex justify-content-between hide-border-bottom">' +
-        '<span class="ms-2">' +
-          '<i class="' + icon + ' fa-fw"></i>' +
-          '<span class="mx-2 fw-bold">' + escHtml(sub) + '</span>' +
-          '<span class="text-muted small">' + posts.length + ' posts</span>' +
-        '</span>' +
-        '<span class="hint-text align-self-center me-2">' +
-          '<i class="fas fa-grip-lines fa-fw"></i> 드래그로 순서 변경 &nbsp;|&nbsp; ' +
-          '<i class="fas fa-pen fa-fw"></i> 제목 수정' +
-        '</span>' +
-      '</div>' +
-      '<ul class="list-group list-group-flush" data-sub="' + escHtml(sub) + '"></ul>';
-
-    var ul = card.querySelector('ul');
-
-    posts.forEach(function(post) {
-      var displayTitle = customTitles[post.url] || post.title;
-      var isCustom = displayTitle !== post.title;
-
-      var li = document.createElement('li');
-      li.className = 'list-group-item sortable-item';
-      li.dataset.url = post.url;
-
-      /* drag handle */
-      var grip = document.createElement('i');
-      grip.className = 'fas fa-grip-vertical fa-fw drag-handle';
-      li.appendChild(grip);
-
-      /* file icon */
-      var fileIco = document.createElement('i');
-      fileIco.className = 'far fa-file-alt fa-fw text-muted small flex-shrink-0';
-      li.appendChild(fileIco);
-
-      /* title span */
-      var span = document.createElement('span');
-      span.className = 'mx-1 post-title-text' + (isCustom ? ' is-custom' : '');
-      span.textContent = displayTitle;
-      li.appendChild(span);
-
-      /* edit button */
-      var btn = document.createElement('button');
-      btn.className = 'edit-title-btn';
-      btn.title = '제목 수정';
-      btn.innerHTML = '<i class="fas fa-pen fa-xs"></i>';
-      btn.addEventListener('click', function() { startEdit(li, post.url, post.title); });
-      li.appendChild(btn);
-
-      ul.appendChild(li);
-    });
-
-    container.appendChild(card);
-
-    Sortable.create(ul, {
-      animation: 150,
-      handle: '.drag-handle',
-      ghostClass: 'sortable-ghost',
-      chosenClass: 'sortable-chosen'
-    });
-  });
-}
-
-/* ── Save / Reset ── */
-function saveOrder() {
-  var cat = activeCat();
-  var savedAll = loadOrders();
-  savedAll[cat] = {};
-
-  document.querySelectorAll('#postLists ul[data-sub]').forEach(function(ul) {
-    var sub = ul.dataset.sub;
-    savedAll[cat][sub] = Array.from(ul.querySelectorAll('li[data-url]')).map(function(li) {
-      return li.dataset.url;
-    });
-  });
-
-  localStorage.setItem(ORDER_KEY, JSON.stringify(savedAll));
-  flashBtn('saveBtn', '<i class="fas fa-check fa-fw me-1"></i>저장 완료!', 'btn-primary', 'btn-success');
-}
-
-function resetOrder() {
-  var cat = activeCat();
-  var savedAll = loadOrders();
-  delete savedAll[cat];
-  localStorage.setItem(ORDER_KEY, JSON.stringify(savedAll));
-  renderCategory(cat);
-}
-
-function resetTitles() {
-  var cat = activeCat();
-  var titles = loadTitles();
-  var posts = ALL_POSTS[cat] || {};
-  SUB_ORDER.forEach(function(sub) {
-    (posts[sub] || []).forEach(function(p) { delete titles[p.url]; });
-  });
-  saveTitles(titles);
-  renderCategory(cat);
-}
-
-function flashBtn(id, label, fromClass, toClass) {
-  var btn = document.getElementById(id);
-  if (!btn) return;
-  var orig = btn.innerHTML;
-  btn.innerHTML = label;
-  btn.classList.replace(fromClass, toClass);
-  setTimeout(function() {
-    btn.innerHTML = orig;
-    btn.classList.replace(toClass, fromClass);
-  }, 2000);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(l) { l.classList.remove('active'); });
-      this.classList.add('active');
-      renderCategory(this.dataset.cat);
-    });
-  });
-  renderCategory(CAT_KEYS[0]);
-});
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 <ul class="nav reorder-tabs mb-4 border-bottom">
   {% for cat in cat_keys %}
@@ -434,44 +150,641 @@ document.addEventListener('DOMContentLoaded', function() {
     <i class="fas fa-font fa-fw me-1"></i>제목 초기화
   </button>
 </div>
+
+</div><!-- #section-order -->
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: 글 편집 · 작성
+════════════════════════════════════════════ -->
+<div id="section-posts" class="hidden">
+
+  <!-- GitHub Token 설정 -->
+  <div class="card mb-3">
+    <div class="card-header hide-border-bottom d-flex justify-content-between align-items-center">
+      <span><i class="fab fa-github fa-fw me-1"></i><span class="fw-bold">GitHub 연동</span></span>
+      <span id="token-badge" class="badge bg-secondary token-badge">미설정</span>
+    </div>
+    <div class="card-body py-2">
+      <p class="small text-muted mb-2">
+        GitHub Personal Access Token (Settings → Developer settings → Fine-grained tokens → <code>Contents: Read and write</code>)
+      </p>
+      <div class="d-flex gap-2">
+        <input id="gh-token-input" type="password" class="form-control form-control-sm"
+               placeholder="github_pat_..." autocomplete="off"
+               onkeydown="if(event.key==='Enter')saveToken()">
+        <button class="btn btn-primary btn-sm flex-shrink-0" onclick="saveToken()">저장</button>
+        <button class="btn btn-outline-danger btn-sm flex-shrink-0" onclick="clearToken()" title="토큰 삭제">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+      <div id="token-status" class="small mt-1"></div>
+    </div>
+  </div>
+
+  <!-- 글 목록 -->
+  <div id="post-list-panel">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-success btn-sm" onclick="newPost()">
+        <i class="fas fa-plus fa-fw me-1"></i>새 글 작성
+      </button>
+      <button class="btn btn-outline-secondary btn-sm" onclick="fetchPostList()">
+        <i class="fas fa-sync fa-fw me-1"></i>목록 새로고침
+      </button>
+    </div>
+    <div id="post-file-list" class="card">
+      <div class="card-body text-muted small text-center py-4">
+        GitHub 토큰을 설정하면 글 목록이 표시됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 에디터 -->
+  <div id="editor-panel" class="hidden">
+    <div class="card">
+      <div class="card-header hide-border-bottom d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-file-alt fa-fw me-1"></i><span id="editor-title-bar" class="fw-bold">글 편집</span></span>
+        <button class="btn btn-link btn-sm py-0 text-muted" onclick="closeEditor()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="card-body">
+
+        <!-- Front matter 필드 -->
+        <div class="row g-2 mb-3">
+          <div class="col-12">
+            <label class="form-label small fw-bold mb-1">제목</label>
+            <input id="f-title" type="text" class="form-control form-control-sm"
+                   placeholder="[Feature] GPU Instance 생성 및 모니터링">
+          </div>
+          <div class="col-sm-5">
+            <label class="form-label small fw-bold mb-1">날짜</label>
+            <input id="f-date" type="text" class="form-control form-control-sm"
+                   placeholder="2026-07-01 12:00:00">
+          </div>
+          <div class="col-sm-7">
+            <label class="form-label small fw-bold mb-1">파일명 슬러그 <span class="text-muted fw-normal">(영문, 하이픈)</span></label>
+            <input id="f-slug" type="text" class="form-control form-control-sm"
+                   placeholder="gpu-instance">
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label small fw-bold mb-1">카테고리</label>
+            <select id="f-cat" class="form-select form-select-sm">
+              <option>GPU</option><option>Infra</option>
+              <option>Openstack</option><option>Network</option>
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label small fw-bold mb-1">서브카테고리</label>
+            <select id="f-sub" class="form-select form-select-sm">
+              <option>Features</option><option>Troubleshooting</option>
+              <option>Projects</option><option>Hands-on</option><option>Study</option>
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label small fw-bold mb-1">태그 <span class="text-muted fw-normal">(쉼표 구분)</span></label>
+            <input id="f-tags" type="text" class="form-control form-control-sm"
+                   placeholder="openstack, gpu, mig">
+          </div>
+        </div>
+
+        <!-- 툴바 -->
+        <div class="editor-toolbar">
+          <button onclick="tb('h2')"       title="H2 제목">H2</button>
+          <button onclick="tb('h3')"       title="H3 제목">H3</button>
+          <div class="tb-sep"></div>
+          <button onclick="tb('bold')"     title="굵게"><i class="fas fa-bold"></i></button>
+          <button onclick="tb('italic')"   title="기울임"><i class="fas fa-italic"></i></button>
+          <div class="tb-sep"></div>
+          <button onclick="tb('code')"     title="인라인 코드"><i class="fas fa-code"></i></button>
+          <button onclick="tb('codeblock')"title="코드 블록"><i class="fas fa-file-code"></i></button>
+          <div class="tb-sep"></div>
+          <button onclick="tb('table')"    title="표 삽입"><i class="fas fa-table"></i></button>
+          <button onclick="tb('hr')"       title="구분선">—</button>
+          <button onclick="tb('link')"     title="링크"><i class="fas fa-link"></i></button>
+          <div class="tb-sep"></div>
+          <button onclick="document.getElementById('img-file').click()" title="이미지 업로드">
+            <i class="fas fa-image fa-fw"></i> 이미지
+          </button>
+          <span id="img-uploading" class="img-uploading ms-1" style="display:none">
+            <i class="fas fa-spinner fa-spin me-1"></i>업로드 중...
+          </span>
+        </div>
+        <input type="file" id="img-file" accept="image/*" style="display:none"
+               onchange="handleImageUpload(this)">
+
+        <!-- 본문 텍스트에어리어 -->
+        <textarea id="editor-body" class="form-control" rows="22"
+                  ondrop="handleImageDrop(event)"
+                  ondragover="event.preventDefault()"
+                  placeholder="마크다운으로 글을 작성하세요.
+이미지는 툴바 버튼 또는 에디터 영역에 드래그 앤 드롭으로 첨부할 수 있습니다."></textarea>
+
+        <!-- 저장 버튼 -->
+        <div class="d-flex align-items-center gap-2 mt-3">
+          <button class="btn btn-primary btn-sm" onclick="submitPost()">
+            <i class="fas fa-save fa-fw me-1"></i>저장 (GitHub 커밋)
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" onclick="closeEditor()">취소</button>
+          <span id="save-status" class="small ms-1"></span>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- #editor-panel -->
+
+</div><!-- #section-posts -->
+
 </div><!-- #main-content -->
 
-<script>
-(function () {
-  var PW = '031677';
-  var SESSION_KEY = 'bbdawn-admin-auth';
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
+<script>
+/* ════════════════════════════════════
+   DATA (Liquid-embedded)
+════════════════════════════════════ */
+var ALL_POSTS = {
+  {% for cat in cat_keys %}
+  {{ cat | jsonify }}: {
+    {% for sub in sub_order %}
+    {{ sub | jsonify }}: [
+      {% assign filtered = site.categories[cat] | where: "subcategory", sub | sort: "date" | reverse %}
+      {% for post in filtered %}
+      {"title": {{ post.title | jsonify }}, "url": {{ post.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+};
+var CAT_KEYS  = {{ cat_keys  | jsonify }};
+var CAT_NAMES = {{ cat_names | jsonify }};
+var SUB_ORDER = {{ sub_order | jsonify }};
+var SUB_ICONS = {
+  "Features":"fas fa-star","Projects":"fas fa-code","Hands-on":"fas fa-terminal",
+  "Study":"fas fa-book-open","Troubleshooting":"fas fa-wrench"
+};
+var ORDER_KEY  = 'bbdawn-post-order';
+var TITLE_KEY  = 'bbdawn-post-titles';
+var TOKEN_KEY  = 'bbdawn-github-token';
+var REPO       = 'bbdawn/bbdawn.github.io';
+var API_BASE   = 'https://api.github.com/repos/' + REPO;
+
+/* ════════════════════════════════════
+   HELPERS
+════════════════════════════════════ */
+function loadOrders() { try{return JSON.parse(localStorage.getItem(ORDER_KEY)||'{}');}catch(e){return{};} }
+function loadTitles() { try{return JSON.parse(localStorage.getItem(TITLE_KEY)||'{}');}catch(e){return{};} }
+function saveTitles(o){ localStorage.setItem(TITLE_KEY, JSON.stringify(o)); }
+function getToken()   { return localStorage.getItem(TOKEN_KEY) || ''; }
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function setSelectVal(id, val) {
+  var el = document.getElementById(id); if (!el) return;
+  for (var i = 0; i < el.options.length; i++) {
+    if (el.options[i].value === val || el.options[i].text === val) { el.selectedIndex = i; return; }
+  }
+}
+function flashBtn(id, html, fromCls, toCls) {
+  var btn = document.getElementById(id); if (!btn) return;
+  var orig = btn.innerHTML;
+  btn.innerHTML = html; btn.classList.replace(fromCls, toCls);
+  setTimeout(function(){ btn.innerHTML = orig; btn.classList.replace(toCls, fromCls); }, 2000);
+}
+
+/* ── Base64 ── */
+function strToB64(str) {
+  var bytes = new TextEncoder().encode(str), bin = '';
+  bytes.forEach(function(b){ bin += String.fromCharCode(b); });
+  return btoa(bin);
+}
+function b64ToStr(b64) {
+  var bin = atob(b64.replace(/\n/g,'')), bytes = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+/* ════════════════════════════════════
+   MODE SWITCHER
+════════════════════════════════════ */
+function setMode(mode) {
+  var isOrder = (mode === 'order');
+  document.getElementById('section-order').classList.toggle('hidden', !isOrder);
+  document.getElementById('section-posts').classList.toggle('hidden', isOrder);
+  document.getElementById('mode-btn-order').className = 'btn btn-sm ' + (isOrder ? 'btn-primary' : 'btn-outline-secondary');
+  document.getElementById('mode-btn-posts').className = 'btn btn-sm ' + (!isOrder ? 'btn-primary' : 'btn-outline-secondary');
+  if (!isOrder) { updateTokenBadge(); if (getToken()) fetchPostList(); }
+}
+
+/* ════════════════════════════════════
+   SECTION 1: ORDER / TITLE
+════════════════════════════════════ */
+function activeCat() {
+  var el = document.querySelector('.reorder-tabs .nav-link.active');
+  return el ? el.dataset.cat : CAT_KEYS[0];
+}
+
+function startEdit(li, url, origTitle) {
+  var span = li.querySelector('.post-title-text');
+  var btn  = li.querySelector('.edit-title-btn');
+  var input = document.createElement('input');
+  input.type = 'text'; input.className = 'form-control form-control-sm post-title-input';
+  input.value = span.textContent;
+  span.replaceWith(input); input.focus(); input.select();
+  btn.innerHTML = '<i class="fas fa-check fa-xs"></i>'; btn.classList.add('is-editing');
+  btn.onclick = function(){ confirmEdit(li, url, origTitle, input, btn); };
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter')  { e.preventDefault(); confirmEdit(li, url, origTitle, input, btn); }
+    if (e.key === 'Escape') { cancelEdit(li, url, origTitle, input, btn); }
+  });
+}
+function confirmEdit(li, url, origTitle, input, btn) {
+  var newTitle = input.value.trim() || origTitle;
+  var titles = loadTitles();
+  if (newTitle === origTitle) delete titles[url]; else titles[url] = newTitle;
+  saveTitles(titles); replaceInputWithSpan(li, url, origTitle, newTitle, input, btn);
+}
+function cancelEdit(li, url, origTitle, input, btn) {
+  var t = loadTitles(); replaceInputWithSpan(li, url, origTitle, t[url] || origTitle, input, btn);
+}
+function replaceInputWithSpan(li, url, origTitle, displayTitle, input, btn) {
+  var span = document.createElement('span');
+  span.className = 'mx-1 post-title-text' + (displayTitle !== origTitle ? ' is-custom' : '');
+  span.textContent = displayTitle; input.replaceWith(span);
+  btn.innerHTML = '<i class="fas fa-pen fa-xs"></i>'; btn.classList.remove('is-editing');
+  btn.onclick = function(){ startEdit(li, url, origTitle); };
+}
+
+function renderCategory(cat) {
+  var savedAll = loadOrders(), savedCat = savedAll[cat] || {}, customTitles = loadTitles();
+  var container = document.getElementById('postLists'); container.innerHTML = '';
+  SUB_ORDER.forEach(function(sub) {
+    var posts = (ALL_POSTS[cat] || {})[sub];
+    if (!posts || !posts.length) return;
+    var savedSub = savedCat[sub] || [];
+    if (savedSub.length) {
+      var map = {}; posts.forEach(function(p){ map[p.url] = p; });
+      var ordered = [];
+      savedSub.forEach(function(url){ if(map[url]) ordered.push(map[url]); });
+      posts.forEach(function(p){ if(!savedSub.includes(p.url)) ordered.push(p); });
+      posts = ordered;
+    }
+    var icon = SUB_ICONS[sub] || 'far fa-folder-open';
+    var card = document.createElement('div'); card.className = 'card categories mb-4';
+    card.innerHTML =
+      '<div class="card-header d-flex justify-content-between hide-border-bottom">' +
+        '<span class="ms-2"><i class="' + icon + ' fa-fw"></i>' +
+        '<span class="mx-2 fw-bold">' + escHtml(sub) + '</span>' +
+        '<span class="text-muted small">' + posts.length + ' posts</span></span>' +
+        '<span class="hint-text align-self-center me-2">' +
+        '<i class="fas fa-grip-lines fa-fw"></i> 드래그 순서 변경 &nbsp;|&nbsp; <i class="fas fa-pen fa-fw"></i> 제목 수정</span>' +
+      '</div>' +
+      '<ul class="list-group list-group-flush" data-sub="' + escHtml(sub) + '"></ul>';
+    var ul = card.querySelector('ul');
+    posts.forEach(function(post) {
+      var displayTitle = customTitles[post.url] || post.title;
+      var li = document.createElement('li');
+      li.className = 'list-group-item sortable-item'; li.dataset.url = post.url;
+      var grip = document.createElement('i'); grip.className = 'fas fa-grip-vertical fa-fw drag-handle';
+      var fileIco = document.createElement('i'); fileIco.className = 'far fa-file-alt fa-fw text-muted small flex-shrink-0';
+      var span = document.createElement('span');
+      span.className = 'mx-1 post-title-text' + (displayTitle !== post.title ? ' is-custom' : '');
+      span.textContent = displayTitle;
+      var btn = document.createElement('button'); btn.className = 'edit-title-btn'; btn.title = '제목 수정';
+      btn.innerHTML = '<i class="fas fa-pen fa-xs"></i>';
+      btn.addEventListener('click', function(){ startEdit(li, post.url, post.title); });
+      li.append(grip, fileIco, span, btn); ul.appendChild(li);
+    });
+    container.appendChild(card);
+    Sortable.create(ul, { animation:150, handle:'.drag-handle', ghostClass:'sortable-ghost', chosenClass:'sortable-chosen' });
+  });
+}
+
+function saveOrder() {
+  var cat = activeCat(), savedAll = loadOrders(); savedAll[cat] = {};
+  document.querySelectorAll('#postLists ul[data-sub]').forEach(function(ul) {
+    savedAll[cat][ul.dataset.sub] = Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){ return li.dataset.url; });
+  });
+  localStorage.setItem(ORDER_KEY, JSON.stringify(savedAll));
+  flashBtn('saveBtn', '<i class="fas fa-check fa-fw me-1"></i>저장 완료!', 'btn-primary', 'btn-success');
+}
+function resetOrder() {
+  var cat = activeCat(), s = loadOrders(); delete s[cat];
+  localStorage.setItem(ORDER_KEY, JSON.stringify(s)); renderCategory(cat);
+}
+function resetTitles() {
+  var cat = activeCat(), titles = loadTitles();
+  SUB_ORDER.forEach(function(sub){ ((ALL_POSTS[cat]||{})[sub]||[]).forEach(function(p){ delete titles[p.url]; }); });
+  saveTitles(titles); renderCategory(cat);
+}
+
+/* ════════════════════════════════════
+   SECTION 2: POST EDITOR
+════════════════════════════════════ */
+
+/* ── Token ── */
+function updateTokenBadge() {
+  var badge = document.getElementById('token-badge');
+  if (!badge) return;
+  if (getToken()) {
+    badge.className = 'badge bg-success token-badge'; badge.textContent = '연결됨';
+  } else {
+    badge.className = 'badge bg-secondary token-badge'; badge.textContent = '미설정';
+  }
+}
+function saveToken() {
+  var val = document.getElementById('gh-token-input').value.trim();
+  if (!val) return;
+  localStorage.setItem(TOKEN_KEY, val);
+  document.getElementById('gh-token-input').value = '';
+  document.getElementById('token-status').innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>저장되었습니다.</span>';
+  updateTokenBadge(); fetchPostList();
+}
+function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
+  document.getElementById('token-status').innerHTML = '<span class="text-muted">토큰이 삭제되었습니다.</span>';
+  document.getElementById('post-file-list').innerHTML = '<div class="card-body text-muted small text-center py-4">GitHub 토큰을 설정하면 글 목록이 표시됩니다.</div>';
+  updateTokenBadge();
+}
+
+/* ── GitHub API ── */
+function ghFetch(path, opts) {
+  var token = getToken();
+  var headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
+  return fetch(API_BASE + path, Object.assign({ headers: headers }, opts || {}));
+}
+
+async function fetchPostList() {
+  if (!getToken()) {
+    document.getElementById('post-file-list').innerHTML =
+      '<div class="card-body text-warning small text-center py-4"><i class="fas fa-exclamation-triangle me-1"></i>GitHub 토큰을 먼저 설정해주세요.</div>';
+    return;
+  }
+  document.getElementById('post-file-list').innerHTML =
+    '<div class="card-body text-muted small text-center py-3"><i class="fas fa-spinner fa-spin me-1"></i>불러오는 중...</div>';
+  try {
+    var res = await ghFetch('/contents/_posts');
+    if (res.status === 401) {
+      document.getElementById('post-file-list').innerHTML =
+        '<div class="card-body text-danger small text-center py-4">토큰이 유효하지 않습니다. 다시 설정해주세요.</div>';
+      return;
+    }
+    var files = await res.json();
+    var mdFiles = files.filter(function(f){ return f.name.endsWith('.md'); })
+                       .sort(function(a,b){ return b.name.localeCompare(a.name); });
+
+    if (!mdFiles.length) {
+      document.getElementById('post-file-list').innerHTML = '<div class="card-body text-muted small text-center py-4">글이 없습니다.</div>';
+      return;
+    }
+
+    var wrap = document.createElement('div'); wrap.className = 'card';
+    mdFiles.forEach(function(file) {
+      var item = document.createElement('div'); item.className = 'post-file-item';
+      item.innerHTML =
+        '<i class="far fa-file-alt fa-fw text-muted me-2 small flex-shrink-0"></i>' +
+        '<span class="flex-grow-1 text-truncate small" style="font-family:monospace">' + escHtml(file.name) + '</span>' +
+        '<button class="btn btn-outline-primary btn-sm ms-2 flex-shrink-0" style="font-size:0.75rem">편집</button>';
+      item.querySelector('button').addEventListener('click', function(){ openPost(file.path, file.sha, file.name); });
+      wrap.appendChild(item);
+    });
+    document.getElementById('post-file-list').innerHTML = '';
+    document.getElementById('post-file-list').appendChild(wrap);
+  } catch(e) {
+    document.getElementById('post-file-list').innerHTML = '<div class="card-body text-danger small text-center py-4">목록을 불러올 수 없습니다.</div>';
+  }
+}
+
+function parseFrontMatter(raw) {
+  var m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  if (!m) return { fm: {}, body: raw };
+  var fm = {};
+  m[1].split('\n').forEach(function(line) {
+    var col = line.indexOf(':'); if (col === -1) return;
+    var key = line.slice(0, col).trim();
+    var val = line.slice(col + 1).trim().replace(/^["']|["']$/g, '');
+    fm[key] = val;
+  });
+  return { fm: fm, body: m[2] };
+}
+
+async function openPost(path, sha, name) {
+  window._editingPath = path; window._editingSha = sha; window._isNewPost = false;
+  document.getElementById('editor-title-bar').textContent = '편집 중: ' + name;
+  document.getElementById('editor-panel').classList.remove('hidden');
+  document.getElementById('post-list-panel').classList.add('hidden');
+  document.getElementById('save-status').textContent = '';
+  document.getElementById('editor-body').value = '파일을 불러오는 중...';
+  try {
+    var res = await ghFetch('/contents/' + path);
+    var data = await res.json();
+    window._editingSha = data.sha;
+    var raw = b64ToStr(data.content);
+    var parsed = parseFrontMatter(raw);
+    var fm = parsed.fm;
+    document.getElementById('f-title').value = fm.title || '';
+    document.getElementById('f-date').value  = (fm.date || '').replace(/\s*\+0900$/, '').trim();
+    document.getElementById('f-tags').value  = (fm.tags || '').replace(/^\[|\]$/g, '');
+    var catMatch = (fm.categories || '').match(/\[([^,\]]+),?\s*([^\]]*)\]/);
+    if (catMatch) { setSelectVal('f-sub', catMatch[1].trim()); setSelectVal('f-cat', catMatch[2].trim()); }
+    var slugMatch = name.match(/^\d{4}-\d{2}-\d{2}-(.+)\.md$/);
+    document.getElementById('f-slug').value = slugMatch ? slugMatch[1] : name.replace('.md','');
+    document.getElementById('editor-body').value = parsed.body.replace(/^\n/, '');
+  } catch(e) {
+    document.getElementById('editor-body').value = '파일을 불러올 수 없습니다: ' + e.message;
+  }
+}
+
+function newPost() {
+  window._editingPath = null; window._editingSha = null; window._isNewPost = true;
+  var now = new Date();
+  var pad = function(n){ return String(n).padStart(2,'0'); };
+  var ds = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':00:00';
+  document.getElementById('f-title').value = ''; document.getElementById('f-date').value = ds;
+  document.getElementById('f-slug').value  = ''; document.getElementById('f-tags').value = '';
+  document.getElementById('f-cat').selectedIndex = 0; document.getElementById('f-sub').selectedIndex = 0;
+  document.getElementById('editor-body').value = '';
+  document.getElementById('editor-title-bar').textContent = '새 글 작성';
+  document.getElementById('save-status').textContent = '';
+  document.getElementById('editor-panel').classList.remove('hidden');
+  document.getElementById('post-list-panel').classList.add('hidden');
+  document.getElementById('f-title').focus();
+}
+
+function closeEditor() {
+  document.getElementById('editor-panel').classList.add('hidden');
+  document.getElementById('post-list-panel').classList.remove('hidden');
+}
+
+async function submitPost() {
+  var title = document.getElementById('f-title').value.trim();
+  var date  = document.getElementById('f-date').value.trim();
+  var cat   = document.getElementById('f-cat').value;
+  var sub   = document.getElementById('f-sub').value;
+  var tags  = document.getElementById('f-tags').value.trim();
+  var slug  = document.getElementById('f-slug').value.trim();
+  var body  = document.getElementById('editor-body').value;
+  if (!title) { alert('제목을 입력해주세요.'); return; }
+  var datePrefix = date.substring(0, 10);
+  var finalSlug  = slug || title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  var filePath   = '_posts/' + datePrefix + '-' + finalSlug + '.md';
+  var tagArr = tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+  var fmTitle = title.startsWith('[') ? title : '[' + sub.replace('Features','Feature').replace('Projects','Project') + '] ' + title;
+  var fm = ['---',
+    'title: ' + JSON.stringify(fmTitle),
+    'date: ' + date + ' +0900',
+    'categories: [' + sub + ', ' + cat + ']',
+    'subcategory: ' + sub,
+    'tags: [' + tagArr.join(', ') + ']',
+    '---', ''].join('\n');
+  var fullContent = fm + '\n' + body;
+  var encoded = strToB64(fullContent);
+  var path = window._isNewPost ? filePath : window._editingPath;
+  var sha  = window._editingSha;
+  var statusEl = document.getElementById('save-status');
+  statusEl.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>저장 중...';
+  try {
+    var reqBody = { message: (sha ? 'Update: ' : 'Create: ') + path, content: encoded };
+    if (sha) reqBody.sha = sha;
+    var res = await ghFetch('/contents/' + path, { method: 'PUT', body: JSON.stringify(reqBody) });
+    if (res.ok) {
+      var data = await res.json();
+      window._editingSha  = data.content.sha;
+      window._editingPath = path;
+      window._isNewPost   = false;
+      document.getElementById('editor-title-bar').textContent = '편집 중: ' + path.split('/').pop();
+      document.getElementById('f-slug').value = finalSlug;
+      statusEl.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>저장 완료 — GitHub Actions 배포 중</span>';
+    } else {
+      var err = await res.json();
+      statusEl.innerHTML = '<span class="text-danger">저장 실패: ' + escHtml(err.message || res.status) + '</span>';
+    }
+  } catch(e) {
+    statusEl.innerHTML = '<span class="text-danger">오류: ' + escHtml(e.message) + '</span>';
+  }
+}
+
+/* ── Markdown Toolbar ── */
+function tb(type) {
+  var ta = document.getElementById('editor-body');
+  var s = ta.selectionStart, e = ta.selectionEnd;
+  var sel = ta.value.substring(s, e);
+  var before = ta.value.substring(0, s), after = ta.value.substring(e);
+  var ins = '', cur = 0;
+  switch(type) {
+    case 'h2':        ins = '\n## '  + (sel||'제목'); cur = ins.length; break;
+    case 'h3':        ins = '\n### ' + (sel||'제목'); cur = ins.length; break;
+    case 'bold':      ins = '**' + (sel||'텍스트') + '**'; cur = sel ? ins.length : 2; break;
+    case 'italic':    ins = '*'  + (sel||'텍스트') + '*';  cur = sel ? ins.length : 1; break;
+    case 'code':      ins = '`'  + (sel||'code')   + '`';  cur = sel ? ins.length : 1; break;
+    case 'codeblock': ins = '\n```\n' + (sel||'') + '\n```\n'; cur = sel ? ins.length : 5; break;
+    case 'hr':        ins = '\n\n---\n\n'; cur = ins.length; break;
+    case 'link':      ins = '[' + (sel||'링크 텍스트') + '](url)'; cur = sel ? ins.length - 5 : 1; break;
+    case 'table':
+      ins = '\n| 항목 | 설명 |\n|------|------|\n| 값1 | 내용1 |\n| 값2 | 내용2 |\n';
+      cur = ins.length; break;
+  }
+  ta.value = before + ins + after;
+  ta.selectionStart = ta.selectionEnd = s + cur;
+  ta.focus();
+}
+
+/* ── Image Upload ── */
+async function uploadImageToGitHub(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = async function() {
+      var base64 = reader.result.split(',')[1];
+      var ext  = file.name.split('.').pop().toLowerCase();
+      var name = file.name.replace(/\.[^.]+$/,'').replace(/[^a-z0-9]/gi,'-').toLowerCase();
+      var imgPath = 'assets/img/posts/' + Date.now() + '-' + name + '.' + ext;
+      try {
+        var res = await ghFetch('/contents/' + imgPath, {
+          method: 'PUT',
+          body: JSON.stringify({ message: 'Upload image: ' + file.name, content: base64 })
+        });
+        if (res.ok) resolve('/' + imgPath);
+        else { var err = await res.json(); reject(new Error(err.message || 'Upload failed')); }
+      } catch(e) { reject(e); }
+    };
+    reader.onerror = function(){ reject(new Error('파일 읽기 실패')); };
+    reader.readAsDataURL(file);
+  });
+}
+
+function insertAtEditor(text) {
+  var ta = document.getElementById('editor-body');
+  var s = ta.selectionStart, e = ta.selectionEnd;
+  ta.value = ta.value.substring(0,s) + text + ta.value.substring(e);
+  ta.selectionStart = ta.selectionEnd = s + text.length;
+  ta.focus();
+}
+
+async function handleImageUpload(input) {
+  if (!input.files[0]) return;
+  var file = input.files[0]; input.value = '';
+  document.getElementById('img-uploading').style.display = 'inline';
+  try {
+    var path = await uploadImageToGitHub(file);
+    insertAtEditor('\n![' + file.name + '](' + path + ')\n');
+  } catch(e) { alert('이미지 업로드 실패: ' + e.message); }
+  finally { document.getElementById('img-uploading').style.display = 'none'; }
+}
+
+async function handleImageDrop(e) {
+  e.preventDefault();
+  var file = e.dataTransfer.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  document.getElementById('img-uploading').style.display = 'inline';
+  try {
+    var path = await uploadImageToGitHub(file);
+    insertAtEditor('\n![' + file.name + '](' + path + ')\n');
+  } catch(err) { alert('이미지 업로드 실패: ' + err.message); }
+  finally { document.getElementById('img-uploading').style.display = 'none'; }
+}
+
+/* ════════════════════════════════════
+   INIT
+════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  /* Order tabs */
+  document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(l){ l.classList.remove('active'); });
+      this.classList.add('active');
+      renderCategory(this.dataset.cat);
+    });
+  });
+  renderCategory(CAT_KEYS[0]);
+  /* Token badge */
+  updateTokenBadge();
+});
+</script>
+
+<script>
+/* ════════════════════════════════════
+   PASSWORD
+════════════════════════════════════ */
+(function () {
+  var PW = '031677', SESSION_KEY = 'bbdawn-admin-auth';
   function unlock() {
     document.getElementById('pw-overlay').classList.add('hidden');
     document.getElementById('main-content').classList.remove('hidden');
   }
-
-  /* 이미 인증된 세션이면 바로 열기 */
   if (sessionStorage.getItem(SESSION_KEY) === '1') { unlock(); return; }
-
-  /* 아니면 오버레이 표시 후 포커스 */
-  document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('pw-input').focus();
-  });
-
-  window.checkPw = function () {
-    var val = document.getElementById('pw-input').value;
-    if (val === PW) {
-      sessionStorage.setItem(SESSION_KEY, '1');
-      unlock();
+  document.addEventListener('DOMContentLoaded', function(){ document.getElementById('pw-input').focus(); });
+  window.checkPw = function() {
+    if (document.getElementById('pw-input').value === PW) {
+      sessionStorage.setItem(SESSION_KEY, '1'); unlock();
     } else {
       var inp = document.getElementById('pw-input');
-      inp.classList.remove('shake');
-      void inp.offsetWidth; /* reflow */
-      inp.classList.add('shake');
+      inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake');
       document.getElementById('pw-error').textContent = '비밀번호가 올바르지 않습니다.';
-      inp.value = '';
-      inp.focus();
+      inp.value = ''; inp.focus();
     }
   };
-
-  window.clearPwError = function () {
-    document.getElementById('pw-error').textContent = '';
-  };
+  window.clearPwError = function(){ document.getElementById('pw-error').textContent = ''; };
 })();
 </script>
