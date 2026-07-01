@@ -30,11 +30,11 @@ layout: page
 
 {% include lang.html %}
 
-{% assign sections        = "GPU,Infra,Openstack,Network" | split: "," %}
-{% assign section_names   = "GPU,Rack Topology,Openstack,Network" | split: "," %}
+{% assign sections        = "GPU,Infra,Openstack,Network,Linux" | split: "," %}
+{% assign section_names   = "GPU,Rack Topology,Openstack,Network,Linux" | split: "," %}
 {% assign subcategory_order = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
 
-{% for i in (0..3) %}
+{% for i in (0..4) %}
   {% assign cat       = sections[i] %}
   {% assign cat_posts = site.categories[cat] | sort: "date" | reverse %}
   {% if cat_posts.size > 0 %}
