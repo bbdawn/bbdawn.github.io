@@ -1,5 +1,5 @@
 ---
-title: "[Project] OpenStack GPU 호스트 관리 TUI 도구 개발"
+title: "[Project] GPU mdev 관리 도구 개발 (2) — orphan 자동 탐지 TUI 도구"
 date: 2026-06-30 08:00:00 +0900
 categories: [Project, GPU]
 subcategory: Project
