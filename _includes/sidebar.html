@@ -136,3 +136,24 @@
   <!-- .sidebar-bottom -->
 </aside>
 <!-- #sidebar -->
+
+<script>
+(function(){
+  var order;
+  try { order = JSON.parse(localStorage.getItem('bbdawn-tab-order') || 'null'); } catch(e) { order = null; }
+  if (!order || !order.length) return;
+  var nav = document.querySelector('#sidebar nav ul');
+  if (!nav) return;
+  var items = Array.from(nav.querySelectorAll('li.nav-item'));
+  var map = {};
+  items.forEach(function(li){
+    var a = li.querySelector('a');
+    if (a) map[a.getAttribute('href')] = li;
+  });
+  order.forEach(function(url){ if (map[url]) nav.appendChild(map[url]); });
+  items.forEach(function(li){
+    var a = li.querySelector('a');
+    if (a && !order.includes(a.getAttribute('href'))) nav.appendChild(li);
+  });
+})();
+</script>

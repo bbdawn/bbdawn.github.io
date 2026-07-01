@@ -141,6 +141,23 @@ sitemap: false
 {% assign cat_names = "GPU,Rack Topology,Openstack,Linux" | split: "," %}
 {% assign sub_order = "Feature,Troubleshooting,Project,Hands-on,Study" | split: "," %}
 
+<!-- 사이드바 탭 순서 카드 -->
+<div class="card categories mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center hide-border-bottom">
+    <span class="ms-2 fw-bold"><i class="fas fa-bars fa-fw me-1"></i>사이드바 탭 순서</span>
+    <span class="hint-text me-2"><i class="fas fa-grip-lines fa-fw"></i> 드래그로 순서 변경</span>
+  </div>
+  <ul class="list-group list-group-flush" id="tabSortList"></ul>
+  <div class="card-footer d-flex gap-2 py-2">
+    <button class="btn btn-primary btn-sm" onclick="saveTabOrder()">
+      <i class="fas fa-save fa-fw me-1"></i>탭 순서 저장
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" onclick="resetTabOrder()">
+      <i class="fas fa-undo fa-fw me-1"></i>초기화
+    </button>
+  </div>
+</div>
+
 <ul class="nav reorder-tabs mb-4 border-bottom">
   {% for cat in cat_keys %}
   <li class="nav-item">
@@ -314,9 +331,15 @@ var SUB_ICONS = {
   "Feature":"fas fa-star","Project":"fas fa-code","Hands-on":"fas fa-terminal",
   "Study":"fas fa-book-open","Troubleshooting":"fas fa-wrench"
 };
+var TAB_LIST = [
+  {% for tab in site.tabs %}
+  {"title": {{ tab.title | jsonify }}, "url": {{ tab.url | relative_url | jsonify }}, "icon": {{ tab.icon | jsonify }}}{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+];
 var ORDER_KEY  = 'bbdawn-post-order';
 var TITLE_KEY  = 'bbdawn-post-titles';
 var HIDDEN_KEY = 'bbdawn-hidden-posts';
+var TAB_ORDER_KEY = 'bbdawn-tab-order';
 var TOKEN_KEY  = 'bbdawn-github-token';
 var REPO       = 'bbdawn/bbdawn.github.io';
 var API_BASE   = 'https://api.github.com/repos/' + REPO;
@@ -373,6 +396,42 @@ function setMode(mode){
   document.getElementById('mode-btn-order').className='btn btn-sm '+(isOrder?'btn-primary':'btn-outline-secondary');
   document.getElementById('mode-btn-posts').className='btn btn-sm '+(!isOrder?'btn-primary':'btn-outline-secondary');
   if(!isOrder){ updateTokenBadge(); if(getToken()) fetchPostList(); }
+}
+
+/* ════════════════════════════════════
+   TAB ORDER
+════════════════════════════════════ */
+function loadTabOrder(){ try{return JSON.parse(localStorage.getItem(TAB_ORDER_KEY)||'null');}catch(e){return null;} }
+function renderTabSortList(){
+  var ul=document.getElementById('tabSortList'); if(!ul) return;
+  ul.innerHTML='';
+  var order=loadTabOrder();
+  var tabs=TAB_LIST.slice();
+  if(order&&order.length){
+    var map={}; tabs.forEach(function(t){map[t.url]=t;});
+    var sorted=[]; order.forEach(function(url){if(map[url])sorted.push(map[url]);});
+    tabs.forEach(function(t){if(!order.includes(t.url))sorted.push(t);}); tabs=sorted;
+  }
+  tabs.forEach(function(tab){
+    var li=document.createElement('li');
+    li.className='list-group-item sortable-item'; li.dataset.url=tab.url;
+    var grip=document.createElement('i'); grip.className='fas fa-grip-vertical fa-fw drag-handle';
+    var ico=document.createElement('i'); ico.className=tab.icon+' fa-fw text-muted small flex-shrink-0 mx-1';
+    var span=document.createElement('span'); span.className='mx-1'; span.textContent=tab.title.toUpperCase();
+    li.append(grip,ico,span); ul.appendChild(li);
+  });
+  Sortable.create(ul,{animation:150,handle:'.drag-handle',ghostClass:'sortable-ghost',chosenClass:'sortable-chosen'});
+}
+function saveTabOrder(){
+  var ul=document.getElementById('tabSortList'); if(!ul) return;
+  var order=Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){return li.dataset.url;});
+  localStorage.setItem(TAB_ORDER_KEY,JSON.stringify(order));
+  alert('탭 순서가 저장됐습니다. 페이지를 새로고침하면 적용됩니다.');
+}
+function resetTabOrder(){
+  localStorage.removeItem(TAB_ORDER_KEY);
+  renderTabSortList();
+  alert('탭 순서가 초기화됐습니다.');
 }
 
 /* ════════════════════════════════════
@@ -736,6 +795,7 @@ document.addEventListener('DOMContentLoaded',function(){
       this.classList.add('active'); renderCategory(this.dataset.cat);
     });
   });
+  renderTabSortList();
   renderCategory(CAT_KEYS[0]);
   updateTokenBadge();
 });
