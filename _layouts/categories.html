@@ -126,5 +126,26 @@ layout: page
       if (!hasVisible) card.style.display = 'none';
     });
   }
+
+  /* 탭 순서에 따라 카테고리 카드 재정렬 */
+  var tabToCat = {
+    {% for tab in site.tabs %}{% if tab.filter_category %}
+    {{ tab.url | relative_url | jsonify }}: {{ tab.filter_category | jsonify }},
+    {% endif %}{% endfor %}
+  };
+  var tabOrder;
+  try { tabOrder = JSON.parse(localStorage.getItem('bbdawn-tab-order') || 'null'); } catch(e) { tabOrder = null; }
+  if (tabOrder && tabOrder.length) {
+    var cards = Array.from(document.querySelectorAll('.card.categories[data-cat]'));
+    if (cards.length) {
+      var parent = cards[0].parentNode;
+      var cardMap = {};
+      cards.forEach(function (c) { cardMap[c.dataset.cat] = c; });
+      tabOrder.forEach(function (url) {
+        var cat = tabToCat[url];
+        if (cat && cardMap[cat]) parent.appendChild(cardMap[cat]);
+      });
+    }
+  }
 })();
 </script>
