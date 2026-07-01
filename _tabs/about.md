@@ -9,7 +9,9 @@ order: 0
   개발도 하고 인프라도 아는 클라우드 백엔드 개발자입니다.
 </p>
 <p style="font-size: 1rem; line-height: 1.85; opacity: 0.65; margin: 0;">
-  OpenStack 기반 Private Cloud 플랫폼을 개발·운영하며, GPU 인스턴스 관리, 네트워크, 로드밸런서 등 인프라 제어 기능을 직접 설계하고 구현합니다. 반복되는 운영 문제를 자동화로 해결하는 것에 관심이 많습니다.
+  OpenStack 기반 Private Cloud 플랫폼을 개발·운영하며,<br>
+  GPU 인스턴스 관리, 네트워크, 로드밸런서 등 인프라 제어 기능을 직접 설계하고 구현합니다.<br>
+  반복되는 운영 문제를 자동화로 해결하는 것에 관심이 많습니다.
 </p>
 
 ---
@@ -26,7 +28,7 @@ order: 0
     </div>
     <span style="font-size: 0.88rem; opacity: 0.45;">2022.08 ~ 재직중 &nbsp;<span id="duration"></span></span>
   </div>
-  <p style="font-size: 0.9rem; line-height: 1.65; opacity: 0.5; margin: 0 0 1.25rem;">AI · 클라우드 솔루션 전문 기업 — 클라우드 인프라, 플랫폼, 운영 자동화, AI 기반 클라우드 관리 기술 개발</p>
+  <p style="font-size: 0.9rem; line-height: 1.65; opacity: 0.5; margin: 0 0 1.25rem;">클라우드 인프라, 플랫폼, 운영 자동화, AI 기반 클라우드 관리 기술 개발 기업</p>
 
   <!-- 타임라인 -->
   <div style="border-left: 2px solid var(--main-border-color, #e0e0e0); padding-left: 1.25rem;">
@@ -40,7 +42,8 @@ order: 0
       </div>
       <ul style="font-size: 0.95rem; line-height: 1.85; padding-left: 1rem; margin: 0; opacity: 0.8;">
         <li>OpenStack 기반 Private Cloud 관리 포탈 "Contrabass" 백엔드 개발 및 운영</li>
-        <li>GPU Passthrough / MIG 인스턴스 관리 및 모니터링 기능 개발</li>
+        <li>GPU Passthrough / MIG 인스턴스 생성 및 관리 기능 개발</li>
+        <li>GPU Host, GPU Instance 모니터링 기능 개발</li>
         <li>GPU 운영 자동화 TUI 개발 (mdev orphan 탐지, MIG 프로파일 관리)</li>
         <li>Octavia 로드밸런서 장애 처리 자동화 TUI 개발</li>
         <li>데이터센터 Rack Topology 시각화 기능 개발 (IPMI/SNMP)</li>
@@ -56,7 +59,7 @@ order: 0
         <span style="font-size: 0.82rem; opacity: 0.45;">2022.12 ~ 2023.03 (4개월)</span>
       </div>
       <ul style="font-size: 0.95rem; line-height: 1.85; padding-left: 1rem; margin: 0; opacity: 0.8;">
-        <li>Samsung Cloud Platform PaaS(Kubernetes) 관리 포탈 화면 개발</li>
+        <li>Samsung Cloud Platform PaaS(Kubernetes) 관리 포탈 Frontend 개발</li>
       </ul>
     </div>
 
