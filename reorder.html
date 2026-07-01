@@ -158,6 +158,36 @@ sitemap: false
   </div>
 </div>
 
+<!-- 새 탭 추가 카드 -->
+<div class="card mb-4">
+  <div class="card-header hide-border-bottom">
+    <span class="ms-2 fw-bold"><i class="fas fa-plus-circle fa-fw me-1"></i>새 탭 추가</span>
+  </div>
+  <div class="card-body py-3">
+    <p class="small text-muted mb-3">사이드바에 새 탭을 추가합니다. GitHub 토큰이 필요합니다. (<span class="fw-bold">글 편집 모드</span>에서 설정)</p>
+    <div class="row g-2">
+      <div class="col-sm-4">
+        <label class="form-label small fw-bold mb-1">탭 이름</label>
+        <input id="new-tab-title" type="text" class="form-control form-control-sm" placeholder="Linux">
+      </div>
+      <div class="col-sm-4">
+        <label class="form-label small fw-bold mb-1">카테고리 키 <span class="text-muted fw-normal">(영문)</span></label>
+        <input id="new-tab-cat" type="text" class="form-control form-control-sm" placeholder="Linux">
+      </div>
+      <div class="col-sm-4">
+        <label class="form-label small fw-bold mb-1">아이콘 <span class="text-muted fw-normal">(Font Awesome 클래스)</span></label>
+        <input id="new-tab-icon" type="text" class="form-control form-control-sm" placeholder="fas fa-terminal">
+      </div>
+    </div>
+    <div class="d-flex align-items-center gap-2 mt-3">
+      <button class="btn btn-success btn-sm" onclick="createTab()">
+        <i class="fas fa-plus fa-fw me-1"></i>탭 생성 (GitHub 커밋)
+      </button>
+      <span id="tab-create-status" class="small"></span>
+    </div>
+  </div>
+</div>
+
 <ul class="nav reorder-tabs mb-4 border-bottom">
   {% for cat in cat_keys %}
   <li class="nav-item">
@@ -432,6 +462,35 @@ function resetTabOrder(){
   localStorage.removeItem(TAB_ORDER_KEY);
   renderTabSortList();
   alert('탭 순서가 초기화됐습니다.');
+}
+async function createTab(){
+  var title=document.getElementById('new-tab-title').value.trim();
+  var cat  =document.getElementById('new-tab-cat').value.trim();
+  var icon =document.getElementById('new-tab-icon').value.trim()||'fas fa-folder';
+  var statusEl=document.getElementById('tab-create-status');
+  if(!title){alert('탭 이름을 입력해주세요.');return;}
+  if(!cat)  {alert('카테고리 키를 입력해주세요.');return;}
+  if(!getToken()){alert('GitHub 토큰을 먼저 설정해주세요. (글 편집 모드에서 설정)');return;}
+  var slug=title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  var order=TAB_LIST.length+1;
+  var content='---\nlayout: filtered-posts\ntitle: '+title+'\nicon: '+icon+'\norder: '+order+'\nfilter_category: '+cat+'\n---\n';
+  var path='_tabs/'+slug+'.md';
+  statusEl.innerHTML='<i class="fas fa-spinner fa-spin me-1"></i>생성 중...';
+  try{
+    var res=await ghFetch('/contents/'+path,{
+      method:'PUT',
+      body:JSON.stringify({message:'Add tab: '+title,content:strToB64(content)})
+    });
+    if(res.ok){
+      statusEl.innerHTML='<span class="text-success"><i class="fas fa-check me-1"></i>탭이 생성됐습니다. 배포 후 사이드바에 나타납니다.</span>';
+      document.getElementById('new-tab-title').value='';
+      document.getElementById('new-tab-cat').value='';
+      document.getElementById('new-tab-icon').value='';
+    }else{
+      var err=await res.json();
+      statusEl.innerHTML='<span class="text-danger">실패: '+escHtml(err.message||res.status)+'</span>';
+    }
+  }catch(e){statusEl.innerHTML='<span class="text-danger">오류: '+escHtml(e.message)+'</span>';}
 }
 
 /* ════════════════════════════════════
