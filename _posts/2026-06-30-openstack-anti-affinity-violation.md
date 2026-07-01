@@ -1,5 +1,5 @@
 ---
-title: "[Troubleshooting] Loadbalancer: Anti-affinity instance group policy was violated"
+title: "[Troubleshooting] Loadbalancer 생성 실패 원인(1) : Anti-affinity instance group policy was violated"
 date: 2026-06-30 16:00:00 +0900
 categories: [Troubleshooting, Openstack]
 subcategory: Troubleshooting

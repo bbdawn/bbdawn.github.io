@@ -1,5 +1,5 @@
 ---
-title: "[Troubleshooting] Loadbalancer: o-hm0 인터페이스 없어서 생성 실패"
+title: "[Troubleshooting] Loadbalancer 생성 실패 원인(2) : o-hm0 인터페이스 없어서 생성 실패"
 date: 2026-07-01 10:00:00 +0900
 categories: [Troubleshooting, Openstack]
 subcategory: Troubleshooting
