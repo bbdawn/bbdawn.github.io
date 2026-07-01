@@ -6,6 +6,88 @@ sitemap: false
 ---
 
 <style>
+  /* ── Password overlay ── */
+  #pw-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--main-bg, #fff);
+  }
+  #pw-overlay.hidden { display: none; }
+  .pw-box {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    width: 320px;
+  }
+  .pw-box .lock-icon {
+    font-size: 2rem;
+    color: var(--link-color);
+    margin-bottom: 1rem;
+  }
+  .pw-box h6 {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+  .pw-input-wrap {
+    display: flex;
+    gap: 0.5rem;
+  }
+  #pw-input {
+    flex: 1;
+    border: 1.5px solid var(--border-color, #dee2e6);
+    border-radius: 6px;
+    padding: 0.45rem 0.75rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    background: var(--main-bg, #fff);
+    color: var(--text-color, #333);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #pw-input:focus { border-color: var(--link-color); }
+  #pw-input.shake {
+    animation: shake 0.35s ease;
+    border-color: #dc3545;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+  #pw-error {
+    font-size: 0.8rem;
+    color: #dc3545;
+    margin-top: 0.6rem;
+    min-height: 1.2em;
+  }
+  #main-content.hidden { display: none; }
+</style>
+
+<!-- Password overlay -->
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="lock-icon"><i class="fas fa-lock"></i></div>
+    <h6>관리자 비밀번호를 입력하세요</h6>
+    <div class="pw-input-wrap">
+      <input id="pw-input" type="password" maxlength="20"
+             placeholder="••••••" autocomplete="off"
+             oninput="clearPwError()" onkeydown="if(event.key==='Enter')checkPw()">
+      <button class="btn btn-primary btn-sm" onclick="checkPw()">
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+    <div id="pw-error"></div>
+  </div>
+</div>
+
+<div id="main-content" class="hidden">
+<style>
   .sortable-item {
     display: flex;
     align-items: center;
@@ -352,3 +434,44 @@ document.addEventListener('DOMContentLoaded', function() {
     <i class="fas fa-font fa-fw me-1"></i>제목 초기화
   </button>
 </div>
+</div><!-- #main-content -->
+
+<script>
+(function () {
+  var PW = '031677';
+  var SESSION_KEY = 'bbdawn-admin-auth';
+
+  function unlock() {
+    document.getElementById('pw-overlay').classList.add('hidden');
+    document.getElementById('main-content').classList.remove('hidden');
+  }
+
+  /* 이미 인증된 세션이면 바로 열기 */
+  if (sessionStorage.getItem(SESSION_KEY) === '1') { unlock(); return; }
+
+  /* 아니면 오버레이 표시 후 포커스 */
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('pw-input').focus();
+  });
+
+  window.checkPw = function () {
+    var val = document.getElementById('pw-input').value;
+    if (val === PW) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      unlock();
+    } else {
+      var inp = document.getElementById('pw-input');
+      inp.classList.remove('shake');
+      void inp.offsetWidth; /* reflow */
+      inp.classList.add('shake');
+      document.getElementById('pw-error').textContent = '비밀번호가 올바르지 않습니다.';
+      inp.value = '';
+      inp.focus();
+    }
+  };
+
+  window.clearPwError = function () {
+    document.getElementById('pw-error').textContent = '';
+  };
+})();
+</script>
