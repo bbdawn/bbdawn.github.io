@@ -39,7 +39,7 @@ layout: page
   {% assign cat_posts = site.categories[cat] | sort: "date" | reverse %}
   {% if cat_posts.size > 0 %}
 
-<div class="card categories mb-4">
+<div class="card categories mb-4" data-cat="{{ cat }}">
   <div class="card-header d-flex align-items-center hide-border-bottom">
     <span class="ms-1">
       <i class="far fa-folder-open fa-fw"></i>
@@ -63,9 +63,9 @@ layout: page
         {{ sub }}
       </span>
     </div>
-    <ul class="list-group list-group-flush mb-1">
+    <ul class="list-group list-group-flush mb-1" data-sub="{{ sub }}">
       {% for post in sub_posts %}
-      <li class="list-group-item ps-4">
+      <li class="list-group-item ps-4" data-url="{{ post.url | relative_url }}">
         {% if sub == "Features" %}
           <i class="fas fa-star fa-fw text-muted small"></i>
         {% elsif sub == "Projects" %}
@@ -90,3 +90,34 @@ layout: page
 
   {% endif %}
 {% endfor %}
+
+<script>
+(function () {
+  var ORDER_KEY = 'bbdawn-post-order';
+  var TITLE_KEY = 'bbdawn-post-titles';
+  var orders, titles;
+  try { orders = JSON.parse(localStorage.getItem(ORDER_KEY) || '{}'); } catch(e) { orders = {}; }
+  try { titles = JSON.parse(localStorage.getItem(TITLE_KEY) || '{}'); } catch(e) { titles = {}; }
+
+  document.querySelectorAll('.card.categories[data-cat]').forEach(function (card) {
+    var catOrder = orders[card.dataset.cat];
+
+    card.querySelectorAll('ul[data-sub]').forEach(function (ul) {
+      var subOrder = catOrder && catOrder[ul.dataset.sub];
+
+      if (subOrder && subOrder.length) {
+        var items = Array.from(ul.querySelectorAll('li[data-url]'));
+        var map = {};
+        items.forEach(function (li) { map[li.dataset.url] = li; });
+        subOrder.forEach(function (url) { if (map[url]) ul.appendChild(map[url]); });
+        items.forEach(function (li) { if (!subOrder.includes(li.dataset.url)) ul.appendChild(li); });
+      }
+
+      ul.querySelectorAll('li[data-url] a').forEach(function (a) {
+        var t = titles[a.getAttribute('href')];
+        if (t) a.textContent = t;
+      });
+    });
+  });
+})();
+</script>
