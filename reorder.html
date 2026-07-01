@@ -7,13 +7,16 @@ sitemap: false
 
 <style>
   .sortable-item {
+    display: flex;
+    align-items: center;
     cursor: default;
     user-select: none;
   }
   .drag-handle {
     cursor: grab;
     color: #aaa;
-    padding: 0 0.5rem 0 0;
+    flex-shrink: 0;
+    padding: 0 0.4rem 0 0;
   }
   .drag-handle:active { cursor: grabbing; }
   .sortable-ghost {
@@ -21,8 +24,33 @@ sitemap: false
     background: rgba(var(--bs-primary-rgb), 0.08) !important;
   }
   .sortable-chosen {
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   }
+  .post-title-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .post-title-text.is-custom {
+    color: var(--link-color);
+  }
+  .post-title-input {
+    flex: 1;
+    min-width: 0;
+    margin: 0 0.25rem;
+    font-size: 0.9rem;
+  }
+  .edit-title-btn {
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+    padding: 0 0.3rem;
+    line-height: 1;
+    border: none;
+    background: none;
+    color: #aaa;
+  }
+  .sortable-item:hover .edit-title-btn { opacity: 1; }
+  .edit-title-btn.is-editing { opacity: 1; color: var(--link-color); }
   .reorder-tabs .nav-link {
     color: var(--text-muted-color, #6c757d);
     border-bottom: 2px solid transparent;
@@ -35,9 +63,7 @@ sitemap: false
     border-bottom-color: var(--link-color);
     background: none;
   }
-  .reorder-tabs .nav-link:hover {
-    color: var(--link-color);
-  }
+  .reorder-tabs .nav-link:hover { color: var(--link-color); }
   .save-area {
     position: sticky;
     bottom: 1.5rem;
@@ -51,9 +77,9 @@ sitemap: false
   }
 </style>
 
-{% assign cat_keys   = "GPU,Infra,Openstack,Network" | split: "," %}
-{% assign cat_names  = "GPU,Rack Topology,Openstack,Network" | split: "," %}
-{% assign sub_order  = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
+{% assign cat_keys  = "GPU,Infra,Openstack,Network" | split: "," %}
+{% assign cat_names = "GPU,Rack Topology,Openstack,Network" | split: "," %}
+{% assign sub_order = "Features,Troubleshooting,Projects,Hands-on,Study" | split: "," %}
 
 <script>
 var ALL_POSTS = {
@@ -76,18 +102,28 @@ var CAT_NAMES = {{ cat_names | jsonify }};
 var SUB_ORDER = {{ sub_order | jsonify }};
 
 var SUB_ICONS = {
-  "Features":       "fas fa-star",
-  "Projects":       "fas fa-code",
-  "Hands-on":       "fas fa-terminal",
-  "Study":          "fas fa-book-open",
-  "Troubleshooting":"fas fa-wrench"
+  "Features":        "fas fa-star",
+  "Projects":        "fas fa-code",
+  "Hands-on":        "fas fa-terminal",
+  "Study":           "fas fa-book-open",
+  "Troubleshooting": "fas fa-wrench"
 };
 
-var STORAGE_KEY = 'bbdawn-post-order';
+var ORDER_KEY = 'bbdawn-post-order';
+var TITLE_KEY = 'bbdawn-post-titles';
 
-function loadSaved() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
-  catch(e) { return {}; }
+function loadOrders() {
+  try { return JSON.parse(localStorage.getItem(ORDER_KEY) || '{}'); } catch(e) { return {}; }
+}
+function loadTitles() {
+  try { return JSON.parse(localStorage.getItem(TITLE_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveTitles(obj) {
+  localStorage.setItem(TITLE_KEY, JSON.stringify(obj));
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function activeCat() {
@@ -95,9 +131,60 @@ function activeCat() {
   return el ? el.dataset.cat : CAT_KEYS[0];
 }
 
+/* ── Title editing ── */
+function startEdit(li, url, origTitle) {
+  var span = li.querySelector('.post-title-text');
+  var btn  = li.querySelector('.edit-title-btn');
+  var currentVal = span.textContent;
+
+  var input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'form-control form-control-sm post-title-input';
+  input.value = currentVal;
+  span.replaceWith(input);
+  input.focus();
+  input.select();
+
+  btn.innerHTML = '<i class="fas fa-check fa-xs"></i>';
+  btn.classList.add('is-editing');
+  btn.onclick = function() { confirmEdit(li, url, origTitle, input, btn); };
+
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter')  { e.preventDefault(); confirmEdit(li, url, origTitle, input, btn); }
+    if (e.key === 'Escape') { cancelEdit(li, url, origTitle, input, btn); }
+  });
+}
+
+function confirmEdit(li, url, origTitle, input, btn) {
+  var newTitle = input.value.trim() || origTitle;
+  var titles = loadTitles();
+  if (newTitle === origTitle) { delete titles[url]; } else { titles[url] = newTitle; }
+  saveTitles(titles);
+  replaceInputWithSpan(li, url, origTitle, newTitle, input, btn);
+}
+
+function cancelEdit(li, url, origTitle, input, btn) {
+  var titles = loadTitles();
+  var displayed = titles[url] || origTitle;
+  replaceInputWithSpan(li, url, origTitle, displayed, input, btn);
+}
+
+function replaceInputWithSpan(li, url, origTitle, displayTitle, input, btn) {
+  var span = document.createElement('span');
+  span.className = 'mx-1 post-title-text' + (displayTitle !== origTitle ? ' is-custom' : '');
+  span.textContent = displayTitle;
+  input.replaceWith(span);
+
+  btn.innerHTML = '<i class="fas fa-pen fa-xs"></i>';
+  btn.classList.remove('is-editing');
+  btn.onclick = function() { startEdit(li, url, origTitle); };
+}
+
+/* ── Render ── */
 function renderCategory(cat) {
-  var savedAll = loadSaved();
+  var savedAll = loadOrders();
   var savedCat = savedAll[cat] || {};
+  var customTitles = loadTitles();
   var container = document.getElementById('postLists');
   container.innerHTML = '';
 
@@ -105,7 +192,6 @@ function renderCategory(cat) {
     var posts = (ALL_POSTS[cat] || {})[sub];
     if (!posts || !posts.length) return;
 
-    /* apply saved order */
     var savedSub = savedCat[sub] || [];
     if (savedSub.length) {
       var map = {};
@@ -123,24 +209,50 @@ function renderCategory(cat) {
       '<div class="card-header d-flex justify-content-between hide-border-bottom">' +
         '<span class="ms-2">' +
           '<i class="' + icon + ' fa-fw"></i>' +
-          '<span class="mx-2 fw-bold">' + sub + '</span>' +
+          '<span class="mx-2 fw-bold">' + escHtml(sub) + '</span>' +
           '<span class="text-muted small">' + posts.length + ' posts</span>' +
         '</span>' +
         '<span class="hint-text align-self-center me-2">' +
-          '<i class="fas fa-grip-lines fa-fw"></i> 드래그하여 순서 변경' +
+          '<i class="fas fa-grip-lines fa-fw"></i> 드래그로 순서 변경 &nbsp;|&nbsp; ' +
+          '<i class="fas fa-pen fa-fw"></i> 제목 수정' +
         '</span>' +
       '</div>' +
-      '<ul class="list-group list-group-flush" data-sub="' + sub + '"></ul>';
+      '<ul class="list-group list-group-flush" data-sub="' + escHtml(sub) + '"></ul>';
 
     var ul = card.querySelector('ul');
+
     posts.forEach(function(post) {
+      var displayTitle = customTitles[post.url] || post.title;
+      var isCustom = displayTitle !== post.title;
+
       var li = document.createElement('li');
       li.className = 'list-group-item sortable-item';
       li.dataset.url = post.url;
-      li.innerHTML =
-        '<i class="fas fa-grip-vertical fa-fw drag-handle"></i>' +
-        '<i class="far fa-file-alt fa-fw text-muted small"></i>' +
-        '<span class="mx-1">' + post.title + '</span>';
+
+      /* drag handle */
+      var grip = document.createElement('i');
+      grip.className = 'fas fa-grip-vertical fa-fw drag-handle';
+      li.appendChild(grip);
+
+      /* file icon */
+      var fileIco = document.createElement('i');
+      fileIco.className = 'far fa-file-alt fa-fw text-muted small flex-shrink-0';
+      li.appendChild(fileIco);
+
+      /* title span */
+      var span = document.createElement('span');
+      span.className = 'mx-1 post-title-text' + (isCustom ? ' is-custom' : '');
+      span.textContent = displayTitle;
+      li.appendChild(span);
+
+      /* edit button */
+      var btn = document.createElement('button');
+      btn.className = 'edit-title-btn';
+      btn.title = '제목 수정';
+      btn.innerHTML = '<i class="fas fa-pen fa-xs"></i>';
+      btn.addEventListener('click', function() { startEdit(li, post.url, post.title); });
+      li.appendChild(btn);
+
       ul.appendChild(li);
     });
 
@@ -155,9 +267,10 @@ function renderCategory(cat) {
   });
 }
 
+/* ── Save / Reset ── */
 function saveOrder() {
   var cat = activeCat();
-  var savedAll = loadSaved();
+  var savedAll = loadOrders();
   savedAll[cat] = {};
 
   document.querySelectorAll('#postLists ul[data-sub]').forEach(function(ul) {
@@ -167,33 +280,46 @@ function saveOrder() {
     });
   });
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedAll));
-
-  var btn = document.getElementById('saveBtn');
-  var orig = btn.innerHTML;
-  btn.innerHTML = '<i class="fas fa-check fa-fw me-1"></i>저장 완료!';
-  btn.classList.replace('btn-primary', 'btn-success');
-  setTimeout(function() {
-    btn.innerHTML = orig;
-    btn.classList.replace('btn-success', 'btn-primary');
-  }, 2000);
+  localStorage.setItem(ORDER_KEY, JSON.stringify(savedAll));
+  flashBtn('saveBtn', '<i class="fas fa-check fa-fw me-1"></i>저장 완료!', 'btn-primary', 'btn-success');
 }
 
 function resetOrder() {
   var cat = activeCat();
-  var savedAll = loadSaved();
+  var savedAll = loadOrders();
   delete savedAll[cat];
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedAll));
+  localStorage.setItem(ORDER_KEY, JSON.stringify(savedAll));
   renderCategory(cat);
+}
+
+function resetTitles() {
+  var cat = activeCat();
+  var titles = loadTitles();
+  var posts = ALL_POSTS[cat] || {};
+  SUB_ORDER.forEach(function(sub) {
+    (posts[sub] || []).forEach(function(p) { delete titles[p.url]; });
+  });
+  saveTitles(titles);
+  renderCategory(cat);
+}
+
+function flashBtn(id, label, fromClass, toClass) {
+  var btn = document.getElementById(id);
+  if (!btn) return;
+  var orig = btn.innerHTML;
+  btn.innerHTML = label;
+  btn.classList.replace(fromClass, toClass);
+  setTimeout(function() {
+    btn.innerHTML = orig;
+    btn.classList.replace(toClass, fromClass);
+  }, 2000);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();
-      document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(l) {
-        l.classList.remove('active');
-      });
+      document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(l) { l.classList.remove('active'); });
       this.classList.add('active');
       renderCategory(this.dataset.cat);
     });
@@ -204,27 +330,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
-<!-- Tab bar -->
 <ul class="nav reorder-tabs mb-4 border-bottom">
   {% for cat in cat_keys %}
   <li class="nav-item">
     <a class="nav-link {% if forloop.first %}active{% endif %}"
-       href="#" data-cat="{{ cat }}">
-      {{ cat_names[forloop.index0] }}
-    </a>
+       href="#" data-cat="{{ cat }}">{{ cat_names[forloop.index0] }}</a>
   </li>
   {% endfor %}
 </ul>
 
-<!-- Post lists (filled by JS) -->
 <div id="postLists"></div>
 
-<!-- Sticky save area -->
 <div class="save-area d-flex gap-2 mt-3">
   <button id="saveBtn" class="btn btn-primary btn-sm" onclick="saveOrder()">
     <i class="fas fa-save fa-fw me-1"></i>순서 저장
   </button>
   <button class="btn btn-outline-secondary btn-sm" onclick="resetOrder()">
-    <i class="fas fa-undo fa-fw me-1"></i>현재 탭 초기화
+    <i class="fas fa-undo fa-fw me-1"></i>순서 초기화
+  </button>
+  <button class="btn btn-outline-secondary btn-sm" onclick="resetTitles()">
+    <i class="fas fa-font fa-fw me-1"></i>제목 초기화
   </button>
 </div>

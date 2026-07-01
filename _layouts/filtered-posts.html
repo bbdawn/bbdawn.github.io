@@ -68,27 +68,37 @@ layout: page
 
 <script>
 (function () {
-  var STORAGE_KEY = 'bbdawn-post-order';
-  var category = {{ page.filter_category | jsonify }};
-  var saved;
-  try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return; }
-  var catOrder = saved[category];
-  if (!catOrder) return;
+  /* ── 순서 적용 ── */
+  var ORDER_KEY = 'bbdawn-post-order';
+  var TITLE_KEY = 'bbdawn-post-titles';
+  var category  = {{ page.filter_category | jsonify }};
+
+  var orders, titles;
+  try { orders = JSON.parse(localStorage.getItem(ORDER_KEY) || '{}'); } catch(e) { orders = {}; }
+  try { titles = JSON.parse(localStorage.getItem(TITLE_KEY) || '{}'); } catch(e) { titles = {}; }
+
+  var catOrder = orders[category];
 
   document.querySelectorAll('.card.categories ul[data-sub]').forEach(function (ul) {
-    var sub = ul.dataset.sub;
-    var subOrder = catOrder[sub];
-    if (!subOrder || !subOrder.length) return;
+    /* 순서 재정렬 */
+    if (catOrder) {
+      var sub      = ul.dataset.sub;
+      var subOrder = catOrder[sub];
+      if (subOrder && subOrder.length) {
+        var items = Array.from(ul.querySelectorAll('li[data-url]'));
+        var map   = {};
+        items.forEach(function (li) { map[li.dataset.url] = li; });
+        subOrder.forEach(function (url) { if (map[url]) ul.appendChild(map[url]); });
+        items.forEach(function (li) {
+          if (!subOrder.includes(li.dataset.url)) ul.appendChild(li);
+        });
+      }
+    }
 
-    var items = Array.from(ul.querySelectorAll('li[data-url]'));
-    var map = {};
-    items.forEach(function (li) { map[li.dataset.url] = li; });
-
-    subOrder.forEach(function (url) {
-      if (map[url]) ul.appendChild(map[url]);
-    });
-    items.forEach(function (li) {
-      if (!subOrder.includes(li.dataset.url)) ul.appendChild(li);
+    /* 커스텀 제목 적용 */
+    ul.querySelectorAll('li[data-url] a').forEach(function (a) {
+      var t = titles[a.getAttribute('href')];
+      if (t) a.textContent = t;
     });
   });
 })();
