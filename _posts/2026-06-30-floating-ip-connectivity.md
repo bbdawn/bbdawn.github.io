@@ -122,6 +122,8 @@ List<PortResponse> portList = ports.stream()
 | 포트가 External Network에 직접 연결됨 | Floating IP는 Internal Network 포트에만 연동 가능 |
 
 ---
+![스크린샷 2026-07-01 오후 12.58.48.png](/assets/img/posts/1782880670813------------2026-07-01------12-58-48.png)
+
 
 ## 효과
 
