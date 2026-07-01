@@ -89,6 +89,24 @@ DELETE FROM load_balancer WHERE id = 'lb-uuid';
 
 ---
 
+## 사용 방법
+
+```bash
+./loadbalancer-manager
+```
+
+OpenStack 연동을 위해 openrc 파일 경로를 설정합니다.
+
+```bash
+# 환경변수로 지정
+export LB_MANAGER_OPENSTACK_OPENRC=~/openrc
+
+# 또는 기본 경로 사용
+~/contrabass-openrc
+```
+
+---
+
 ## 효과
 
 | 항목 | 이전 | 이후 |
