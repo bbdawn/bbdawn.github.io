@@ -57,7 +57,19 @@ layout: page
     <ul class="list-group list-group-flush" data-sub="{{ sub }}">
       {% for post in sub_posts %}
         <li class="list-group-item" data-url="{{ post.url | relative_url }}">
-          <i class="far fa-file-alt fa-fw text-muted small"></i>
+          {% if sub == "Features" %}
+            <i class="fas fa-star fa-fw text-muted small"></i>
+          {% elsif sub == "Projects" %}
+            <i class="fas fa-code fa-fw text-muted small"></i>
+          {% elsif sub == "Hands-on" %}
+            <i class="fas fa-terminal fa-fw text-muted small"></i>
+          {% elsif sub == "Study" %}
+            <i class="fas fa-book-open fa-fw text-muted small"></i>
+          {% elsif sub == "Troubleshooting" %}
+            <i class="fas fa-wrench fa-fw text-muted small"></i>
+          {% else %}
+            <i class="far fa-file-alt fa-fw text-muted small"></i>
+          {% endif %}
           <a href="{{ post.url | relative_url }}" class="mx-1">{{ post.title }}</a>
         </li>
       {% endfor %}
