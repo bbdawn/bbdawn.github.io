@@ -1,8 +1,8 @@
 ---
-title: "[Hands-on] OpenStack GPU 인스턴스 기반 RAG 파이프라인 구성"
+title: "[Project] OpenStack GPU 인스턴스 기반 RAG 파이프라인 구성"
 date: 2026-06-30 11:00:00 +0900
 categories: [Study, GPU]
-subcategory: Hands-on
+subcategory: Projects
 tags: [openstack, gpu, rag, ollama, qdrant, terraform, ansible, python, llm]
 ---
 

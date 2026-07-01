@@ -1,8 +1,8 @@
 ---
-title: "[Hands-on] OpenStack GPU 프로비저닝 자동화 (Terraform + Ansible)"
+title: "[Project] OpenStack GPU 프로비저닝 자동화 (Terraform + Ansible)"
 date: 2026-06-30 05:00:00 +0900
 categories: [Project, GPU]
-subcategory: Hands-on
+subcategory: Projects
 tags: [terraform, ansible, gpu, openstack, nvidia, dcgm, iac]
 ---
 
