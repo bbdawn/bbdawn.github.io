@@ -33,7 +33,10 @@ sitemap: false
   #main-content.hidden { display: none; }
 
   /* ── Mode switcher ── */
-  .mode-switcher { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color, #dee2e6); }
+  .mode-switcher {
+    display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+    padding-bottom: 1rem; border-bottom: 1px solid var(--border-color, #dee2e6);
+  }
 
   /* ── Order/title section ── */
   .sortable-item { display: flex; align-items: center; cursor: default; user-select: none; }
@@ -61,33 +64,34 @@ sitemap: false
   .hint-text { font-size: 0.8rem; color: var(--text-muted-color, #6c757d); }
 
   /* ── Post editor section ── */
-  .editor-toolbar {
-    display: flex; flex-wrap: wrap; gap: 0.25rem; align-items: center;
-    padding: 0.4rem 0.5rem; background: var(--sidebar-bg, #f8f8f8);
-    border: 1px solid var(--border-color, #dee2e6); border-radius: 6px 6px 0 0;
-    border-bottom: none;
-  }
-  .editor-toolbar button {
-    border: 1px solid var(--border-color, #dee2e6); border-radius: 4px;
-    background: var(--main-bg, #fff); color: var(--text-color, #333);
-    padding: 0.2rem 0.45rem; font-size: 0.78rem; cursor: pointer; line-height: 1.4;
-    transition: background 0.1s;
-  }
-  .editor-toolbar button:hover { background: var(--link-color); color: #fff; border-color: var(--link-color); }
-  .editor-toolbar .tb-sep { width: 1px; height: 1.4rem; background: var(--border-color, #dee2e6); margin: 0 0.15rem; }
-  #editor-body {
-    border-radius: 0 0 6px 6px !important; font-family: 'SFMono-Regular', Consolas, monospace;
-    font-size: 0.85rem; resize: vertical; min-height: 320px;
-  }
   .post-file-item {
     display: flex; align-items: center; padding: 0.55rem 0.75rem;
     border-bottom: 1px solid var(--border-color, #dee2e6); font-size: 0.85rem;
   }
   .post-file-item:last-child { border-bottom: none; }
   .post-file-item:hover { background: rgba(var(--bs-primary-rgb),.04); }
-  .img-uploading { font-size: 0.8rem; color: var(--text-muted-color, #6c757d); }
+  .img-uploading { font-size: 0.82rem; color: var(--text-muted-color, #6c757d); }
   .token-badge { font-size: 0.78rem; }
   #section-posts.hidden, #section-order.hidden, #editor-panel.hidden { display: none; }
+
+  /* ── Toast UI 스타일 오버라이드 ── */
+  .toastui-editor-defaultUI {
+    border: 1px solid var(--border-color, #dee2e6) !important;
+    border-radius: 6px; overflow: hidden;
+    font-family: inherit !important;
+  }
+  .toastui-editor-toolbar {
+    background: var(--sidebar-bg, #f8f9fa) !important;
+    border-bottom: 1px solid var(--border-color, #dee2e6) !important;
+  }
+  .toastui-editor-main { background: var(--main-bg, #fff) !important; }
+  .toastui-editor { background: var(--main-bg, #fff) !important; color: var(--text-color, #333) !important; }
+  .toastui-editor-contents p,
+  .toastui-editor-contents li { font-size: 0.95rem; line-height: 1.8; }
+  #img-uploading-indicator {
+    display: none; font-size: 0.82rem;
+    color: var(--text-muted-color, #6c757d); margin-top: 0.4rem;
+  }
 </style>
 
 <!-- Password overlay -->
@@ -119,9 +123,9 @@ sitemap: false
   </button>
 </div>
 
-<!-- ═══════════════════════════════════════════
+<!-- ═══════════════════════════════════
      SECTION 1: 순서 · 제목 관리
-════════════════════════════════════════════ -->
+════════════════════════════════════ -->
 <div id="section-order">
 
 {% assign cat_keys  = "GPU,Infra,Openstack,Network" | split: "," %}
@@ -153,9 +157,9 @@ sitemap: false
 
 </div><!-- #section-order -->
 
-<!-- ═══════════════════════════════════════════
+<!-- ═══════════════════════════════════
      SECTION 2: 글 편집 · 작성
-════════════════════════════════════════════ -->
+════════════════════════════════════ -->
 <div id="section-posts" class="hidden">
 
   <!-- GitHub Token 설정 -->
@@ -166,7 +170,7 @@ sitemap: false
     </div>
     <div class="card-body py-2">
       <p class="small text-muted mb-2">
-        GitHub Personal Access Token (Settings → Developer settings → Fine-grained tokens → <code>Contents: Read and write</code>)
+        GitHub Personal Access Token (Fine-grained / Contents: Read and write)
       </p>
       <div class="d-flex gap-2">
         <input id="gh-token-input" type="password" class="form-control form-control-sm"
@@ -222,7 +226,9 @@ sitemap: false
                    placeholder="2026-07-01 12:00:00">
           </div>
           <div class="col-sm-7">
-            <label class="form-label small fw-bold mb-1">파일명 슬러그 <span class="text-muted fw-normal">(영문, 하이픈)</span></label>
+            <label class="form-label small fw-bold mb-1">
+              파일명 슬러그 <span class="text-muted fw-normal">(영문, 하이픈)</span>
+            </label>
             <input id="f-slug" type="text" class="form-control form-control-sm"
                    placeholder="gpu-instance">
           </div>
@@ -241,43 +247,19 @@ sitemap: false
             </select>
           </div>
           <div class="col-sm-4">
-            <label class="form-label small fw-bold mb-1">태그 <span class="text-muted fw-normal">(쉼표 구분)</span></label>
+            <label class="form-label small fw-bold mb-1">
+              태그 <span class="text-muted fw-normal">(쉼표 구분)</span>
+            </label>
             <input id="f-tags" type="text" class="form-control form-control-sm"
                    placeholder="openstack, gpu, mig">
           </div>
         </div>
 
-        <!-- 툴바 -->
-        <div class="editor-toolbar">
-          <button onclick="tb('h2')"       title="H2 제목">H2</button>
-          <button onclick="tb('h3')"       title="H3 제목">H3</button>
-          <div class="tb-sep"></div>
-          <button onclick="tb('bold')"     title="굵게"><i class="fas fa-bold"></i></button>
-          <button onclick="tb('italic')"   title="기울임"><i class="fas fa-italic"></i></button>
-          <div class="tb-sep"></div>
-          <button onclick="tb('code')"     title="인라인 코드"><i class="fas fa-code"></i></button>
-          <button onclick="tb('codeblock')"title="코드 블록"><i class="fas fa-file-code"></i></button>
-          <div class="tb-sep"></div>
-          <button onclick="tb('table')"    title="표 삽입"><i class="fas fa-table"></i></button>
-          <button onclick="tb('hr')"       title="구분선">—</button>
-          <button onclick="tb('link')"     title="링크"><i class="fas fa-link"></i></button>
-          <div class="tb-sep"></div>
-          <button onclick="document.getElementById('img-file').click()" title="이미지 업로드">
-            <i class="fas fa-image fa-fw"></i> 이미지
-          </button>
-          <span id="img-uploading" class="img-uploading ms-1" style="display:none">
-            <i class="fas fa-spinner fa-spin me-1"></i>업로드 중...
-          </span>
+        <!-- WYSIWYG 에디터 -->
+        <div id="editor-container"></div>
+        <div id="img-uploading-indicator">
+          <i class="fas fa-spinner fa-spin me-1"></i>이미지 업로드 중...
         </div>
-        <input type="file" id="img-file" accept="image/*" style="display:none"
-               onchange="handleImageUpload(this)">
-
-        <!-- 본문 텍스트에어리어 -->
-        <textarea id="editor-body" class="form-control" rows="22"
-                  ondrop="handleImageDrop(event)"
-                  ondragover="event.preventDefault()"
-                  placeholder="마크다운으로 글을 작성하세요.
-이미지는 툴바 버튼 또는 에디터 영역에 드래그 앤 드롭으로 첨부할 수 있습니다."></textarea>
 
         <!-- 저장 버튼 -->
         <div class="d-flex align-items-center gap-2 mt-3">
@@ -323,442 +305,406 @@ var SUB_ICONS = {
   "Features":"fas fa-star","Projects":"fas fa-code","Hands-on":"fas fa-terminal",
   "Study":"fas fa-book-open","Troubleshooting":"fas fa-wrench"
 };
-var ORDER_KEY  = 'bbdawn-post-order';
-var TITLE_KEY  = 'bbdawn-post-titles';
-var TOKEN_KEY  = 'bbdawn-github-token';
-var REPO       = 'bbdawn/bbdawn.github.io';
-var API_BASE   = 'https://api.github.com/repos/' + REPO;
+var ORDER_KEY = 'bbdawn-post-order';
+var TITLE_KEY = 'bbdawn-post-titles';
+var TOKEN_KEY = 'bbdawn-github-token';
+var REPO      = 'bbdawn/bbdawn.github.io';
+var API_BASE  = 'https://api.github.com/repos/' + REPO;
 
 /* ════════════════════════════════════
    HELPERS
 ════════════════════════════════════ */
-function loadOrders() { try{return JSON.parse(localStorage.getItem(ORDER_KEY)||'{}');}catch(e){return{};} }
-function loadTitles() { try{return JSON.parse(localStorage.getItem(TITLE_KEY)||'{}');}catch(e){return{};} }
+function loadOrders(){ try{return JSON.parse(localStorage.getItem(ORDER_KEY)||'{}');}catch(e){return{};} }
+function loadTitles(){ try{return JSON.parse(localStorage.getItem(TITLE_KEY)||'{}');}catch(e){return{};} }
 function saveTitles(o){ localStorage.setItem(TITLE_KEY, JSON.stringify(o)); }
-function getToken()   { return localStorage.getItem(TOKEN_KEY) || ''; }
+function getToken()  { return localStorage.getItem(TOKEN_KEY) || ''; }
 
-function escHtml(s) {
+function escHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function setSelectVal(id, val) {
-  var el = document.getElementById(id); if (!el) return;
-  for (var i = 0; i < el.options.length; i++) {
-    if (el.options[i].value === val || el.options[i].text === val) { el.selectedIndex = i; return; }
+function setSelectVal(id, val){
+  var el = document.getElementById(id); if(!el) return;
+  for(var i=0;i<el.options.length;i++){
+    if(el.options[i].value===val||el.options[i].text===val){el.selectedIndex=i;return;}
   }
 }
-function flashBtn(id, html, fromCls, toCls) {
-  var btn = document.getElementById(id); if (!btn) return;
-  var orig = btn.innerHTML;
-  btn.innerHTML = html; btn.classList.replace(fromCls, toCls);
-  setTimeout(function(){ btn.innerHTML = orig; btn.classList.replace(toCls, fromCls); }, 2000);
+function flashBtn(id, html, fromCls, toCls){
+  var btn=document.getElementById(id); if(!btn) return;
+  var orig=btn.innerHTML; btn.innerHTML=html; btn.classList.replace(fromCls,toCls);
+  setTimeout(function(){btn.innerHTML=orig;btn.classList.replace(toCls,fromCls);},2000);
 }
 
 /* ── Base64 ── */
-function strToB64(str) {
-  var bytes = new TextEncoder().encode(str), bin = '';
-  bytes.forEach(function(b){ bin += String.fromCharCode(b); });
-  return btoa(bin);
+function strToB64(str){
+  var bytes=new TextEncoder().encode(str), bin='';
+  bytes.forEach(function(b){bin+=String.fromCharCode(b);}); return btoa(bin);
 }
-function b64ToStr(b64) {
-  var bin = atob(b64.replace(/\n/g,'')), bytes = new Uint8Array(bin.length);
-  for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+function b64ToStr(b64){
+  var bin=atob(b64.replace(/\n/g,'')), bytes=new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
   return new TextDecoder().decode(bytes);
 }
 
 /* ════════════════════════════════════
    MODE SWITCHER
 ════════════════════════════════════ */
-function setMode(mode) {
-  var isOrder = (mode === 'order');
-  document.getElementById('section-order').classList.toggle('hidden', !isOrder);
-  document.getElementById('section-posts').classList.toggle('hidden', isOrder);
-  document.getElementById('mode-btn-order').className = 'btn btn-sm ' + (isOrder ? 'btn-primary' : 'btn-outline-secondary');
-  document.getElementById('mode-btn-posts').className = 'btn btn-sm ' + (!isOrder ? 'btn-primary' : 'btn-outline-secondary');
-  if (!isOrder) { updateTokenBadge(); if (getToken()) fetchPostList(); }
+function setMode(mode){
+  var isOrder=(mode==='order');
+  document.getElementById('section-order').classList.toggle('hidden',!isOrder);
+  document.getElementById('section-posts').classList.toggle('hidden',isOrder);
+  document.getElementById('mode-btn-order').className='btn btn-sm '+(isOrder?'btn-primary':'btn-outline-secondary');
+  document.getElementById('mode-btn-posts').className='btn btn-sm '+(!isOrder?'btn-primary':'btn-outline-secondary');
+  if(!isOrder){ updateTokenBadge(); if(getToken()) fetchPostList(); }
 }
 
 /* ════════════════════════════════════
-   SECTION 1: ORDER / TITLE
+   SECTION 1 : ORDER / TITLE
 ════════════════════════════════════ */
-function activeCat() {
-  var el = document.querySelector('.reorder-tabs .nav-link.active');
-  return el ? el.dataset.cat : CAT_KEYS[0];
+function activeCat(){
+  var el=document.querySelector('.reorder-tabs .nav-link.active');
+  return el?el.dataset.cat:CAT_KEYS[0];
 }
-
-function startEdit(li, url, origTitle) {
-  var span = li.querySelector('.post-title-text');
-  var btn  = li.querySelector('.edit-title-btn');
-  var input = document.createElement('input');
-  input.type = 'text'; input.className = 'form-control form-control-sm post-title-input';
-  input.value = span.textContent;
-  span.replaceWith(input); input.focus(); input.select();
-  btn.innerHTML = '<i class="fas fa-check fa-xs"></i>'; btn.classList.add('is-editing');
-  btn.onclick = function(){ confirmEdit(li, url, origTitle, input, btn); };
-  input.addEventListener('keydown', function(e){
-    if (e.key === 'Enter')  { e.preventDefault(); confirmEdit(li, url, origTitle, input, btn); }
-    if (e.key === 'Escape') { cancelEdit(li, url, origTitle, input, btn); }
+function startEdit(li,url,origTitle){
+  var span=li.querySelector('.post-title-text'),btn=li.querySelector('.edit-title-btn');
+  var input=document.createElement('input');
+  input.type='text'; input.className='form-control form-control-sm post-title-input';
+  input.value=span.textContent; span.replaceWith(input); input.focus(); input.select();
+  btn.innerHTML='<i class="fas fa-check fa-xs"></i>'; btn.classList.add('is-editing');
+  btn.onclick=function(){confirmEdit(li,url,origTitle,input,btn);};
+  input.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();confirmEdit(li,url,origTitle,input,btn);}
+    if(e.key==='Escape'){cancelEdit(li,url,origTitle,input,btn);}
   });
 }
-function confirmEdit(li, url, origTitle, input, btn) {
-  var newTitle = input.value.trim() || origTitle;
-  var titles = loadTitles();
-  if (newTitle === origTitle) delete titles[url]; else titles[url] = newTitle;
-  saveTitles(titles); replaceInputWithSpan(li, url, origTitle, newTitle, input, btn);
+function confirmEdit(li,url,origTitle,input,btn){
+  var newTitle=input.value.trim()||origTitle, titles=loadTitles();
+  if(newTitle===origTitle) delete titles[url]; else titles[url]=newTitle;
+  saveTitles(titles); replaceInputWithSpan(li,url,origTitle,newTitle,input,btn);
 }
-function cancelEdit(li, url, origTitle, input, btn) {
-  var t = loadTitles(); replaceInputWithSpan(li, url, origTitle, t[url] || origTitle, input, btn);
+function cancelEdit(li,url,origTitle,input,btn){
+  var t=loadTitles(); replaceInputWithSpan(li,url,origTitle,t[url]||origTitle,input,btn);
 }
-function replaceInputWithSpan(li, url, origTitle, displayTitle, input, btn) {
-  var span = document.createElement('span');
-  span.className = 'mx-1 post-title-text' + (displayTitle !== origTitle ? ' is-custom' : '');
-  span.textContent = displayTitle; input.replaceWith(span);
-  btn.innerHTML = '<i class="fas fa-pen fa-xs"></i>'; btn.classList.remove('is-editing');
-  btn.onclick = function(){ startEdit(li, url, origTitle); };
+function replaceInputWithSpan(li,url,origTitle,displayTitle,input,btn){
+  var span=document.createElement('span');
+  span.className='mx-1 post-title-text'+(displayTitle!==origTitle?' is-custom':'');
+  span.textContent=displayTitle; input.replaceWith(span);
+  btn.innerHTML='<i class="fas fa-pen fa-xs"></i>'; btn.classList.remove('is-editing');
+  btn.onclick=function(){startEdit(li,url,origTitle);};
 }
-
-function renderCategory(cat) {
-  var savedAll = loadOrders(), savedCat = savedAll[cat] || {}, customTitles = loadTitles();
-  var container = document.getElementById('postLists'); container.innerHTML = '';
-  SUB_ORDER.forEach(function(sub) {
-    var posts = (ALL_POSTS[cat] || {})[sub];
-    if (!posts || !posts.length) return;
-    var savedSub = savedCat[sub] || [];
-    if (savedSub.length) {
-      var map = {}; posts.forEach(function(p){ map[p.url] = p; });
-      var ordered = [];
-      savedSub.forEach(function(url){ if(map[url]) ordered.push(map[url]); });
-      posts.forEach(function(p){ if(!savedSub.includes(p.url)) ordered.push(p); });
-      posts = ordered;
+function renderCategory(cat){
+  var savedAll=loadOrders(),savedCat=savedAll[cat]||{},customTitles=loadTitles();
+  var container=document.getElementById('postLists'); container.innerHTML='';
+  SUB_ORDER.forEach(function(sub){
+    var posts=(ALL_POSTS[cat]||{})[sub]; if(!posts||!posts.length) return;
+    var savedSub=savedCat[sub]||[];
+    if(savedSub.length){
+      var map={}; posts.forEach(function(p){map[p.url]=p;});
+      var ordered=[]; savedSub.forEach(function(url){if(map[url])ordered.push(map[url]);});
+      posts.forEach(function(p){if(!savedSub.includes(p.url))ordered.push(p);}); posts=ordered;
     }
-    var icon = SUB_ICONS[sub] || 'far fa-folder-open';
-    var card = document.createElement('div'); card.className = 'card categories mb-4';
-    card.innerHTML =
-      '<div class="card-header d-flex justify-content-between hide-border-bottom">' +
-        '<span class="ms-2"><i class="' + icon + ' fa-fw"></i>' +
-        '<span class="mx-2 fw-bold">' + escHtml(sub) + '</span>' +
-        '<span class="text-muted small">' + posts.length + ' posts</span></span>' +
-        '<span class="hint-text align-self-center me-2">' +
-        '<i class="fas fa-grip-lines fa-fw"></i> 드래그 순서 변경 &nbsp;|&nbsp; <i class="fas fa-pen fa-fw"></i> 제목 수정</span>' +
-      '</div>' +
-      '<ul class="list-group list-group-flush" data-sub="' + escHtml(sub) + '"></ul>';
-    var ul = card.querySelector('ul');
-    posts.forEach(function(post) {
-      var displayTitle = customTitles[post.url] || post.title;
-      var li = document.createElement('li');
-      li.className = 'list-group-item sortable-item'; li.dataset.url = post.url;
-      var grip = document.createElement('i'); grip.className = 'fas fa-grip-vertical fa-fw drag-handle';
-      var fileIco = document.createElement('i'); fileIco.className = 'far fa-file-alt fa-fw text-muted small flex-shrink-0';
-      var span = document.createElement('span');
-      span.className = 'mx-1 post-title-text' + (displayTitle !== post.title ? ' is-custom' : '');
-      span.textContent = displayTitle;
-      var btn = document.createElement('button'); btn.className = 'edit-title-btn'; btn.title = '제목 수정';
-      btn.innerHTML = '<i class="fas fa-pen fa-xs"></i>';
-      btn.addEventListener('click', function(){ startEdit(li, post.url, post.title); });
-      li.append(grip, fileIco, span, btn); ul.appendChild(li);
+    var icon=SUB_ICONS[sub]||'far fa-folder-open';
+    var card=document.createElement('div'); card.className='card categories mb-4';
+    card.innerHTML=
+      '<div class="card-header d-flex justify-content-between hide-border-bottom">'+
+      '<span class="ms-2"><i class="'+icon+' fa-fw"></i>'+
+      '<span class="mx-2 fw-bold">'+escHtml(sub)+'</span>'+
+      '<span class="text-muted small">'+posts.length+' posts</span></span>'+
+      '<span class="hint-text align-self-center me-2">'+
+      '<i class="fas fa-grip-lines fa-fw"></i> 드래그 순서 변경 &nbsp;|&nbsp; '+
+      '<i class="fas fa-pen fa-fw"></i> 제목 수정</span></div>'+
+      '<ul class="list-group list-group-flush" data-sub="'+escHtml(sub)+'"></ul>';
+    var ul=card.querySelector('ul');
+    posts.forEach(function(post){
+      var displayTitle=customTitles[post.url]||post.title;
+      var li=document.createElement('li');
+      li.className='list-group-item sortable-item'; li.dataset.url=post.url;
+      var grip=document.createElement('i'); grip.className='fas fa-grip-vertical fa-fw drag-handle';
+      var fileIco=document.createElement('i'); fileIco.className='far fa-file-alt fa-fw text-muted small flex-shrink-0';
+      var span=document.createElement('span');
+      span.className='mx-1 post-title-text'+(displayTitle!==post.title?' is-custom':'');
+      span.textContent=displayTitle;
+      var btn=document.createElement('button'); btn.className='edit-title-btn'; btn.title='제목 수정';
+      btn.innerHTML='<i class="fas fa-pen fa-xs"></i>';
+      btn.addEventListener('click',function(){startEdit(li,post.url,post.title);});
+      li.append(grip,fileIco,span,btn); ul.appendChild(li);
     });
     container.appendChild(card);
-    Sortable.create(ul, { animation:150, handle:'.drag-handle', ghostClass:'sortable-ghost', chosenClass:'sortable-chosen' });
+    Sortable.create(ul,{animation:150,handle:'.drag-handle',ghostClass:'sortable-ghost',chosenClass:'sortable-chosen'});
   });
 }
-
-function saveOrder() {
-  var cat = activeCat(), savedAll = loadOrders(); savedAll[cat] = {};
-  document.querySelectorAll('#postLists ul[data-sub]').forEach(function(ul) {
-    savedAll[cat][ul.dataset.sub] = Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){ return li.dataset.url; });
+function saveOrder(){
+  var cat=activeCat(),savedAll=loadOrders(); savedAll[cat]={};
+  document.querySelectorAll('#postLists ul[data-sub]').forEach(function(ul){
+    savedAll[cat][ul.dataset.sub]=Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){return li.dataset.url;});
   });
-  localStorage.setItem(ORDER_KEY, JSON.stringify(savedAll));
-  flashBtn('saveBtn', '<i class="fas fa-check fa-fw me-1"></i>저장 완료!', 'btn-primary', 'btn-success');
+  localStorage.setItem(ORDER_KEY,JSON.stringify(savedAll));
+  flashBtn('saveBtn','<i class="fas fa-check fa-fw me-1"></i>저장 완료!','btn-primary','btn-success');
 }
-function resetOrder() {
-  var cat = activeCat(), s = loadOrders(); delete s[cat];
-  localStorage.setItem(ORDER_KEY, JSON.stringify(s)); renderCategory(cat);
+function resetOrder(){
+  var cat=activeCat(),s=loadOrders(); delete s[cat];
+  localStorage.setItem(ORDER_KEY,JSON.stringify(s)); renderCategory(cat);
 }
-function resetTitles() {
-  var cat = activeCat(), titles = loadTitles();
-  SUB_ORDER.forEach(function(sub){ ((ALL_POSTS[cat]||{})[sub]||[]).forEach(function(p){ delete titles[p.url]; }); });
+function resetTitles(){
+  var cat=activeCat(),titles=loadTitles();
+  SUB_ORDER.forEach(function(sub){((ALL_POSTS[cat]||{})[sub]||[]).forEach(function(p){delete titles[p.url];});});
   saveTitles(titles); renderCategory(cat);
 }
 
 /* ════════════════════════════════════
-   SECTION 2: POST EDITOR
+   SECTION 2 : POST EDITOR
 ════════════════════════════════════ */
 
 /* ── Token ── */
-function updateTokenBadge() {
-  var badge = document.getElementById('token-badge');
-  if (!badge) return;
-  if (getToken()) {
-    badge.className = 'badge bg-success token-badge'; badge.textContent = '연결됨';
-  } else {
-    badge.className = 'badge bg-secondary token-badge'; badge.textContent = '미설정';
-  }
+function updateTokenBadge(){
+  var badge=document.getElementById('token-badge'); if(!badge) return;
+  if(getToken()){badge.className='badge bg-success token-badge';badge.textContent='연결됨';}
+  else{badge.className='badge bg-secondary token-badge';badge.textContent='미설정';}
 }
-function saveToken() {
-  var val = document.getElementById('gh-token-input').value.trim();
-  if (!val) return;
-  localStorage.setItem(TOKEN_KEY, val);
-  document.getElementById('gh-token-input').value = '';
-  document.getElementById('token-status').innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>저장되었습니다.</span>';
+function saveToken(){
+  var val=document.getElementById('gh-token-input').value.trim(); if(!val) return;
+  localStorage.setItem(TOKEN_KEY,val);
+  document.getElementById('gh-token-input').value='';
+  document.getElementById('token-status').innerHTML='<span class="text-success"><i class="fas fa-check me-1"></i>저장되었습니다.</span>';
   updateTokenBadge(); fetchPostList();
 }
-function clearToken() {
+function clearToken(){
   localStorage.removeItem(TOKEN_KEY);
-  document.getElementById('token-status').innerHTML = '<span class="text-muted">토큰이 삭제되었습니다.</span>';
-  document.getElementById('post-file-list').innerHTML = '<div class="card-body text-muted small text-center py-4">GitHub 토큰을 설정하면 글 목록이 표시됩니다.</div>';
+  document.getElementById('token-status').innerHTML='<span class="text-muted">토큰이 삭제되었습니다.</span>';
+  document.getElementById('post-file-list').innerHTML=
+    '<div class="card-body text-muted small text-center py-4">GitHub 토큰을 설정하면 글 목록이 표시됩니다.</div>';
   updateTokenBadge();
 }
 
 /* ── GitHub API ── */
-function ghFetch(path, opts) {
-  var token = getToken();
-  var headers = { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' };
-  return fetch(API_BASE + path, Object.assign({ headers: headers }, opts || {}));
+function ghFetch(path,opts){
+  var headers={'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
+  return fetch(API_BASE+path,Object.assign({headers:headers},opts||{}));
 }
-
-async function fetchPostList() {
-  if (!getToken()) {
-    document.getElementById('post-file-list').innerHTML =
+async function fetchPostList(){
+  if(!getToken()){
+    document.getElementById('post-file-list').innerHTML=
       '<div class="card-body text-warning small text-center py-4"><i class="fas fa-exclamation-triangle me-1"></i>GitHub 토큰을 먼저 설정해주세요.</div>';
     return;
   }
-  document.getElementById('post-file-list').innerHTML =
+  document.getElementById('post-file-list').innerHTML=
     '<div class="card-body text-muted small text-center py-3"><i class="fas fa-spinner fa-spin me-1"></i>불러오는 중...</div>';
-  try {
-    var res = await ghFetch('/contents/_posts');
-    if (res.status === 401) {
-      document.getElementById('post-file-list').innerHTML =
-        '<div class="card-body text-danger small text-center py-4">토큰이 유효하지 않습니다. 다시 설정해주세요.</div>';
-      return;
+  try{
+    var res=await ghFetch('/contents/_posts');
+    if(res.status===401){
+      document.getElementById('post-file-list').innerHTML=
+        '<div class="card-body text-danger small text-center py-4">토큰이 유효하지 않습니다.</div>'; return;
     }
-    var files = await res.json();
-    var mdFiles = files.filter(function(f){ return f.name.endsWith('.md'); })
-                       .sort(function(a,b){ return b.name.localeCompare(a.name); });
-
-    if (!mdFiles.length) {
-      document.getElementById('post-file-list').innerHTML = '<div class="card-body text-muted small text-center py-4">글이 없습니다.</div>';
-      return;
+    var files=await res.json();
+    var mdFiles=files.filter(function(f){return f.name.endsWith('.md');})
+                     .sort(function(a,b){return b.name.localeCompare(a.name);});
+    if(!mdFiles.length){
+      document.getElementById('post-file-list').innerHTML='<div class="card-body text-muted small text-center py-4">글이 없습니다.</div>'; return;
     }
-
-    var wrap = document.createElement('div'); wrap.className = 'card';
-    mdFiles.forEach(function(file) {
-      var item = document.createElement('div'); item.className = 'post-file-item';
-      item.innerHTML =
-        '<i class="far fa-file-alt fa-fw text-muted me-2 small flex-shrink-0"></i>' +
-        '<span class="flex-grow-1 text-truncate small" style="font-family:monospace">' + escHtml(file.name) + '</span>' +
-        '<button class="btn btn-outline-primary btn-sm ms-2 flex-shrink-0" style="font-size:0.75rem">편집</button>';
-      item.querySelector('button').addEventListener('click', function(){ openPost(file.path, file.sha, file.name); });
+    var wrap=document.createElement('div'); wrap.className='card';
+    mdFiles.forEach(function(file){
+      var item=document.createElement('div'); item.className='post-file-item';
+      item.innerHTML=
+        '<i class="far fa-file-alt fa-fw text-muted me-2 small flex-shrink-0"></i>'+
+        '<span class="flex-grow-1 text-truncate small" style="font-family:monospace">'+escHtml(file.name)+'</span>'+
+        '<button class="btn btn-outline-primary btn-sm ms-2 flex-shrink-0" style="font-size:.75rem">편집</button>';
+      item.querySelector('button').addEventListener('click',function(){openPost(file.path,file.sha,file.name);});
       wrap.appendChild(item);
     });
-    document.getElementById('post-file-list').innerHTML = '';
+    document.getElementById('post-file-list').innerHTML='';
     document.getElementById('post-file-list').appendChild(wrap);
-  } catch(e) {
-    document.getElementById('post-file-list').innerHTML = '<div class="card-body text-danger small text-center py-4">목록을 불러올 수 없습니다.</div>';
+  }catch(e){
+    document.getElementById('post-file-list').innerHTML='<div class="card-body text-danger small text-center py-4">목록을 불러올 수 없습니다.</div>';
   }
 }
 
-function parseFrontMatter(raw) {
-  var m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-  if (!m) return { fm: {}, body: raw };
-  var fm = {};
-  m[1].split('\n').forEach(function(line) {
-    var col = line.indexOf(':'); if (col === -1) return;
-    var key = line.slice(0, col).trim();
-    var val = line.slice(col + 1).trim().replace(/^["']|["']$/g, '');
-    fm[key] = val;
+function parseFrontMatter(raw){
+  var m=raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/); if(!m) return{fm:{},body:raw};
+  var fm={};
+  m[1].split('\n').forEach(function(line){
+    var col=line.indexOf(':'); if(col===-1) return;
+    var key=line.slice(0,col).trim(), val=line.slice(col+1).trim().replace(/^["']|["']$/g,'');
+    fm[key]=val;
   });
-  return { fm: fm, body: m[2] };
+  return{fm:fm,body:m[2]};
 }
 
-async function openPost(path, sha, name) {
-  window._editingPath = path; window._editingSha = sha; window._isNewPost = false;
-  document.getElementById('editor-title-bar').textContent = '편집 중: ' + name;
-  document.getElementById('editor-panel').classList.remove('hidden');
-  document.getElementById('post-list-panel').classList.add('hidden');
-  document.getElementById('save-status').textContent = '';
-  document.getElementById('editor-body').value = '파일을 불러오는 중...';
-  try {
-    var res = await ghFetch('/contents/' + path);
-    var data = await res.json();
-    window._editingSha = data.sha;
-    var raw = b64ToStr(data.content);
-    var parsed = parseFrontMatter(raw);
-    var fm = parsed.fm;
-    document.getElementById('f-title').value = fm.title || '';
-    document.getElementById('f-date').value  = (fm.date || '').replace(/\s*\+0900$/, '').trim();
-    document.getElementById('f-tags').value  = (fm.tags || '').replace(/^\[|\]$/g, '');
-    var catMatch = (fm.categories || '').match(/\[([^,\]]+),?\s*([^\]]*)\]/);
-    if (catMatch) { setSelectVal('f-sub', catMatch[1].trim()); setSelectVal('f-cat', catMatch[2].trim()); }
-    var slugMatch = name.match(/^\d{4}-\d{2}-\d{2}-(.+)\.md$/);
-    document.getElementById('f-slug').value = slugMatch ? slugMatch[1] : name.replace('.md','');
-    document.getElementById('editor-body').value = parsed.body.replace(/^\n/, '');
-  } catch(e) {
-    document.getElementById('editor-body').value = '파일을 불러올 수 없습니다: ' + e.message;
-  }
+/* ── Toast UI WYSIWYG ── */
+var tuiEditor=null, tuiLoadPromise=null;
+
+function loadToastUI(){
+  if(tuiLoadPromise) return tuiLoadPromise;
+  tuiLoadPromise=new Promise(function(resolve){
+    if(window.toastui && window.toastui.Editor){resolve();return;}
+    /* CSS */
+    ['https://uicdn.toast.com/editor/latest/toastui-editor.min.css',
+     'https://uicdn.toast.com/editor/latest/theme/toastui-editor-dark.min.css']
+    .forEach(function(href){
+      var l=document.createElement('link'); l.rel='stylesheet'; l.href=href;
+      document.head.appendChild(l);
+    });
+    /* JS */
+    var s=document.createElement('script');
+    s.src='https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js';
+    s.onload=resolve; document.head.appendChild(s);
+  });
+  return tuiLoadPromise;
 }
 
-function newPost() {
-  window._editingPath = null; window._editingSha = null; window._isNewPost = true;
-  var now = new Date();
-  var pad = function(n){ return String(n).padStart(2,'0'); };
-  var ds = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':00:00';
-  document.getElementById('f-title').value = ''; document.getElementById('f-date').value = ds;
-  document.getElementById('f-slug').value  = ''; document.getElementById('f-tags').value = '';
-  document.getElementById('f-cat').selectedIndex = 0; document.getElementById('f-sub').selectedIndex = 0;
-  document.getElementById('editor-body').value = '';
-  document.getElementById('editor-title-bar').textContent = '새 글 작성';
-  document.getElementById('save-status').textContent = '';
+async function ensureEditor(){
+  await loadToastUI();
+  if(tuiEditor) return;
+  var isDark=document.documentElement.getAttribute('data-mode')==='dark'||
+             document.body.classList.contains('dark');
+  tuiEditor=new toastui.Editor({
+    el:document.getElementById('editor-container'),
+    height:'520px',
+    initialEditType:'wysiwyg',
+    previewStyle:'tab',
+    theme:isDark?'dark':'default',
+    language:'ko-KR',
+    toolbarItems:[
+      ['heading','bold','italic','strike'],
+      ['hr','quote'],
+      ['ul','ol','task','indent','outdent'],
+      ['table','image','link'],
+      ['code','codeblock'],
+    ],
+    hooks:{
+      addImageBlobHook:async function(blob,callback){
+        if(!getToken()){alert('GitHub 토큰을 먼저 설정해주세요.');return;}
+        document.getElementById('img-uploading-indicator').style.display='block';
+        try{
+          var path=await uploadImageToGitHub(blob);
+          callback(path,blob.name||'image');
+        }catch(e){alert('이미지 업로드 실패: '+e.message);}
+        finally{document.getElementById('img-uploading-indicator').style.display='none';}
+      }
+    }
+  });
+}
+
+async function openPost(path,sha,name){
+  window._editingPath=path; window._editingSha=sha; window._isNewPost=false;
+  document.getElementById('editor-title-bar').textContent='편집 중: '+name;
   document.getElementById('editor-panel').classList.remove('hidden');
   document.getElementById('post-list-panel').classList.add('hidden');
+  document.getElementById('save-status').textContent='';
+  await ensureEditor();
+  tuiEditor.setMarkdown('파일을 불러오는 중...');
+  try{
+    var res=await ghFetch('/contents/'+path), data=await res.json();
+    window._editingSha=data.sha;
+    var raw=b64ToStr(data.content), parsed=parseFrontMatter(raw), fm=parsed.fm;
+    document.getElementById('f-title').value=fm.title||'';
+    document.getElementById('f-date').value=(fm.date||'').replace(/\s*\+0900$/,'').trim();
+    document.getElementById('f-tags').value=(fm.tags||'').replace(/^\[|\]$/g,'');
+    var catMatch=(fm.categories||'').match(/\[([^,\]]+),?\s*([^\]]*)\]/);
+    if(catMatch){setSelectVal('f-sub',catMatch[1].trim());setSelectVal('f-cat',catMatch[2].trim());}
+    var slugMatch=name.match(/^\d{4}-\d{2}-\d{2}-(.+)\.md$/);
+    document.getElementById('f-slug').value=slugMatch?slugMatch[1]:name.replace('.md','');
+    tuiEditor.setMarkdown(parsed.body.replace(/^\n/,''));
+  }catch(e){tuiEditor.setMarkdown('파일을 불러올 수 없습니다: '+e.message);}
+}
+
+async function newPost(){
+  window._editingPath=null; window._editingSha=null; window._isNewPost=true;
+  var now=new Date(), pad=function(n){return String(n).padStart(2,'0');};
+  var ds=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':00:00';
+  document.getElementById('f-title').value=''; document.getElementById('f-date').value=ds;
+  document.getElementById('f-slug').value='';  document.getElementById('f-tags').value='';
+  document.getElementById('f-cat').selectedIndex=0; document.getElementById('f-sub').selectedIndex=0;
+  document.getElementById('editor-title-bar').textContent='새 글 작성';
+  document.getElementById('save-status').textContent='';
+  document.getElementById('editor-panel').classList.remove('hidden');
+  document.getElementById('post-list-panel').classList.add('hidden');
+  await ensureEditor();
+  tuiEditor.setMarkdown('');
   document.getElementById('f-title').focus();
 }
 
-function closeEditor() {
+function closeEditor(){
   document.getElementById('editor-panel').classList.add('hidden');
   document.getElementById('post-list-panel').classList.remove('hidden');
 }
 
-async function submitPost() {
-  var title = document.getElementById('f-title').value.trim();
-  var date  = document.getElementById('f-date').value.trim();
-  var cat   = document.getElementById('f-cat').value;
-  var sub   = document.getElementById('f-sub').value;
-  var tags  = document.getElementById('f-tags').value.trim();
-  var slug  = document.getElementById('f-slug').value.trim();
-  var body  = document.getElementById('editor-body').value;
-  if (!title) { alert('제목을 입력해주세요.'); return; }
-  var datePrefix = date.substring(0, 10);
-  var finalSlug  = slug || title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  var filePath   = '_posts/' + datePrefix + '-' + finalSlug + '.md';
-  var tagArr = tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
-  var fmTitle = title.startsWith('[') ? title : '[' + sub.replace('Features','Feature').replace('Projects','Project') + '] ' + title;
-  var fm = ['---',
-    'title: ' + JSON.stringify(fmTitle),
-    'date: ' + date + ' +0900',
-    'categories: [' + sub + ', ' + cat + ']',
-    'subcategory: ' + sub,
-    'tags: [' + tagArr.join(', ') + ']',
-    '---', ''].join('\n');
-  var fullContent = fm + '\n' + body;
-  var encoded = strToB64(fullContent);
-  var path = window._isNewPost ? filePath : window._editingPath;
-  var sha  = window._editingSha;
-  var statusEl = document.getElementById('save-status');
-  statusEl.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>저장 중...';
-  try {
-    var reqBody = { message: (sha ? 'Update: ' : 'Create: ') + path, content: encoded };
-    if (sha) reqBody.sha = sha;
-    var res = await ghFetch('/contents/' + path, { method: 'PUT', body: JSON.stringify(reqBody) });
-    if (res.ok) {
-      var data = await res.json();
-      window._editingSha  = data.content.sha;
-      window._editingPath = path;
-      window._isNewPost   = false;
-      document.getElementById('editor-title-bar').textContent = '편집 중: ' + path.split('/').pop();
-      document.getElementById('f-slug').value = finalSlug;
-      statusEl.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>저장 완료 — GitHub Actions 배포 중</span>';
-    } else {
-      var err = await res.json();
-      statusEl.innerHTML = '<span class="text-danger">저장 실패: ' + escHtml(err.message || res.status) + '</span>';
+async function submitPost(){
+  var title=document.getElementById('f-title').value.trim();
+  var date =document.getElementById('f-date').value.trim();
+  var cat  =document.getElementById('f-cat').value;
+  var sub  =document.getElementById('f-sub').value;
+  var tags =document.getElementById('f-tags').value.trim();
+  var slug =document.getElementById('f-slug').value.trim();
+  var body =tuiEditor?tuiEditor.getMarkdown():'';
+  if(!title){alert('제목을 입력해주세요.');return;}
+  var datePrefix=date.substring(0,10);
+  var finalSlug=slug||title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  var filePath='_posts/'+datePrefix+'-'+finalSlug+'.md';
+  var tagArr=tags.split(',').map(function(t){return t.trim();}).filter(Boolean);
+  var prefix=sub==='Features'?'Feature':sub==='Projects'?'Project':sub;
+  var fmTitle=title.startsWith('[')?title:'['+prefix+'] '+title;
+  var fm=['---',
+    'title: '+JSON.stringify(fmTitle),
+    'date: '+date+' +0900',
+    'categories: ['+sub+', '+cat+']',
+    'subcategory: '+sub,
+    'tags: ['+tagArr.join(', ')+']',
+    '---',''].join('\n');
+  var fullContent=fm+'\n'+body;
+  var path=window._isNewPost?filePath:window._editingPath;
+  var sha=window._editingSha;
+  var statusEl=document.getElementById('save-status');
+  statusEl.innerHTML='<i class="fas fa-spinner fa-spin me-1"></i>저장 중...';
+  try{
+    var reqBody={message:(sha?'Update: ':'Create: ')+path,content:strToB64(fullContent)};
+    if(sha) reqBody.sha=sha;
+    var res=await ghFetch('/contents/'+path,{method:'PUT',body:JSON.stringify(reqBody)});
+    if(res.ok){
+      var data=await res.json();
+      window._editingSha=data.content.sha; window._editingPath=path; window._isNewPost=false;
+      document.getElementById('editor-title-bar').textContent='편집 중: '+path.split('/').pop();
+      document.getElementById('f-slug').value=finalSlug;
+      statusEl.innerHTML='<span class="text-success"><i class="fas fa-check me-1"></i>저장 완료 — GitHub Actions 배포 중</span>';
+    }else{
+      var err=await res.json();
+      statusEl.innerHTML='<span class="text-danger">저장 실패: '+escHtml(err.message||res.status)+'</span>';
     }
-  } catch(e) {
-    statusEl.innerHTML = '<span class="text-danger">오류: ' + escHtml(e.message) + '</span>';
-  }
+  }catch(e){statusEl.innerHTML='<span class="text-danger">오류: '+escHtml(e.message)+'</span>';}
 }
 
-/* ── Markdown Toolbar ── */
-function tb(type) {
-  var ta = document.getElementById('editor-body');
-  var s = ta.selectionStart, e = ta.selectionEnd;
-  var sel = ta.value.substring(s, e);
-  var before = ta.value.substring(0, s), after = ta.value.substring(e);
-  var ins = '', cur = 0;
-  switch(type) {
-    case 'h2':        ins = '\n## '  + (sel||'제목'); cur = ins.length; break;
-    case 'h3':        ins = '\n### ' + (sel||'제목'); cur = ins.length; break;
-    case 'bold':      ins = '**' + (sel||'텍스트') + '**'; cur = sel ? ins.length : 2; break;
-    case 'italic':    ins = '*'  + (sel||'텍스트') + '*';  cur = sel ? ins.length : 1; break;
-    case 'code':      ins = '`'  + (sel||'code')   + '`';  cur = sel ? ins.length : 1; break;
-    case 'codeblock': ins = '\n```\n' + (sel||'') + '\n```\n'; cur = sel ? ins.length : 5; break;
-    case 'hr':        ins = '\n\n---\n\n'; cur = ins.length; break;
-    case 'link':      ins = '[' + (sel||'링크 텍스트') + '](url)'; cur = sel ? ins.length - 5 : 1; break;
-    case 'table':
-      ins = '\n| 항목 | 설명 |\n|------|------|\n| 값1 | 내용1 |\n| 값2 | 내용2 |\n';
-      cur = ins.length; break;
-  }
-  ta.value = before + ins + after;
-  ta.selectionStart = ta.selectionEnd = s + cur;
-  ta.focus();
-}
-
-/* ── Image Upload ── */
-async function uploadImageToGitHub(file) {
-  return new Promise(function(resolve, reject) {
-    var reader = new FileReader();
-    reader.onload = async function() {
-      var base64 = reader.result.split(',')[1];
-      var ext  = file.name.split('.').pop().toLowerCase();
-      var name = file.name.replace(/\.[^.]+$/,'').replace(/[^a-z0-9]/gi,'-').toLowerCase();
-      var imgPath = 'assets/img/posts/' + Date.now() + '-' + name + '.' + ext;
-      try {
-        var res = await ghFetch('/contents/' + imgPath, {
-          method: 'PUT',
-          body: JSON.stringify({ message: 'Upload image: ' + file.name, content: base64 })
+async function uploadImageToGitHub(file){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onload=async function(){
+      var base64=reader.result.split(',')[1];
+      var ext=file.name.split('.').pop().toLowerCase();
+      var name=file.name.replace(/\.[^.]+$/,'').replace(/[^a-z0-9]/gi,'-').toLowerCase();
+      var imgPath='assets/img/posts/'+Date.now()+'-'+name+'.'+ext;
+      try{
+        var res=await ghFetch('/contents/'+imgPath,{
+          method:'PUT',
+          body:JSON.stringify({message:'Upload image: '+file.name,content:base64})
         });
-        if (res.ok) resolve('/' + imgPath);
-        else { var err = await res.json(); reject(new Error(err.message || 'Upload failed')); }
-      } catch(e) { reject(e); }
+        if(res.ok) resolve('/'+imgPath);
+        else{var err=await res.json();reject(new Error(err.message||'Upload failed'));}
+      }catch(e){reject(e);}
     };
-    reader.onerror = function(){ reject(new Error('파일 읽기 실패')); };
+    reader.onerror=function(){reject(new Error('파일 읽기 실패'));};
     reader.readAsDataURL(file);
   });
-}
-
-function insertAtEditor(text) {
-  var ta = document.getElementById('editor-body');
-  var s = ta.selectionStart, e = ta.selectionEnd;
-  ta.value = ta.value.substring(0,s) + text + ta.value.substring(e);
-  ta.selectionStart = ta.selectionEnd = s + text.length;
-  ta.focus();
-}
-
-async function handleImageUpload(input) {
-  if (!input.files[0]) return;
-  var file = input.files[0]; input.value = '';
-  document.getElementById('img-uploading').style.display = 'inline';
-  try {
-    var path = await uploadImageToGitHub(file);
-    insertAtEditor('\n![' + file.name + '](' + path + ')\n');
-  } catch(e) { alert('이미지 업로드 실패: ' + e.message); }
-  finally { document.getElementById('img-uploading').style.display = 'none'; }
-}
-
-async function handleImageDrop(e) {
-  e.preventDefault();
-  var file = e.dataTransfer.files[0];
-  if (!file || !file.type.startsWith('image/')) return;
-  document.getElementById('img-uploading').style.display = 'inline';
-  try {
-    var path = await uploadImageToGitHub(file);
-    insertAtEditor('\n![' + file.name + '](' + path + ')\n');
-  } catch(err) { alert('이미지 업로드 실패: ' + err.message); }
-  finally { document.getElementById('img-uploading').style.display = 'none'; }
 }
 
 /* ════════════════════════════════════
    INIT
 ════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', function() {
-  /* Order tabs */
-  document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(link) {
-    link.addEventListener('click', function(e) {
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(link){
+    link.addEventListener('click',function(e){
       e.preventDefault();
-      document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(l){ l.classList.remove('active'); });
-      this.classList.add('active');
-      renderCategory(this.dataset.cat);
+      document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(l){l.classList.remove('active');});
+      this.classList.add('active'); renderCategory(this.dataset.cat);
     });
   });
   renderCategory(CAT_KEYS[0]);
-  /* Token badge */
   updateTokenBadge();
 });
 </script>
@@ -767,24 +713,24 @@ document.addEventListener('DOMContentLoaded', function() {
 /* ════════════════════════════════════
    PASSWORD
 ════════════════════════════════════ */
-(function () {
-  var PW = '031677', SESSION_KEY = 'bbdawn-admin-auth';
-  function unlock() {
+(function(){
+  var PW='031677', SESSION_KEY='bbdawn-admin-auth';
+  function unlock(){
     document.getElementById('pw-overlay').classList.add('hidden');
     document.getElementById('main-content').classList.remove('hidden');
   }
-  if (sessionStorage.getItem(SESSION_KEY) === '1') { unlock(); return; }
-  document.addEventListener('DOMContentLoaded', function(){ document.getElementById('pw-input').focus(); });
-  window.checkPw = function() {
-    if (document.getElementById('pw-input').value === PW) {
-      sessionStorage.setItem(SESSION_KEY, '1'); unlock();
-    } else {
-      var inp = document.getElementById('pw-input');
-      inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake');
-      document.getElementById('pw-error').textContent = '비밀번호가 올바르지 않습니다.';
-      inp.value = ''; inp.focus();
+  if(sessionStorage.getItem(SESSION_KEY)==='1'){unlock();return;}
+  document.addEventListener('DOMContentLoaded',function(){document.getElementById('pw-input').focus();});
+  window.checkPw=function(){
+    if(document.getElementById('pw-input').value===PW){
+      sessionStorage.setItem(SESSION_KEY,'1');unlock();
+    }else{
+      var inp=document.getElementById('pw-input');
+      inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');
+      document.getElementById('pw-error').textContent='비밀번호가 올바르지 않습니다.';
+      inp.value='';inp.focus();
     }
   };
-  window.clearPwError = function(){ document.getElementById('pw-error').textContent = ''; };
+  window.clearPwError=function(){document.getElementById('pw-error').textContent='';};
 })();
 </script>
