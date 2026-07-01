@@ -8,7 +8,9 @@ tags: [linux, lspci, pci, path, symlink, symbolic-link, gpu, troubleshooting]
 
 ## 문제 상황
 
-GPU 호스트 관리 도구(mole)에서 호스트 목록의 GPU 인식 여부 항목이 `No`로 표시되는 현상이 발생했다. 확인해보니 도구 내부에서 `lspci`를 실행할 때 명령어를 찾지 못하는 것이 원인이었다.
+콘트라베이스 제품에서 물리 호스트에 설치하는 에이전트인 **mole**은 물리 호스트의 하드웨어 정보를 수집하고, `qemu-guest-agent`가 설치된 VM에도 접근해 정보를 가져오는 역할을 한다.
+
+mole이 GPU 인식 여부를 확인하기 위해 내부적으로 `lspci`를 실행하는데, 호스트 목록에서 GPU 항목이 `No`로 표시되는 문제가 발생했다. 확인해보니 mole이 실행되는 환경에서 `lspci`를 찾지 못하는 것이 원인이었다.
 
 ```
 lspci: command not found
@@ -20,20 +22,19 @@ lspci: command not found
 
 `lspci`는 PCI 장치 목록을 출력하는 명령어로, 패키지 이름은 `pciutils`다.
 
-설치되어 있더라도 실행 파일 경로가 현재 사용자의 `PATH`에 포함되지 않아 인식이 안 되는 경우가 있다.
+설치되어 있더라도 실행 파일 경로가 실행 환경의 `PATH`에 포함되지 않아 인식이 안 되는 경우가 있다.
 
 ```bash
 # lspci가 어디 있는지 찾기
 which lspci
 # 결과 없으면:
 
-find / -name lspci 2>/dev/null
+find /usr -name lspci 2>/dev/null
 # 예시 결과:
 # /usr/sbin/lspci
-# /usr/bin/lspci  ← 없을 수도 있음
 ```
 
-일반 사용자 세션이나 특정 실행 환경(systemd 서비스, SSH non-login 쉘 등)에서는 `/usr/sbin`이 PATH에서 빠지는 경우가 있다.
+에이전트처럼 systemd 서비스나 SSH non-login 쉘 형태로 실행되는 환경에서는 `/usr/sbin`이 PATH에서 빠지는 경우가 많다.
 
 ```bash
 echo $PATH
@@ -44,7 +45,7 @@ echo $PATH
 
 ## 임시 해결: 심볼릭 링크 설정
 
-`/usr/bin`처럼 PATH에 포함된 경로에 심볼릭 링크를 걸어 어느 환경에서든 `lspci`를 찾을 수 있게 한다.
+`/usr/bin`처럼 PATH에 포함된 경로에 심볼릭 링크를 걸어 어느 실행 환경에서든 `lspci`를 찾을 수 있게 한다.
 
 ```bash
 # lspci 실제 경로 확인
@@ -66,14 +67,6 @@ lspci | grep -i nvidia
 
 ## 다른 해결 방법들
 
-### PATH에 /usr/sbin 추가 (사용자 환경)
-
-```bash
-# ~/.bashrc 또는 ~/.profile에 추가
-export PATH="$PATH:/usr/sbin"
-source ~/.bashrc
-```
-
 ### lspci 패키지 재설치
 
 ```bash
@@ -86,7 +79,7 @@ sudo dnf install pciutils
 
 ### 절대 경로로 직접 호출
 
-도구 코드에서 `lspci` 대신 `/usr/sbin/lspci`처럼 절대 경로를 사용하면 PATH 의존성 없이 실행할 수 있다.
+에이전트 코드에서 `lspci` 대신 절대 경로를 사용하면 PATH 의존성 없이 실행할 수 있다.
 
 ```python
 import subprocess
@@ -97,17 +90,17 @@ result = subprocess.run(["/usr/sbin/lspci"], capture_output=True, text=True)
 
 ## 근본 해결: mole 추가 개발 필요
 
-현재 심볼릭 링크는 임시 조치다. mole에서 lspci를 실행할 때 PATH에 의존하지 않고 실행 파일을 동적으로 탐색하도록 수정이 필요하다.
+현재 심볼릭 링크는 물리 호스트마다 수동으로 설정해야 하는 임시 조치다. mole 자체에서 lspci 경로를 동적으로 탐색하도록 수정이 필요하다.
 
 ```
 개선 방향:
-- which / shutil.which() 로 lspci 경로 동적 탐색
-- 탐색 실패 시 /usr/sbin/lspci, /usr/bin/lspci 순으로 fallback
-- 경로를 찾지 못할 경우 호스트 목록에 'No (lspci not found)' 등 명확한 메시지 표시
+- shutil.which('lspci') 등으로 경로 동적 탐색
+- 탐색 실패 시 /usr/sbin/lspci, /sbin/lspci 순으로 fallback 시도
+- 경로를 찾지 못할 경우 호스트 목록에 명확한 상태 메시지 표시
 ```
 
 | 상태 | 항목 |
 |------|------|
-| 완료 | 심볼릭 링크로 임시 해결 |
+| 완료 | 물리 호스트에 심볼릭 링크 설정으로 임시 해결 |
 | 예정 | mole에서 lspci 경로 동적 탐색 로직 추가 |
-| 예정 | 탐색 실패 시 사용자에게 명확한 오류 메시지 표시 |
+| 예정 | 탐색 실패 시 호스트 목록에 명확한 오류 상태 표시 |
