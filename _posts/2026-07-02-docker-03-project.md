@@ -1,8 +1,8 @@
 ---
-title: "[Project] Docker 학습 (3) — 실습 프로젝트: Docker Compose로 GPU 모니터링 스택 구성"
+title: "[Study] Docker 학습 (3) — 실습 프로젝트: Docker Compose로 GPU 모니터링 스택 구성"
 date: 2026-07-02 11:00:00 +0900
-categories: [Project, Docker]
-subcategory: Project
+categories: [Study, Docker]
+subcategory: Study
 tags: [docker, docker-compose, gpu, dcgm, prometheus, grafana, monitoring, nvidia]
 ---
 

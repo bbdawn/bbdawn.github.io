@@ -1,8 +1,8 @@
 ---
-title: "[Project] Docker 학습 (1) — 기본 개념: 컨테이너, 이미지, Dockerfile"
+title: "[Study] Docker 학습 (1) — 기본 개념: 컨테이너, 이미지, Dockerfile"
 date: 2026-07-02 09:00:00 +0900
-categories: [Project, Docker]
-subcategory: Project
+categories: [Study, Docker]
+subcategory: Study
 tags: [docker, container, image, dockerfile, volume, network]
 ---
 

@@ -1,8 +1,8 @@
 ---
-title: "[Project] Kubernetes 학습 (1) — minikube로 로컬 클러스터 구성 및 기본 오브젝트 실습"
+title: "[Study] Kubernetes 학습 (1) — minikube로 로컬 클러스터 구성 및 기본 오브젝트 실습"
 date: 2026-07-01 09:00:00 +0900
-categories: [Project, Kubernetes]
-subcategory: Project
+categories: [Study, Kubernetes]
+subcategory: Study
 tags: [kubernetes, k8s, minikube, pod, deployment, service, configmap, daemonset, prometheus]
 ---
 

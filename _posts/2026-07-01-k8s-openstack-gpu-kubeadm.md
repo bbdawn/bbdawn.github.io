@@ -1,8 +1,8 @@
 ---
-title: "[Project] Kubernetes 학습 (2) — OpenStack GPU 인스턴스 위에 K8s 구성 (kubeadm + NVIDIA Device Plugin + DCGM Exporter)"
+title: "[Study] Kubernetes 학습 (2) — OpenStack GPU 인스턴스 위에 K8s 구성 (kubeadm + NVIDIA Device Plugin + DCGM Exporter)"
 date: 2026-07-01 10:00:00 +0900
-categories: [Project, Kubernetes]
-subcategory: Project
+categories: [Study, Kubernetes]
+subcategory: Study
 tags: [kubernetes, k8s, kubeadm, openstack, gpu, nvidia, device-plugin, dcgm, prometheus, mig]
 ---
 

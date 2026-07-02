@@ -1,8 +1,8 @@
 ---
-title: "[Project] Docker 학습 (2) — 실무 활용: Docker Compose, 멀티 스테이지 빌드, 레지스트리"
+title: "[Study] Docker 학습 (2) — 실무 활용: Docker Compose, 멀티 스테이지 빌드, 레지스트리"
 date: 2026-07-02 10:00:00 +0900
-categories: [Project, Docker]
-subcategory: Project
+categories: [Study, Docker]
+subcategory: Study
 tags: [docker, docker-compose, multi-stage-build, registry, security, optimization]
 ---
 
