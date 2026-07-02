@@ -55,7 +55,11 @@ layout: page
         {% else %}
           <i class="far fa-folder-open fa-fw"></i>
         {% endif %}
-        <span class="mx-2 fw-bold">{{ sub }}</span>
+        {% assign sub_label = sub %}
+        {% if sub == "Feature" %}
+          {% assign sub_label = 'Openstack 기반 Private Cloud 자원 관리 플랫폼 "콘트라베이스" 기능 개발' %}
+        {% endif %}
+        <span class="mx-2 fw-bold">{{ sub_label }}</span>
         <span class="text-muted small font-weight-light">{{ sub_posts | size }} posts</span>
       </span>
     </div>

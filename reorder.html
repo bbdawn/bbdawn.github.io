@@ -361,6 +361,12 @@ var SUB_ICONS = {
   "Feature":"fas fa-star","Project":"fas fa-code","Hands-on":"fas fa-terminal",
   "Study":"fas fa-book-open","Troubleshooting":"fas fa-wrench"
 };
+var SUB_LABELS = {
+  "Feature":'Openstack 기반 Private Cloud 자원 관리 플랫폼 "콘트라베이스" 기능 개발'
+};
+function subLabel(cat,sub){
+  return SUB_LABELS[sub] || sub;
+}
 var TAB_LIST = [
   {% for tab in site.tabs %}
   {"title": {{ tab.title | jsonify }}, "url": {{ tab.url | relative_url | jsonify }}, "icon": {{ tab.icon | jsonify }}}{% unless forloop.last %},{% endunless %}
@@ -543,7 +549,7 @@ function renderCategory(cat){
     card.innerHTML=
       '<div class="card-header d-flex justify-content-between hide-border-bottom">'+
       '<span class="ms-2"><i class="'+icon+' fa-fw"></i>'+
-      '<span class="mx-2 fw-bold">'+escHtml(sub)+'</span>'+
+      '<span class="mx-2 fw-bold">'+escHtml(subLabel(cat,sub))+'</span>'+
       '<span class="text-muted small">'+posts.length+' posts</span></span>'+
       '<span class="hint-text align-self-center me-2">'+
       '<i class="fas fa-grip-lines fa-fw"></i> 순서 &nbsp;|&nbsp; '+
