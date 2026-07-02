@@ -30,16 +30,29 @@ layout: page
 
 {% include lang.html %}
 
-{% assign sections      = "GPU,Infra,Openstack,Linux,Kubernetes" | split: "," %}
-{% assign section_names = "GPU,Rack Topology,Openstack,Linux,Kubernetes" | split: "," %}
+{% assign sections      = "Openstack,GPU,Infra,Linux,Docker,Kubernetes" | split: "," %}
+{% assign section_names = "Openstack,GPU,Rack Topology,Linux,Docker,Kubernetes" | split: "," %}
+{% assign section_subs  = "Feature,Troubleshooting,Project,Hands-on,Study" | split: "," %}
 
-{% for i in (0..4) %}
+{% for i in (0..5) %}
   {% assign cat   = sections[i] %}
   {% assign _raw  = site.categories[cat] %}
   {% if _raw %}
-    {% assign cat_posts = _raw | sort: "date" %}
-  {% else %}
-    {% assign cat_posts = "" | split: "," %}
+    {% assign _raw = _raw | where_exp: "item", "item.hidden != true" %}
+  {% endif %}
+  {% assign cat_posts = "" | split: "," %}
+  {% if _raw %}
+    {% for sub in section_subs %}
+      {% assign sub_posts = _raw | where: "subcategory", sub %}
+      {% assign _has_order = false %}
+      {% for p in sub_posts %}{% if p.order %}{% assign _has_order = true %}{% endif %}{% endfor %}
+      {% if _has_order %}
+        {% assign sub_posts = sub_posts | sort: "order" %}
+      {% else %}
+        {% assign sub_posts = sub_posts | sort: "date" %}
+      {% endif %}
+      {% assign cat_posts = cat_posts | concat: sub_posts %}
+    {% endfor %}
   {% endif %}
   {% if cat_posts.size > 0 %}
 

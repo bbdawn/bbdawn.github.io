@@ -30,7 +30,7 @@ layout: page
 
 {% assign _raw_posts = site.categories[page.filter_category] %}
 {% if _raw_posts %}
-  {% assign filtered_posts = _raw_posts | sort: "date" %}
+  {% assign filtered_posts = _raw_posts | where_exp: "item", "item.hidden != true" %}
 {% else %}
   {% assign filtered_posts = "" | split: "," %}
 {% endif %}
@@ -38,6 +38,13 @@ layout: page
 
 {% for sub in subcategory_order %}
   {% assign sub_posts = filtered_posts | where: "subcategory", sub %}
+  {% assign _has_order = false %}
+  {% for p in sub_posts %}{% if p.order %}{% assign _has_order = true %}{% endif %}{% endfor %}
+  {% if _has_order %}
+    {% assign sub_posts = sub_posts | sort: "order" %}
+  {% else %}
+    {% assign sub_posts = sub_posts | sort: "date" %}
+  {% endif %}
   {% if sub_posts.size > 0 %}
   <div class="card categories mb-4">
     <div class="card-header d-flex justify-content-between hide-border-bottom">
