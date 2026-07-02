@@ -137,8 +137,8 @@ sitemap: false
 ════════════════════════════════════ -->
 <div id="section-order">
 
-{% assign cat_keys  = "GPU,Infra,Openstack,Linux,Kubernetes" | split: "," %}
-{% assign cat_names = "GPU,Rack Topology,Openstack,Linux,Kubernetes" | split: "," %}
+{% assign cat_keys  = "Openstack,GPU,Infra,Linux,Docker,Kubernetes" | split: "," %}
+{% assign cat_names = "Openstack,GPU,Rack Topology,Linux,Docker,Kubernetes" | split: "," %}
 {% assign sub_order = "Feature,Troubleshooting,Project,Hands-on,Study" | split: "," %}
 
 <!-- 사이드바 탭 순서 카드 -->
@@ -293,6 +293,7 @@ sitemap: false
             <select id="f-cat" class="form-select form-select-sm">
               <option>GPU</option><option>Infra</option>
               <option>Openstack</option><option>Network</option>
+              <option>Linux</option><option>Docker</option><option>Kubernetes</option>
             </select>
           </div>
           <div class="col-sm-4">
@@ -345,9 +346,12 @@ var ALL_POSTS = {
   {{ cat | jsonify }}: {
     {% for sub in sub_order %}
     {{ sub | jsonify }}: [
-      {% if site.categories[cat] %}{% assign filtered = site.categories[cat] | where: "subcategory", sub | sort: "date" %}{% else %}{% assign filtered = "" | split: "," %}{% endif %}
+      {% if site.categories[cat] %}{% assign filtered = site.categories[cat] | where: "subcategory", sub %}{% else %}{% assign filtered = "" | split: "," %}{% endif %}
+      {% assign _has_order = false %}
+      {% for p in filtered %}{% if p.order %}{% assign _has_order = true %}{% endif %}{% endfor %}
+      {% if _has_order %}{% assign filtered = filtered | sort: "order" %}{% else %}{% assign filtered = filtered | sort: "date" %}{% endif %}
       {% for post in filtered %}
-      {"title": {{ post.title | jsonify }}, "url": {{ post.url | relative_url | jsonify }}}{% unless forloop.last %},{% endunless %}
+      {"title": {{ post.title | jsonify }}, "url": {{ post.url | relative_url | jsonify }}, "hidden": {{ post.hidden | default: false | jsonify }}}{% unless forloop.last %},{% endunless %}
       {% endfor %}
     ]{% unless forloop.last %},{% endunless %}
     {% endfor %}
@@ -423,6 +427,59 @@ function b64ToStr(b64){
 }
 
 /* ════════════════════════════════════
+   GITHUB PERSISTENCE (배포 반영용 커밋 헬퍼)
+   순서·제목·숨김 변경을 로컬(localStorage)뿐 아니라
+   실제 저장소 파일(front matter)에도 커밋해 전체 방문자에게 배포되도록 한다.
+════════════════════════════════════ */
+async function fetchFile(path){
+  var res=await ghFetch('/contents/'+path);
+  if(!res.ok) throw new Error(path+' 조회 실패 ('+res.status+')');
+  var data=await res.json();
+  return {content:b64ToStr(data.content), sha:data.sha};
+}
+async function commitFile(path, content, sha, message){
+  var reqBody={message:message, content:strToB64(content)};
+  if(sha) reqBody.sha=sha;
+  var res=await ghFetch('/contents/'+path,{method:'PUT', body:JSON.stringify(reqBody)});
+  if(!res.ok){
+    var err=await res.json().catch(function(){return{};});
+    throw new Error(err.message||('저장 실패 ('+res.status+')'));
+  }
+  return res.json();
+}
+function setFrontMatterField(raw, key, value){
+  var m=raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  if(!m) return raw;
+  var found=false;
+  var re=new RegExp('^'+key+'\\s*:');
+  var lines=m[1].split('\n').map(function(line){
+    if(re.test(line)){ found=true; return (value===null)?null:(key+': '+value); }
+    return line;
+  }).filter(function(l){ return l!==null; });
+  if(!found && value!==null) lines.push(key+': '+value);
+  return '---\n'+lines.join('\n')+'\n---\n'+m[2];
+}
+var _postFilesCache=null;
+async function listPostFiles(force){
+  if(_postFilesCache && !force) return _postFilesCache;
+  var res=await ghFetch('/contents/_posts');
+  if(!res.ok) throw new Error('_posts 목록 조회 실패 ('+res.status+')');
+  var files=await res.json();
+  _postFilesCache=files.filter(function(f){return f.name.endsWith('.md');});
+  return _postFilesCache;
+}
+function urlToPostSlug(url){
+  var m=url.match(/^\/posts\/(.+?)\/?$/);
+  return m?m[1]:null;
+}
+async function findPostFile(url){
+  var slug=urlToPostSlug(url); if(!slug) return null;
+  var files=await listPostFiles();
+  var re=new RegExp('^\\d{4}-\\d{2}-\\d{2}-'+slug.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\.md$');
+  return files.find(function(f){return re.test(f.name);})||null;
+}
+
+/* ════════════════════════════════════
    MODE SWITCHER
 ════════════════════════════════════ */
 function setMode(mode){
@@ -453,16 +510,39 @@ function renderTabSortList(){
     li.className='list-group-item sortable-item'; li.dataset.url=tab.url;
     var grip=document.createElement('i'); grip.className='fas fa-grip-vertical fa-fw drag-handle';
     var ico=document.createElement('i'); ico.className=tab.icon+' fa-fw text-muted small flex-shrink-0 mx-1';
-    var span=document.createElement('span'); span.className='mx-1'; span.textContent=tab.title.toUpperCase();
+    var span=document.createElement('span'); span.className='mx-1'; span.textContent=(tab.title||tab.url).toUpperCase();
     li.append(grip,ico,span); ul.appendChild(li);
   });
   Sortable.create(ul,{animation:150,handle:'.drag-handle',ghostClass:'sortable-ghost',chosenClass:'sortable-chosen'});
 }
-function saveTabOrder(){
+async function saveTabOrder(){
   var ul=document.getElementById('tabSortList'); if(!ul) return;
-  var order=Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){return li.dataset.url;});
-  localStorage.setItem(TAB_ORDER_KEY,JSON.stringify(order));
-  alert('탭 순서가 저장됐습니다. 페이지를 새로고침하면 적용됩니다.');
+  var urls=Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){return li.dataset.url;});
+  localStorage.setItem(TAB_ORDER_KEY,JSON.stringify(urls));
+  if(!getToken()){
+    alert('탭 순서가 이 브라우저에만 저장됐습니다.\n모든 방문자에게 배포하려면 "글 편집 · 작성" 모드에서 GitHub 토큰을 설정한 뒤 다시 저장해주세요.');
+    return;
+  }
+  var btn=document.querySelector('button[onclick="saveTabOrder()"]');
+  var origHtml=btn?btn.innerHTML:null;
+  if(btn){ btn.innerHTML='<i class="fas fa-spinner fa-spin fa-fw me-1"></i>배포 중...'; btn.disabled=true; }
+  try{
+    for(var i=0;i<urls.length;i++){
+      var slug=urls[i].replace(/^\/|\/$/g,''); if(!slug) continue;
+      var path='_tabs/'+slug+'.md';
+      var file;
+      try{ file=await fetchFile(path); }catch(e){ continue; }
+      var updated=setFrontMatterField(file.content,'order',String(i));
+      if(updated!==file.content){
+        await commitFile(path, updated, file.sha, 'Reorder tab: '+slug);
+      }
+    }
+    alert('탭 순서가 저장되어 배포됩니다. (GitHub Actions 배포에 1~2분 소요)');
+  }catch(e){
+    alert('탭 순서 저장 중 오류: '+e.message);
+  }finally{
+    if(btn){ btn.disabled=false; btn.innerHTML=origHtml; }
+  }
 }
 function resetTabOrder(){
   localStorage.removeItem(TAB_ORDER_KEY);
@@ -518,10 +598,24 @@ function startEdit(li,url,origTitle){
     if(e.key==='Escape'){cancelEdit(li,url,origTitle,input,btn);}
   });
 }
-function confirmEdit(li,url,origTitle,input,btn){
+async function confirmEdit(li,url,origTitle,input,btn){
   var newTitle=input.value.trim()||origTitle, titles=loadTitles();
   if(newTitle===origTitle) delete titles[url]; else titles[url]=newTitle;
   saveTitles(titles); replaceInputWithSpan(li,url,origTitle,newTitle,input,btn);
+  if(newTitle===origTitle) return;
+  if(!getToken()){
+    alert('GitHub 토큰이 없어 이 브라우저에만 제목이 저장됐습니다.\n배포하려면 "글 편집 · 작성" 모드에서 토큰을 설정해주세요.');
+    return;
+  }
+  try{
+    var file=await findPostFile(url);
+    if(!file) throw new Error('파일을 찾을 수 없습니다.');
+    var current=await fetchFile(file.path);
+    var updated=setFrontMatterField(current.content,'title',JSON.stringify(newTitle));
+    await commitFile(file.path, updated, current.sha, 'Update title: '+file.name);
+  }catch(e){
+    alert('제목 배포 저장 실패: '+e.message);
+  }
 }
 function cancelEdit(li,url,origTitle,input,btn){
   var t=loadTitles(); replaceInputWithSpan(li,url,origTitle,t[url]||origTitle,input,btn);
@@ -559,7 +653,7 @@ function renderCategory(cat){
     var ul=card.querySelector('ul');
     posts.forEach(function(post){
       var displayTitle=customTitles[post.url]||post.title;
-      var isHidden=hiddenList.includes(post.url);
+      var isHidden=post.hidden||hiddenList.includes(post.url);
       var li=document.createElement('li');
       li.className='list-group-item sortable-item'+(isHidden?' post-hidden':'');
       li.dataset.url=post.url;
@@ -575,12 +669,25 @@ function renderCategory(cat){
       visBtn.className='visibility-btn'+(isHidden?' is-hidden':'');
       visBtn.title=isHidden?'활성화':'비활성화';
       visBtn.innerHTML='<i class="fas fa-eye'+(isHidden?'-slash':'')+' fa-xs"></i>';
-      visBtn.addEventListener('click',function(){
+      visBtn.addEventListener('click',async function(){
         var nowHidden=toggleHidden(post.url);
         li.classList.toggle('post-hidden',nowHidden);
         visBtn.classList.toggle('is-hidden',nowHidden);
         visBtn.title=nowHidden?'활성화':'비활성화';
         visBtn.innerHTML='<i class="fas fa-eye'+(nowHidden?'-slash':'')+' fa-xs"></i>';
+        if(!getToken()){
+          alert('GitHub 토큰이 없어 이 브라우저에만 적용됐습니다.\n배포하려면 "글 편집 · 작성" 모드에서 토큰을 설정해주세요.');
+          return;
+        }
+        try{
+          var file=await findPostFile(post.url);
+          if(!file) throw new Error('파일을 찾을 수 없습니다.');
+          var current=await fetchFile(file.path);
+          var updated=setFrontMatterField(current.content,'hidden',nowHidden?'true':null);
+          await commitFile(file.path, updated, current.sha, (nowHidden?'Hide: ':'Unhide: ')+file.name);
+        }catch(e){
+          alert('숨김 상태 배포 저장 실패: '+e.message);
+        }
       });
       li.append(grip,fileIco,span,editBtn,visBtn); ul.appendChild(li);
     });
@@ -588,17 +695,62 @@ function renderCategory(cat){
     Sortable.create(ul,{animation:150,handle:'.drag-handle',ghostClass:'sortable-ghost',chosenClass:'sortable-chosen'});
   });
 }
-function saveOrder(){
+async function saveOrder(){
   var cat=activeCat(),savedAll=loadOrders(); savedAll[cat]={};
+  var subLists={};
   document.querySelectorAll('#postLists ul[data-sub]').forEach(function(ul){
-    savedAll[cat][ul.dataset.sub]=Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){return li.dataset.url;});
+    var urls=Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){return li.dataset.url;});
+    savedAll[cat][ul.dataset.sub]=urls;
+    subLists[ul.dataset.sub]=urls;
   });
   localStorage.setItem(ORDER_KEY,JSON.stringify(savedAll));
-  flashBtn('saveBtn','<i class="fas fa-check fa-fw me-1"></i>저장 완료!','btn-primary','btn-success');
+  if(!getToken()){
+    flashBtn('saveBtn','<i class="fas fa-check fa-fw me-1"></i>저장 완료! (로컬)','btn-primary','btn-success');
+    alert('GitHub 토큰이 없어 이 브라우저에만 순서가 저장됐습니다.\n배포하려면 "글 편집 · 작성" 모드에서 토큰을 설정해주세요.');
+    return;
+  }
+  var btn=document.getElementById('saveBtn'), origHtml=btn?btn.innerHTML:null;
+  if(btn){ btn.innerHTML='<i class="fas fa-spinner fa-spin fa-fw me-1"></i>배포 중...'; btn.disabled=true; }
+  try{
+    for(var sub in subLists){
+      var urls=subLists[sub];
+      for(var i=0;i<urls.length;i++){
+        var file=await findPostFile(urls[i]);
+        if(!file) continue;
+        var current=await fetchFile(file.path);
+        var updated=setFrontMatterField(current.content,'order',String(i));
+        if(updated!==current.content){
+          await commitFile(file.path, updated, current.sha, 'Reorder post: '+file.name);
+        }
+      }
+    }
+    if(btn){ btn.disabled=false; btn.innerHTML=origHtml; }
+    flashBtn('saveBtn','<i class="fas fa-check fa-fw me-1"></i>배포됨!','btn-primary','btn-success');
+  }catch(e){
+    if(btn){ btn.disabled=false; btn.innerHTML=origHtml; }
+    alert('순서 배포 저장 중 오류: '+e.message);
+  }
 }
-function resetOrder(){
+async function resetOrder(){
   var cat=activeCat(),s=loadOrders(); delete s[cat];
   localStorage.setItem(ORDER_KEY,JSON.stringify(s)); renderCategory(cat);
+  if(!getToken()) return;
+  if(!confirm('배포된 순서(날짜순으로 되돌리기)도 초기화할까요?')) return;
+  try{
+    for(var sub in (ALL_POSTS[cat]||{})){
+      var posts=(ALL_POSTS[cat]||{})[sub]||[];
+      for(var i=0;i<posts.length;i++){
+        var file=await findPostFile(posts[i].url);
+        if(!file) continue;
+        var current=await fetchFile(file.path);
+        var updated=setFrontMatterField(current.content,'order',null);
+        if(updated!==current.content){
+          await commitFile(file.path, updated, current.sha, 'Reset order: '+file.name);
+        }
+      }
+    }
+    alert('순서가 초기화되어 배포됩니다.');
+  }catch(e){ alert('순서 초기화 배포 실패: '+e.message); }
 }
 function resetTitles(){
   var cat=activeCat(),titles=loadTitles();
