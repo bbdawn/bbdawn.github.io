@@ -836,6 +836,26 @@ function parseFrontMatter(raw){
   return{fm:fm,body:m[2]};
 }
 
+/* ── Liquid 태그 보호 ──
+   Toast UI 에디터는 마크다운을 파싱→직렬화하면서 {% %} 안의 특수문자(_,-,(,) 등)를
+   이스케이프해버려 {% post_url %} 같은 태그가 깨진다. 에디터에 넣기 전에 태그를
+   플레이스홀더로 치환하고, 꺼낼 때 원래 태그로 복원해 이 손상을 막는다. */
+function protectLiquidTags(text){
+  var tags=[];
+  var protectedText=text.replace(/\{%[\s\S]*?%\}/g,function(m){
+    tags.push(m);
+    return 'LIQUIDTAGPLACEHOLDER'+(tags.length-1);
+  });
+  return {text:protectedText, tags:tags};
+}
+function restoreLiquidTags(text, tags){
+  if(!tags||!tags.length) return text;
+  return text.replace(/LIQUIDTAGPLACEHOLDER(\d+)/g,function(m,i){
+    var idx=parseInt(i,10);
+    return (idx>=0&&idx<tags.length)?tags[idx]:m;
+  });
+}
+
 /* ── Toast UI WYSIWYG ── */
 var tuiEditor=null, tuiLoadPromise=null;
 
@@ -910,12 +930,14 @@ async function openPost(path,sha,name){
     if(catMatch){setSelectVal('f-sub',catMatch[1].trim());setSelectVal('f-cat',catMatch[2].trim());}
     var slugMatch=name.match(/^\d{4}-\d{2}-\d{2}-(.+)\.md$/);
     document.getElementById('f-slug').value=slugMatch?slugMatch[1]:name.replace('.md','');
-    tuiEditor.setMarkdown(parsed.body.replace(/^\n/,''));
+    var protectedRes=protectLiquidTags(parsed.body.replace(/^\n/,''));
+    window._liquidTags=protectedRes.tags;
+    tuiEditor.setMarkdown(protectedRes.text);
   }catch(e){tuiEditor.setMarkdown('파일을 불러올 수 없습니다: '+e.message);}
 }
 
 async function newPost(){
-  window._editingPath=null; window._editingSha=null; window._isNewPost=true;
+  window._editingPath=null; window._editingSha=null; window._isNewPost=true; window._liquidTags=[];
   var now=new Date(), pad=function(n){return String(n).padStart(2,'0');};
   var ds=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':00:00';
   document.getElementById('f-title').value=''; document.getElementById('f-date').value=ds;
@@ -943,6 +965,7 @@ async function submitPost(){
   var tags =document.getElementById('f-tags').value.trim();
   var slug =document.getElementById('f-slug').value.trim();
   var body =tuiEditor?tuiEditor.getMarkdown():'';
+  body=restoreLiquidTags(body, window._liquidTags||[]);
   if(!title){alert('제목을 입력해주세요.');return;}
   var datePrefix=date.substring(0,10);
   var finalSlug=slug||title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
