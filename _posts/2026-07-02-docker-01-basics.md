@@ -18,7 +18,7 @@ OpenStack에서 VM 단위로 인프라를 다뤄왔지만, 애플리케이션 �
                   └── Network (컨테이너 간 통신)
 ```
 
-실무에서 자주 쓰는 Compose, 멀티 스테이지 빌드, 레지스트리 운영은 다음 글([Docker 학습 (2)]({% post_url 2026-07-02-docker-02-practical %}))에서 다룹니다.
+실무에서 자주 쓰는 Compose\, 멀티 스테이지 빌드\, 레지스트리 운영은 다음 글\(\[Docker 학습 \(2\)\]\(\{% post\_url 2026\-07\-02\-docker\-02\-practical %\}\)\)에서 다룹니다\.
 
 ***
 
@@ -71,6 +71,59 @@ docker pull nginx
 docker run -d --name web -p 8080:80 nginx
 docker ps
 curl http://localhost:8080
+
+========================================
+zoo@joohyunui-MacBookPro ~ % docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+63e237f10cf6: Pull complete 
+3be819c1c8cf: Pull complete 
+41103e2ff54e: Pull complete 
+74e33773ee42: Pull complete 
+81b43e7a1eae: Pull complete 
+75e5e08234c9: Pull complete 
+5d1f91636239: Pull complete 
+8c0925824bff: Download complete 
+dd2ea61022d9: Download complete 
+Digest: sha256:ec4ed8b5299e5e90694af7750eb6dffd2627317d30544d056b0371f8082f7bce
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+
+zoo@joohyunui-MacBookPro ~ % docker run -d --name web -p 8080:80 nginx 
+4d87c757cbee1ec16786177fc5a07bbcb1b7c694faf73320ec60e6038d9d198c
+zoo@joohyunui-MacBookPro ~ % docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                     NAMES
+4d87c757cbee   nginx     "/docker-entrypoint.…"   4 seconds ago   Up 3 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   web
+
+
+zoo@joohyunui-MacBookPro ~ % curl http://localhost:8080
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, nginx is successfully installed and working.
+Further configuration is required for the web server, reverse proxy, 
+API gateway, load balancer, content cache, or other features.</p>
+
+<p>For online documentation and support please refer to
+<a href="https://nginx.org/">nginx.org</a>.<br/>
+To engage with the community please visit
+<a href="https://community.nginx.org/">community.nginx.org</a>.<br/>
+For enterprise grade support, professional services, additional 
+security features and capabilities please refer to
+<a href="https://f5.com/nginx">f5.com/nginx</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
 ```
 
 ### 2\. Dockerfile 작성 및 빌드
