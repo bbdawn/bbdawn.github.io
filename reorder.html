@@ -837,9 +837,11 @@ function parseFrontMatter(raw){
 }
 
 /* ── Liquid 태그 보호 ──
-   Toast UI 에디터는 마크다운을 파싱→직렬화하면서 {% %} 안의 특수문자(_,-,(,) 등)를
-   이스케이프해버려 {% post_url %} 같은 태그가 깨진다. 에디터에 넣기 전에 태그를
-   플레이스홀더로 치환하고, 꺼낼 때 원래 태그로 복원해 이 손상을 막는다. */
+   Toast UI 에디터는 마크다운을 파싱→직렬화하면서 Liquid 태그 안의 특수문자(_,-,(,) 등)를
+   이스케이프해버려 post_url 태그가 깨진다. 에디터에 넣기 전에 태그를
+   플레이스홀더로 치환하고, 꺼낼 때 원래 태그로 복원해 이 손상을 막는다.
+   (아래 블록은 Jekyll이 자기 자신을 Liquid 태그로 오인해 파싱하지 않도록 raw로 감싼다) */
+{% raw %}
 function protectLiquidTags(text){
   var tags=[];
   var protectedText=text.replace(/\{%[\s\S]*?%\}/g,function(m){
@@ -855,6 +857,7 @@ function restoreLiquidTags(text, tags){
     return (idx>=0&&idx<tags.length)?tags[idx]:m;
   });
 }
+{% endraw %}
 
 /* ── Toast UI WYSIWYG ── */
 var tuiEditor=null, tuiLoadPromise=null;
