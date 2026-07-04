@@ -175,4 +175,4 @@ docker system prune
 
 * **(1)**: 기본 개념 — 컨테이너, 이미지, Dockerfile (현재)
 * **(2)**: 실무 활용 — Docker Compose, 멀티 스테이지 빌드, 레지스트리
-* **(3)**: 실습 프로젝트 — Docker Compose로 GPU 모니터링 스택 구성
+* **(3)**: 실습 프로젝트 — Docker Compose로 컨테이너 모니터링 스택 구성
