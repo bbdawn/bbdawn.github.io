@@ -1,8 +1,8 @@
 ---
-title: "[Hands-on] Contrabass 네트워크 구성 실습 — 외부/내부 네트워크부터 로드밸런서, 공유 볼륨까지"
+title: "[Study] 네트워크 구성 — 외부/내부 네트워크부터 로드밸런서, 공유 볼륨까지"
 date: 2026-07-02 09:00:00 +0900
-categories: [Hands-on, Openstack]
-subcategory: Hands-on
+categories: [Study, Openstack]
+subcategory: Study
 tags: [openstack, neutron, octavia, manila, network, loadbalancer, hands-on]
 ---
 
