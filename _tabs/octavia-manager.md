@@ -57,6 +57,7 @@ permalink: /octavia-manager/
   #octavia-manager .om-card p { font-size: 0.92rem; line-height: 1.75; opacity: 0.85; }
   #octavia-manager .om-note {
     font-size: 0.85rem;
+    line-height: 1.8;
     padding: 0.7rem 1rem;
     border-left: 3px solid #dc3545;
     background: rgba(220,53,69,0.06);
@@ -305,7 +306,10 @@ permalink: /octavia-manager/
   <!-- 안 지워지는 LB 삭제 -->
   <div class="om-panel" id="panel-cleanup">
     <div class="om-note info">
-      아래 절차는 순서대로 진행합니다: ① PENDING_* 상태를 ERROR로 전환 → ② 포탈/CLI로 cascade 삭제 시도 → ③ 그래도 안 지워지면 DB 직접 삭제(최후 수단).
+      아래 절차는 순서대로 진행합니다.<br>
+      ① PENDING_* 상태를 ERROR로 전환<br>
+      ② 포탈/CLI로 cascade 삭제 시도<br>
+      ③ 그래도 안 지워지면 DB 직접 삭제 (최후 수단)
     </div>
 
     <div class="om-card">
