@@ -206,105 +206,15 @@ permalink: /octavia-manager/
 <div id="octavia-manager">
 
   <div class="om-tabs">
-    <button class="om-tab-btn active" data-panel="structure">리소스 구조</button>
-    <button class="om-tab-btn" data-panel="cleanup">안 지워지는 LB 삭제</button>
+    <button class="om-tab-btn active" data-panel="cleanup">안 지워지는 LB 삭제</button>
     <button class="om-tab-btn" data-panel="cli">CLI 명령어 / 로그</button>
     <button class="om-tab-btn" data-panel="service">서비스 상태/재시작</button>
     <button class="om-tab-btn" data-panel="troubleshoot">트러블슈팅</button>
-  </div>
-
-  <!-- 구조 -->
-  <div class="om-panel active" id="panel-structure">
-    <div class="om-card">
-      <h3><i class="fas fa-sitemap"></i> 리소스 계층 구조</h3>
-      <img src="/assets/img/posts/octavia-loadbalancer-structure.png" alt="LoadBalancer 리소스 계층 구조도" style="max-width:100%; height:auto; display:block; margin:0.5rem auto 1.25rem; border-radius:8px;">
-
-      <div class="om-tree">
-        <div class="om-tree-node">
-          <div class="om-tree-icon"><i class="fas fa-server"></i></div>
-          <div class="om-tree-body">
-            <div class="om-tree-title">LoadBalancer</div>
-            <div class="om-tree-desc">최상위 객체. VIP(가상 IP)를 가지며 실제로는 <strong>Amphora</strong>(Nova VM) 위에서 동작합니다. 생성 시 Amphora가 배포되고, 하위 리소스(Listener, Pool 등)가 여기 종속됩니다.</div>
-          </div>
-        </div>
-
-        <div class="om-tree-node">
-          <div class="om-tree-icon"><i class="fas fa-plug"></i></div>
-          <div class="om-tree-body">
-            <div class="om-tree-title">Listener <span class="om-tree-tag">HTTP · HTTPS · TCP · TERMINATED_HTTPS</span></div>
-            <div class="om-tree-desc">트래픽을 수신하는 지점. 프로토콜/포트를 정의합니다. 하나의 LB에 여러 Listener를 둘 수 있습니다(예: 80, 443).</div>
-          </div>
-        </div>
-
-        <div class="om-tree-node">
-          <div class="om-tree-icon"><i class="fas fa-layer-group"></i></div>
-          <div class="om-tree-body">
-            <div class="om-tree-title">Pool <span class="om-tree-tag">default_pool</span></div>
-            <div class="om-tree-desc">실제 트래픽을 분산시킬 백엔드 서버 그룹. 로드밸런싱 알고리즘(ROUND_ROBIN, LEAST_CONNECTIONS, SOURCE_IP 등)을 지정합니다.</div>
-          </div>
-        </div>
-
-        <div class="om-tree-node">
-          <div class="om-tree-icon"><i class="fas fa-desktop"></i></div>
-          <div class="om-tree-body">
-            <div class="om-tree-title">Pool Member <span class="om-tree-tag">× N</span></div>
-            <div class="om-tree-desc">Pool에 속한 개별 백엔드 서버. IP:Port와 가중치(weight)를 가지며, Health Monitor 결과에 따라 개별적으로 활성/비활성 상태가 바뀝니다.</div>
-          </div>
-        </div>
-
-        <div class="om-tree-node">
-          <div class="om-tree-icon"><i class="fas fa-heartbeat"></i></div>
-          <div class="om-tree-body">
-            <div class="om-tree-title">Health Monitor</div>
-            <div class="om-tree-desc">Pool Member 상태를 주기적으로 점검(HTTP/TCP/PING). 연속 실패 횟수(<code>max_retries_down</code>)를 넘기면 <code>OFFLINE</code> 처리합니다.</div>
-          </div>
-        </div>
-
-        <div class="om-tree-node">
-          <div class="om-tree-icon"><i class="fas fa-code-branch"></i></div>
-          <div class="om-tree-body">
-            <div class="om-tree-title">L7 Policy <span class="om-tree-tag">선택 · × N</span></div>
-            <div class="om-tree-desc">L7 Rule(path/header/cookie) 조건에 따라 트래픽을 다른 Pool로 redirect합니다.</div>
-          </div>
-        </div>
-
-        <div class="om-tree-node">
-          <div class="om-tree-icon"><i class="fas fa-globe"></i></div>
-          <div class="om-tree-body">
-            <div class="om-tree-title">VIP</div>
-            <div class="om-tree-desc">Virtual IP — 실제 트래픽이 들어오는 주소.</div>
-          </div>
-        </div>
-
-        <div class="om-tree-node">
-          <div class="om-tree-icon"><i class="fas fa-sync-alt"></i></div>
-          <div class="om-tree-body">
-            <div class="om-tree-title">VRRP Group <span class="om-tree-tag">HA 구성 시</span></div>
-            <div class="om-tree-desc">Amphora 이중화(Active/Standby)용 메타데이터.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-shield-alt"></i> Amphora Active/Standby (HA) 동작 흐름</h3>
-      <p>HA로 구성하면 Amphora가 2대(Active/Standby) 뜨고, VRRP(keepalived)로 서로의 상태를 감시합니다.</p>
-      <pre class="om-ha-diagram"><code>[평상시]
-  Amphora A (MASTER)  &#8592; VIP 트래픽 처리, VRRP 광고 주기적 전송
-  Amphora B (BACKUP)  &#8592; 대기 상태, A의 VRRP 광고 수신 대기
-
-[Amphora A 장애 발생]
-  A 응답 없음
-    &#8594; octavia-health-manager가 감지
-    &#8594; A의 VRRP 광고 중단
-    &#8594; B가 타임아웃 감지 &#8594; 스스로 MASTER로 승격 (VIP 인수)
-    &#8594; health-manager가 A를 재생성(rebuild) 트리거 (필요 시)</code></pre>
-      <p style="margin-top:0.75rem">그래서 장애 시 VIP 자체는 끊기지 않고 유지되며, 문제가 있던 Amphora만 백그라운드에서 교체됩니다. 수동으로 즉시 전환하고 싶다면 "CLI 명령어 / 로그" 탭의 <code>amphora failover</code> 명령을 사용합니다.</p>
-    </div>
+    <button class="om-tab-btn" data-panel="structure">리소스 구조</button>
   </div>
 
   <!-- 안 지워지는 LB 삭제 -->
-  <div class="om-panel" id="panel-cleanup">
+  <div class="om-panel active" id="panel-cleanup">
     <div class="om-note info">
       아래 절차는 순서대로 진행합니다.<br>
       ① PENDING_* 상태를 ERROR로 전환<br>
@@ -664,6 +574,96 @@ WHERE provisioning_status != 'DELETED';</code></pre>
     </div>
   </div>
 
+
+  <!-- 구조 -->
+  <div class="om-panel" id="panel-structure">
+    <div class="om-card">
+      <h3><i class="fas fa-sitemap"></i> 리소스 계층 구조</h3>
+      <img src="/assets/img/posts/octavia-loadbalancer-structure.png" alt="LoadBalancer 리소스 계층 구조도" style="max-width:100%; height:auto; display:block; margin:0.5rem auto 1.25rem; border-radius:8px;">
+
+      <div class="om-tree">
+        <div class="om-tree-node">
+          <div class="om-tree-icon"><i class="fas fa-server"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">LoadBalancer</div>
+            <div class="om-tree-desc">최상위 객체. VIP(가상 IP)를 가지며 실제로는 <strong>Amphora</strong>(Nova VM) 위에서 동작합니다. 생성 시 Amphora가 배포되고, 하위 리소스(Listener, Pool 등)가 여기 종속됩니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node">
+          <div class="om-tree-icon"><i class="fas fa-plug"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">Listener <span class="om-tree-tag">HTTP · HTTPS · TCP · TERMINATED_HTTPS</span></div>
+            <div class="om-tree-desc">트래픽을 수신하는 지점. 프로토콜/포트를 정의합니다. 하나의 LB에 여러 Listener를 둘 수 있습니다(예: 80, 443).</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node">
+          <div class="om-tree-icon"><i class="fas fa-layer-group"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">Pool <span class="om-tree-tag">default_pool</span></div>
+            <div class="om-tree-desc">실제 트래픽을 분산시킬 백엔드 서버 그룹. 로드밸런싱 알고리즘(ROUND_ROBIN, LEAST_CONNECTIONS, SOURCE_IP 등)을 지정합니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node">
+          <div class="om-tree-icon"><i class="fas fa-desktop"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">Pool Member <span class="om-tree-tag">× N</span></div>
+            <div class="om-tree-desc">Pool에 속한 개별 백엔드 서버. IP:Port와 가중치(weight)를 가지며, Health Monitor 결과에 따라 개별적으로 활성/비활성 상태가 바뀝니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node">
+          <div class="om-tree-icon"><i class="fas fa-heartbeat"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">Health Monitor</div>
+            <div class="om-tree-desc">Pool Member 상태를 주기적으로 점검(HTTP/TCP/PING). 연속 실패 횟수(<code>max_retries_down</code>)를 넘기면 <code>OFFLINE</code> 처리합니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node">
+          <div class="om-tree-icon"><i class="fas fa-code-branch"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">L7 Policy <span class="om-tree-tag">선택 · × N</span></div>
+            <div class="om-tree-desc">L7 Rule(path/header/cookie) 조건에 따라 트래픽을 다른 Pool로 redirect합니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node">
+          <div class="om-tree-icon"><i class="fas fa-globe"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">VIP</div>
+            <div class="om-tree-desc">Virtual IP — 실제 트래픽이 들어오는 주소.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node">
+          <div class="om-tree-icon"><i class="fas fa-sync-alt"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">VRRP Group <span class="om-tree-tag">HA 구성 시</span></div>
+            <div class="om-tree-desc">Amphora 이중화(Active/Standby)용 메타데이터.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="om-card">
+      <h3><i class="fas fa-shield-alt"></i> Amphora Active/Standby (HA) 동작 흐름</h3>
+      <p>HA로 구성하면 Amphora가 2대(Active/Standby) 뜨고, VRRP(keepalived)로 서로의 상태를 감시합니다.</p>
+      <pre class="om-ha-diagram"><code>[평상시]
+  Amphora A (MASTER)  &#8592; VIP 트래픽 처리, VRRP 광고 주기적 전송
+  Amphora B (BACKUP)  &#8592; 대기 상태, A의 VRRP 광고 수신 대기
+
+[Amphora A 장애 발생]
+  A 응답 없음
+    &#8594; octavia-health-manager가 감지
+    &#8594; A의 VRRP 광고 중단
+    &#8594; B가 타임아웃 감지 &#8594; 스스로 MASTER로 승격 (VIP 인수)
+    &#8594; health-manager가 A를 재생성(rebuild) 트리거 (필요 시)</code></pre>
+      <p style="margin-top:0.75rem">그래서 장애 시 VIP 자체는 끊기지 않고 유지되며, 문제가 있던 Amphora만 백그라운드에서 교체됩니다. 수동으로 즉시 전환하고 싶다면 "CLI 명령어 / 로그" 탭의 <code>amphora failover</code> 명령을 사용합니다.</p>
+    </div>
+  </div>
 </div>
 
 <script>
