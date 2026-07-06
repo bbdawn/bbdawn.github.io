@@ -45,7 +45,7 @@ order: 0
         <li>GPU Passthrough / MIG 인스턴스 생성 및 관리 기능 개발</li>
         <li>GPU Host, GPU Instance 모니터링 기능 개발</li>
         <li>GPU 운영 자동화 TUI 개발 (mdev orphan 탐지, MIG 프로파일 관리)</li>
-        <li>Octavia 로드밸런서 장애 처리 자동화 TUI 개발</li>
+        <li>Octavia 로드밸런서 장애 처리 자동화 도구 개발</li>
         <li>데이터센터 Rack Topology 시각화 기능 개발 (IPMI/SNMP)</li>
         <li>국방부 국방지능형플랫폼 GPU 모니터링 기능 개발 및 현장 기술 지원</li>
       </ul>
