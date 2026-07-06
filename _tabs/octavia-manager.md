@@ -126,6 +126,92 @@ permalink: /octavia-manager/
     border-radius: 4px; background: rgba(var(--bs-primary-rgb, 13,110,253), 0.12);
     color: var(--link-color); margin-bottom: 0.5rem;
   }
+
+  #octavia-manager .om-cmd-list {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    margin: 0.75rem 0 0.25rem;
+  }
+  #octavia-manager .om-cmd-row {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: var(--code-bg, #f6f6f6);
+    border-radius: 6px;
+    padding: 0.45rem 0.5rem 0.45rem 0.75rem;
+  }
+  #octavia-manager .om-cmd-label {
+    flex-shrink: 0; min-width: 92px;
+    font-size: 0.78rem; opacity: 0.6;
+  }
+  #octavia-manager .om-cmd-row code {
+    flex: 1; min-width: 0;
+    background: none; padding: 0;
+    font-size: 0.82rem;
+    white-space: pre; overflow-x: auto;
+  }
+  #octavia-manager .om-cmd-copy {
+    flex-shrink: 0; border: none; background: none; cursor: pointer;
+    color: var(--text-muted-color, #6c757d);
+    padding: 0.25rem 0.45rem; border-radius: 5px;
+    font-size: 0.85rem; transition: all 0.15s;
+  }
+  #octavia-manager .om-cmd-copy:hover { color: var(--link-color); background: rgba(0,0,0,0.06); }
+  #octavia-manager .om-cmd-copy.copied { color: #28a745; }
+
+  #octavia-manager .om-step-body .om-cmd-copy {
+    margin-left: 0.35rem;
+  }
+
+  #octavia-manager table.om-table .om-cmd-copy {
+    margin-left: 0.3rem;
+  }
+
+  #octavia-manager .om-subhead {
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.02em;
+    text-transform: uppercase; opacity: 0.55;
+    margin: 1rem 0 0.4rem;
+  }
+
+  #octavia-manager .om-tree { display: flex; flex-direction: column; gap: 0.55rem; }
+  #octavia-manager .om-tree-node {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    background: var(--code-bg, #f6f6f6);
+    border-left: 4px solid var(--om-lvl-color, #3b82f6);
+    border-radius: 8px;
+    padding: 0.65rem 0.9rem;
+  }
+  #octavia-manager .om-tree-lvl0 { --om-lvl-color: #3b82f6; margin-left: 0; }
+  #octavia-manager .om-tree-lvl0 .om-tree-icon { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  #octavia-manager .om-tree-lvl1 { --om-lvl-color: #10b981; margin-left: 1.5rem; }
+  #octavia-manager .om-tree-lvl1 .om-tree-icon { background: rgba(16,185,129,0.15); color: #10b981; }
+  #octavia-manager .om-tree-lvl2 { --om-lvl-color: #f59e0b; margin-left: 3rem; }
+  #octavia-manager .om-tree-lvl2 .om-tree-icon { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  #octavia-manager .om-tree-lvl3 { --om-lvl-color: #8b5cf6; margin-left: 4.5rem; }
+  #octavia-manager .om-tree-lvl3 .om-tree-icon { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+  #octavia-manager .om-tree-icon {
+    flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+  }
+  #octavia-manager .om-tree-title {
+    font-weight: 700; font-size: 0.95rem;
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  }
+  #octavia-manager .om-tree-tag {
+    font-size: 0.72rem; font-weight: 600; opacity: 0.7;
+    background: rgba(0,0,0,0.06); border-radius: 4px; padding: 0.1rem 0.4rem;
+  }
+  #octavia-manager .om-tree-desc { font-size: 0.85rem; opacity: 0.75; line-height: 1.6; margin-top: 0.15rem; }
+
+  #octavia-manager .om-ha-diagram {
+    font-family: var(--font-monospace, monospace);
+    font-size: 0.8rem; line-height: 1.85;
+  }
+
+  @media (max-width: 576px) {
+    #octavia-manager .om-tree-lvl1 { margin-left: 0.75rem; }
+    #octavia-manager .om-tree-lvl2 { margin-left: 1.5rem; }
+    #octavia-manager .om-tree-lvl3 { margin-left: 2.25rem; }
+    #octavia-manager .om-cmd-label { min-width: 68px; font-size: 0.72rem; }
+  }
 </style>
 
 <div id="octavia-manager">
@@ -142,45 +228,89 @@ permalink: /octavia-manager/
   <div class="om-panel active" id="panel-structure">
     <div class="om-card">
       <h3><i class="fas fa-sitemap"></i> 리소스 계층 구조</h3>
-      <pre><code>LoadBalancer  (VIP, Amphora &#215; 1~2 — active/standby)
-  &#9500;&#9472;&#9472; Listener             (프로토콜/포트: HTTP, HTTPS, TCP, TERMINATED_HTTPS ...)
-  &#9474;     &#9500;&#9472;&#9472; Pool (default_pool)
-  &#9474;     &#9474;     &#9500;&#9472;&#9472; Pool Member &#215; N   (백엔드 서버 IP:Port, weight)
-  &#9474;     &#9474;     &#9492;&#9472;&#9472; Health Monitor    (delay, timeout, max_retries, http_method ...)
-  &#9474;     &#9492;&#9472;&#9472; L7 Policy &#215; N (선택)
-  &#9474;           &#9500;&#9472;&#9472; L7 Rule &#215; N       (조건: path, header, cookie ...)
-  &#9474;           &#9492;&#9472;&#9472; redirect &#8594; 다른 Pool
-  &#9500;&#9472;&#9472; VIP                  (Virtual IP, 실제 트래픽이 들어오는 주소)
-  &#9492;&#9472;&#9472; VRRP Group           (Amphora 이중화용 메타데이터, HA 구성 시)</code></pre>
+      <p>위에서 아래로 갈수록 하위 리소스입니다. 색상으로 계층 깊이를 구분했습니다.</p>
 
-      <p style="margin-top:0.9rem">하나의 LoadBalancer는 여러 Listener를 가질 수 있고, 각 Listener는 기본 Pool(default_pool) 하나와 선택적으로 여러 L7 Policy를 가집니다. 실제로는 이 모든 논리 리소스가 <strong>Amphora</strong>라는 VM(Nova 인스턴스) 위에서 동작하며, VIP·VRRP Group은 이 Amphora의 이중화·네트워크 정보를 담습니다.</p>
+      <div class="om-tree">
+        <div class="om-tree-node om-tree-lvl0">
+          <div class="om-tree-icon"><i class="fas fa-server"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">LoadBalancer</div>
+            <div class="om-tree-desc">최상위 객체. VIP(가상 IP)를 가지며 실제로는 <strong>Amphora</strong>(Nova VM) 위에서 동작합니다. 생성 시 Amphora가 배포되고, 하위 리소스(Listener, Pool 등)가 여기 종속됩니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node om-tree-lvl1">
+          <div class="om-tree-icon"><i class="fas fa-plug"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">Listener <span class="om-tree-tag">HTTP · HTTPS · TCP · TERMINATED_HTTPS</span></div>
+            <div class="om-tree-desc">트래픽을 수신하는 지점. 프로토콜/포트를 정의합니다. 하나의 LB에 여러 Listener를 둘 수 있습니다(예: 80, 443).</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node om-tree-lvl2">
+          <div class="om-tree-icon"><i class="fas fa-layer-group"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">Pool <span class="om-tree-tag">default_pool</span></div>
+            <div class="om-tree-desc">실제 트래픽을 분산시킬 백엔드 서버 그룹. 로드밸런싱 알고리즘(ROUND_ROBIN, LEAST_CONNECTIONS, SOURCE_IP 등)을 지정합니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node om-tree-lvl3">
+          <div class="om-tree-icon"><i class="fas fa-desktop"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">Pool Member <span class="om-tree-tag">× N</span></div>
+            <div class="om-tree-desc">Pool에 속한 개별 백엔드 서버. IP:Port와 가중치(weight)를 가지며, Health Monitor 결과에 따라 개별적으로 활성/비활성 상태가 바뀝니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node om-tree-lvl3">
+          <div class="om-tree-icon"><i class="fas fa-heartbeat"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">Health Monitor</div>
+            <div class="om-tree-desc">Pool Member 상태를 주기적으로 점검(HTTP/TCP/PING). 연속 실패 횟수(<code>max_retries_down</code>)를 넘기면 <code>OFFLINE</code> 처리합니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node om-tree-lvl2">
+          <div class="om-tree-icon"><i class="fas fa-code-branch"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">L7 Policy <span class="om-tree-tag">선택 · × N</span></div>
+            <div class="om-tree-desc">L7 Rule(path/header/cookie) 조건에 따라 트래픽을 다른 Pool로 redirect합니다.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node om-tree-lvl1">
+          <div class="om-tree-icon"><i class="fas fa-globe"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">VIP</div>
+            <div class="om-tree-desc">Virtual IP — 실제 트래픽이 들어오는 주소.</div>
+          </div>
+        </div>
+
+        <div class="om-tree-node om-tree-lvl1">
+          <div class="om-tree-icon"><i class="fas fa-sync-alt"></i></div>
+          <div class="om-tree-body">
+            <div class="om-tree-title">VRRP Group <span class="om-tree-tag">HA 구성 시</span></div>
+            <div class="om-tree-desc">Amphora 이중화(Active/Standby)용 메타데이터.</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="om-card">
-      <h3><i class="fas fa-layer-group"></i> 리소스별 역할</h3>
-      <table class="om-table">
-        <tr><th>리소스</th><th>역할</th></tr>
-        <tr>
-          <td><code>LoadBalancer</code></td>
-          <td>전체 로드밸런싱 서비스의 최상위 객체. VIP(가상 IP)를 가지며, 실제로는 Amphora(Nova VM) 위에서 동작합니다. 생성 시 Amphora가 배포되고, 이후 모든 하위 리소스(Listener, Pool 등)가 여기 종속됩니다.</td>
-        </tr>
-        <tr>
-          <td><code>Listener</code></td>
-          <td>트래픽을 수신하는 지점. 프로토콜(HTTP/HTTPS/TCP/TERMINATED_HTTPS)과 포트를 정의합니다. 하나의 LB에 여러 Listener를 둘 수 있어(예: 80, 443) 서로 다른 프로토콜/포트의 트래픽을 각각 처리할 수 있습니다.</td>
-        </tr>
-        <tr>
-          <td><code>Pool</code></td>
-          <td>실제 트래픽을 분산시킬 백엔드 서버 그룹. 로드밸런싱 알고리즘(ROUND_ROBIN, LEAST_CONNECTIONS, SOURCE_IP 등)을 지정합니다. Listener의 default_pool로 바로 연결되거나, L7 Policy를 통해 조건부로 연결됩니다.</td>
-        </tr>
-        <tr>
-          <td><code>Pool Member</code></td>
-          <td>Pool에 속한 개별 백엔드 서버. IP:Port와 가중치(weight)를 가지며, weight가 높을수록 더 많은 트래픽을 받습니다. Health Monitor 결과에 따라 개별적으로 활성/비활성 상태가 바뀝니다.</td>
-        </tr>
-        <tr>
-          <td><code>Health Monitor</code></td>
-          <td>Pool Member의 상태를 주기적으로 점검해서 비정상 서버를 트래픽 분배 대상에서 자동으로 제외합니다. HTTP/TCP/PING 등 방식으로 체크하며, 연속 실패 횟수(<code>max_retries_down</code>)를 넘기면 <code>OFFLINE</code>으로 표시됩니다.</td>
-        </tr>
-      </table>
+      <h3><i class="fas fa-shield-alt"></i> Amphora Active/Standby (HA) 동작 흐름</h3>
+      <p>HA로 구성하면 Amphora가 2대(Active/Standby) 뜨고, VRRP(keepalived)로 서로의 상태를 감시합니다.</p>
+      <pre class="om-ha-diagram"><code>[평상시]
+  Amphora A (MASTER)  &#8592; VIP 트래픽 처리, VRRP 광고 주기적 전송
+  Amphora B (BACKUP)  &#8592; 대기 상태, A의 VRRP 광고 수신 대기
+
+[Amphora A 장애 발생]
+  A 응답 없음
+    &#8594; octavia-health-manager가 감지
+    &#8594; A의 VRRP 광고 중단
+    &#8594; B가 타임아웃 감지 &#8594; 스스로 MASTER로 승격 (VIP 인수)
+    &#8594; health-manager가 A를 재생성(rebuild) 트리거 (필요 시)</code></pre>
+      <p style="margin-top:0.75rem">그래서 장애 시 VIP 자체는 끊기지 않고 유지되며, 문제가 있던 Amphora만 백그라운드에서 교체됩니다. 수동으로 즉시 전환하고 싶다면 "CLI / 로그" 탭의 <code>amphora failover</code> 명령을 사용합니다.</p>
     </div>
   </div>
 
@@ -189,12 +319,17 @@ permalink: /octavia-manager/
     <div class="om-card">
       <h3><i class="fas fa-terminal"></i> OpenStack CLI 사용 방법</h3>
       <p>인증 정보(openrc)를 먼저 불러온 뒤 명령어를 사용합니다.</p>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>source contrabass-openrc
-
-# 로드밸런서 목록 조회
-openstack loadbalancer list</code></pre>
+      <div class="om-cmd-list">
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">인증 정보 로드</span>
+          <code>source contrabass-openrc</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">LB 목록 조회</span>
+          <code>openstack loadbalancer list</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
       </div>
       <p style="margin-top:0.9rem">조회 결과 예시 (값은 예시로 대체):</p>
       <pre><code>+--------------------------------------+----------------+----------------------------------+-------------+---------------------+-------------------+----------+
@@ -231,77 +366,126 @@ openstack loadbalancer list</code></pre>
     <div class="om-card">
       <h3><i class="fas fa-list"></i> 리소스별 조회 명령어</h3>
       <table class="om-table">
-        <tr><th>리소스</th><th>명령어</th></tr>
-        <tr><td>LoadBalancer</td><td><code>openstack loadbalancer list</code> / <code>show &lt;lb-id&gt;</code></td></tr>
-        <tr><td>Listener</td><td><code>openstack loadbalancer listener list</code> / <code>show &lt;listener-id&gt;</code></td></tr>
-        <tr><td>Pool</td><td><code>openstack loadbalancer pool list</code> / <code>show &lt;pool-id&gt;</code></td></tr>
-        <tr><td>Pool Member</td><td><code>openstack loadbalancer member list &lt;pool-id&gt;</code> / <code>show &lt;pool-id&gt; &lt;member-id&gt;</code></td></tr>
-        <tr><td>Health Monitor</td><td><code>openstack loadbalancer healthmonitor list</code> / <code>show &lt;hm-id&gt;</code></td></tr>
-        <tr><td>L7 Policy</td><td><code>openstack loadbalancer l7policy list</code> / <code>show &lt;policy-id&gt;</code></td></tr>
-        <tr><td>L7 Rule</td><td><code>openstack loadbalancer l7rule list &lt;policy-id&gt;</code> / <code>show &lt;policy-id&gt; &lt;rule-id&gt;</code></td></tr>
-        <tr><td>Amphora</td><td><code>openstack loadbalancer amphora list</code> / <code>show &lt;amphora-id&gt;</code></td></tr>
+        <tr><th>리소스</th><th>목록</th><th>상세</th></tr>
+        <tr><td>LoadBalancer</td>
+          <td><code>openstack loadbalancer list</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+          <td><code>openstack loadbalancer show &lt;lb-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+        </tr>
+        <tr><td>Listener</td>
+          <td><code>openstack loadbalancer listener list</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+          <td><code>openstack loadbalancer listener show &lt;listener-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+        </tr>
+        <tr><td>Pool</td>
+          <td><code>openstack loadbalancer pool list</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+          <td><code>openstack loadbalancer pool show &lt;pool-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+        </tr>
+        <tr><td>Pool Member</td>
+          <td><code>openstack loadbalancer member list &lt;pool-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+          <td><code>openstack loadbalancer member show &lt;pool-id&gt; &lt;member-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+        </tr>
+        <tr><td>Health Monitor</td>
+          <td><code>openstack loadbalancer healthmonitor list</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+          <td><code>openstack loadbalancer healthmonitor show &lt;hm-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+        </tr>
+        <tr><td>L7 Policy</td>
+          <td><code>openstack loadbalancer l7policy list</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+          <td><code>openstack loadbalancer l7policy show &lt;policy-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+        </tr>
+        <tr><td>L7 Rule</td>
+          <td><code>openstack loadbalancer l7rule list &lt;policy-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+          <td><code>openstack loadbalancer l7rule show &lt;policy-id&gt; &lt;rule-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+        </tr>
+        <tr><td>Amphora</td>
+          <td><code>openstack loadbalancer amphora list</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+          <td><code>openstack loadbalancer amphora show &lt;amphora-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
+        </tr>
       </table>
     </div>
 
     <div class="om-card">
       <h3><i class="fas fa-hammer"></i> 생성 흐름 (전체 구성 예시)</h3>
-      <p>구조 탭의 계층과 동일한 순서로 생성합니다. LoadBalancer → Listener → Pool → Pool Member → Health Monitor.</p>
+      <p>구조 탭의 계층과 동일한 순서로 생성합니다. 이전 단계 결과의 ID를 다음 단계에 넣어주세요.</p>
+
+      <div class="om-subhead">1. LoadBalancer 생성</div>
       <div class="om-copy-wrap">
         <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code># 1. LoadBalancer 생성
-openstack loadbalancer create --name my-lb --vip-subnet-id &lt;subnet-id&gt;
+        <pre><code>openstack loadbalancer create --name my-lb --vip-subnet-id &lt;subnet-id&gt;</code></pre>
+      </div>
 
-# 2. Listener 생성
-openstack loadbalancer listener create --name my-listener \
-  --protocol HTTP --protocol-port 80 &lt;lb-id&gt;
+      <div class="om-subhead">2. Listener 생성</div>
+      <div class="om-copy-wrap">
+        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
+        <pre><code>openstack loadbalancer listener create --name my-listener \
+  --protocol HTTP --protocol-port 80 &lt;lb-id&gt;</code></pre>
+      </div>
 
-# 3. Pool 생성
-openstack loadbalancer pool create --name my-pool \
-  --lb-algorithm ROUND_ROBIN --listener &lt;listener-id&gt; --protocol HTTP
+      <div class="om-subhead">3. Pool 생성</div>
+      <div class="om-copy-wrap">
+        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
+        <pre><code>openstack loadbalancer pool create --name my-pool \
+  --lb-algorithm ROUND_ROBIN --listener &lt;listener-id&gt; --protocol HTTP</code></pre>
+      </div>
 
-# 4. Pool Member 추가
-openstack loadbalancer member create --address 10.0.0.21 \
-  --protocol-port 8080 &lt;pool-id&gt;
+      <div class="om-subhead">4. Pool Member 추가</div>
+      <div class="om-copy-wrap">
+        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
+        <pre><code>openstack loadbalancer member create --address 10.0.0.21 \
+  --protocol-port 8080 &lt;pool-id&gt;</code></pre>
+      </div>
 
-# 5. Health Monitor 생성
-openstack loadbalancer healthmonitor create --delay 5 --timeout 3 \
+      <div class="om-subhead">5. Health Monitor 생성</div>
+      <div class="om-copy-wrap">
+        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
+        <pre><code>openstack loadbalancer healthmonitor create --delay 5 --timeout 3 \
   --max-retries 3 --type HTTP &lt;pool-id&gt;</code></pre>
       </div>
     </div>
 
     <div class="om-card">
       <h3><i class="fas fa-tools"></i> 운영에 자주 쓰는 명령어</h3>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code># LB 트래픽/통계 확인
-openstack loadbalancer stats show &lt;lb-id&gt;
-
-# Amphora 강제 failover (장애 시 수동 복구)
-openstack loadbalancer amphora failover &lt;amphora-id&gt;
-
-# LoadBalancer 강제 삭제 (하위 리소스까지 한번에)
-openstack loadbalancer delete --cascade &lt;lb-id&gt;
-
-# 쿼터 확인
-openstack loadbalancer quota show &lt;project-id&gt;</code></pre>
+      <div class="om-cmd-list">
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">트래픽/통계</span>
+          <code>openstack loadbalancer stats show &lt;lb-id&gt;</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">강제 failover</span>
+          <code>openstack loadbalancer amphora failover &lt;amphora-id&gt;</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">강제 삭제</span>
+          <code>openstack loadbalancer delete --cascade &lt;lb-id&gt;</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">쿼터 확인</span>
+          <code>openstack loadbalancer quota show &lt;project-id&gt;</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
       </div>
     </div>
 
     <div class="om-card">
       <h3><i class="fas fa-file-alt"></i> Octavia 로그 확인</h3>
-      <p>Octavia 각 서비스의 로그는 <code>/var/log/octavia/</code>에 서비스별로 분리되어 쌓입니다.</p>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>cd /var/log/octavia
-ls -la
-# octavia-api.log
-# octavia-worker.log
-# octavia-health-manager.log
-# octavia-housekeeping.log
-
-# 자주 보는 로그
-tail -f octavia-api.log
-tail -f octavia-worker.log</code></pre>
+      <p>Octavia 각 서비스의 로그는 <code>/var/log/octavia/</code>에 서비스별로 분리되어 쌓입니다 (octavia-api.log, octavia-worker.log, octavia-health-manager.log, octavia-housekeeping.log).</p>
+      <div class="om-cmd-list">
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">디렉터리 이동</span>
+          <code>cd /var/log/octavia &amp;&amp; ls -la</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">API 로그</span>
+          <code>tail -f octavia-api.log</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">Worker 로그</span>
+          <code>tail -f octavia-worker.log</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
       </div>
       <p>대부분의 생성/삭제/상태전이 관련 이슈는 <code>octavia-worker.log</code>에서 흔적을 찾을 수 있습니다.</p>
     </div>
@@ -387,48 +571,82 @@ WHERE provisioning_status != 'DELETED';</code></pre>
         <tr><td><code>octavia-housekeeping</code></td><td>오래된/미사용 Amphora 및 리소스 정리</td></tr>
         <tr><td><code>octavia-interface</code></td><td>Amphora 통신용 네트워크 인터페이스(o-hm0) 생성 (1회성 실행 후 exited 상태가 정상)</td></tr>
       </table>
-      <div class="om-copy-wrap" style="margin-top:0.75rem">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>systemctl list-units | grep octavia</code></pre>
+      <div class="om-cmd-list" style="margin-top:0.75rem">
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">전체 목록</span>
+          <code>systemctl list-units | grep octavia</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
       </div>
     </div>
 
     <div class="om-card">
       <h3><i class="fas fa-terminal"></i> 상태 확인</h3>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>systemctl status octavia-api
-systemctl status octavia-worker
-systemctl status octavia-health-manager
-systemctl status octavia-housekeeping
-systemctl status octavia-interface</code></pre>
+      <div class="om-cmd-list">
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">api</span>
+          <code>systemctl status octavia-api</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">worker</span>
+          <code>systemctl status octavia-worker</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">health-manager</span>
+          <code>systemctl status octavia-health-manager</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">housekeeping</span>
+          <code>systemctl status octavia-housekeeping</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">interface</span>
+          <code>systemctl status octavia-interface</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
       </div>
     </div>
 
     <div class="om-card">
       <h3><i class="fas fa-redo"></i> 재시작</h3>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>systemctl restart octavia-worker
-systemctl status octavia-worker
-
-systemctl restart octavia-health-manager
-systemctl status octavia-health-manager
-
-systemctl restart octavia-housekeeping
-systemctl status octavia-housekeeping
-
-systemctl restart octavia-api
-systemctl status octavia-api</code></pre>
+      <p>재시작 후에는 위 "상태 확인" 명령어로 정상 기동됐는지 다시 확인하세요.</p>
+      <div class="om-cmd-list">
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">worker</span>
+          <code>systemctl restart octavia-worker</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">health-manager</span>
+          <code>systemctl restart octavia-health-manager</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">housekeeping</span>
+          <code>systemctl restart octavia-housekeeping</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">api</span>
+          <code>systemctl restart octavia-api</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
       </div>
     </div>
 
     <div class="om-card">
       <h3><i class="fas fa-network-wired"></i> o-hm0 인터페이스 확인</h3>
       <p>Octavia가 Amphora와 통신하는 데 쓰는 헬스매니저 전용 인터페이스입니다. 이게 없으면 LB 생성 자체가 실패합니다.</p>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>ip a | grep o-hm0</code></pre>
+      <div class="om-cmd-list">
+        <div class="om-cmd-row">
+          <span class="om-cmd-label">인터페이스 확인</span>
+          <code>ip a | grep o-hm0</code>
+          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+        </div>
       </div>
     </div>
   </div>
@@ -440,15 +658,39 @@ systemctl status octavia-api</code></pre>
 
       <div class="om-step">
         <div class="om-step-num">1</div>
-        <div class="om-step-body">LB 상태 확인<br><code>openstack loadbalancer show &lt;lb-id&gt;</code> — <code>provisioning_status</code>, <code>operating_status</code> 확인</div>
+        <div class="om-step-body">
+          LB 상태 확인 — <code>provisioning_status</code>, <code>operating_status</code> 확인
+          <div class="om-cmd-list">
+            <div class="om-cmd-row">
+              <code>openstack loadbalancer show &lt;lb-id&gt;</code>
+              <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="om-step">
         <div class="om-step-num">2</div>
-        <div class="om-step-body">Amphora 상태 확인<br><code>openstack loadbalancer amphora list --loadbalancer &lt;lb-id&gt;</code></div>
+        <div class="om-step-body">
+          Amphora 상태 확인
+          <div class="om-cmd-list">
+            <div class="om-cmd-row">
+              <code>openstack loadbalancer amphora list --loadbalancer &lt;lb-id&gt;</code>
+              <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="om-step">
         <div class="om-step-num">3</div>
-        <div class="om-step-body">서비스 로그 확인<br><code>tail -f /var/log/octavia/octavia-worker.log</code></div>
+        <div class="om-step-body">
+          서비스 로그 확인
+          <div class="om-cmd-list">
+            <div class="om-cmd-row">
+              <code>tail -f /var/log/octavia/octavia-worker.log</code>
+              <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="om-step">
         <div class="om-step-num">4</div>
@@ -503,6 +745,20 @@ function omCopy(btn) {
     var orig = btn.textContent;
     btn.textContent = '복사됨';
     setTimeout(function () { btn.textContent = orig; }, 1200);
+  });
+}
+
+function omCopyInline(btn) {
+  var code = btn.previousElementSibling;
+  if (!code) return;
+  navigator.clipboard.writeText(code.innerText).then(function () {
+    var orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check"></i>';
+    btn.classList.add('copied');
+    setTimeout(function () {
+      btn.innerHTML = orig;
+      btn.classList.remove('copied');
+    }, 1000);
   });
 }
 
