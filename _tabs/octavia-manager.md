@@ -211,10 +211,10 @@ permalink: /octavia-manager/
 <div id="octavia-manager">
 
   <div class="om-tabs">
-    <button class="om-tab-btn active" data-panel="structure">구조</button>
-    <button class="om-tab-btn" data-panel="cli">CLI / 로그</button>
-    <button class="om-tab-btn" data-panel="cleanup">Pending 정리</button>
-    <button class="om-tab-btn" data-panel="service">서비스 관리</button>
+    <button class="om-tab-btn active" data-panel="structure">리소스 구조</button>
+    <button class="om-tab-btn" data-panel="cli">CLI 명령어 / 로그</button>
+    <button class="om-tab-btn" data-panel="cleanup">안 지워지는 LB 삭제</button>
+    <button class="om-tab-btn" data-panel="service">서비스 상태/재시작</button>
     <button class="om-tab-btn" data-panel="troubleshoot">트러블슈팅</button>
   </div>
 
