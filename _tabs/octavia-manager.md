@@ -312,13 +312,7 @@ permalink: /octavia-manager/
   <div class="om-panel" id="panel-cli">
     <div class="om-card">
       <h3><i class="fas fa-terminal"></i> OpenStack CLI 사용 방법</h3>
-      <p>인증 정보(openrc)를 먼저 불러온 뒤 명령어를 사용합니다.</p>
       <div class="om-cmd-list">
-        <div class="om-cmd-row">
-          <span class="om-cmd-label">인증 정보 로드</span>
-          <code>source contrabass-openrc</code>
-          <button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
-        </div>
         <div class="om-cmd-row">
           <span class="om-cmd-label">LB 목록 조회</span>
           <code>openstack loadbalancer list</code>
