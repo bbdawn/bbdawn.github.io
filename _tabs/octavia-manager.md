@@ -164,26 +164,19 @@ permalink: /octavia-manager/
     margin-left: 0.3rem;
   }
 
-  #octavia-manager .om-tree { display: flex; flex-direction: column; gap: 0.55rem; }
+  #octavia-manager .om-tree { display: flex; flex-direction: column; gap: 0.6rem; }
   #octavia-manager .om-tree-node {
-    display: flex; align-items: flex-start; gap: 0.75rem;
+    display: flex; align-items: flex-start; gap: 0.9rem;
     background: var(--code-bg, #f6f6f6);
-    border-left: 4px solid var(--om-lvl-color, #3b82f6);
-    border-radius: 8px;
-    padding: 0.65rem 0.9rem;
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
   }
-  #octavia-manager .om-tree-lvl0 { --om-lvl-color: #3b82f6; margin-left: 0; }
-  #octavia-manager .om-tree-lvl0 .om-tree-icon { background: rgba(59,130,246,0.15); color: #3b82f6; }
-  #octavia-manager .om-tree-lvl1 { --om-lvl-color: #10b981; margin-left: 1.5rem; }
-  #octavia-manager .om-tree-lvl1 .om-tree-icon { background: rgba(16,185,129,0.15); color: #10b981; }
-  #octavia-manager .om-tree-lvl2 { --om-lvl-color: #f59e0b; margin-left: 3rem; }
-  #octavia-manager .om-tree-lvl2 .om-tree-icon { background: rgba(245,158,11,0.15); color: #f59e0b; }
-  #octavia-manager .om-tree-lvl3 { --om-lvl-color: #8b5cf6; margin-left: 4.5rem; }
-  #octavia-manager .om-tree-lvl3 .om-tree-icon { background: rgba(139,92,246,0.15); color: #8b5cf6; }
   #octavia-manager .om-tree-icon {
-    flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 50%;
+    flex-shrink: 0; width: 2.1rem; height: 2.1rem; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.9rem;
+    background: rgba(var(--bs-primary-rgb, 13,110,253), 0.12);
+    color: var(--link-color);
   }
   #octavia-manager .om-tree-title {
     font-weight: 700; font-size: 0.95rem;
@@ -205,9 +198,6 @@ permalink: /octavia-manager/
   #octavia-manager .om-sql-step .om-cmd-label { min-width: 0; margin-bottom: 0.3rem; font-weight: 600; opacity: 0.75; }
 
   @media (max-width: 576px) {
-    #octavia-manager .om-tree-lvl1 { margin-left: 0.75rem; }
-    #octavia-manager .om-tree-lvl2 { margin-left: 1.5rem; }
-    #octavia-manager .om-tree-lvl3 { margin-left: 2.25rem; }
     #octavia-manager .om-cmd-label { min-width: 68px; font-size: 0.72rem; }
   }
 </style>
@@ -229,7 +219,7 @@ permalink: /octavia-manager/
       <img src="/assets/img/posts/octavia-loadbalancer-structure.png" alt="LoadBalancer 리소스 계층 구조도" style="max-width:100%; height:auto; display:block; margin:0.5rem auto 1.25rem; border-radius:8px;">
 
       <div class="om-tree">
-        <div class="om-tree-node om-tree-lvl0">
+        <div class="om-tree-node">
           <div class="om-tree-icon"><i class="fas fa-server"></i></div>
           <div class="om-tree-body">
             <div class="om-tree-title">LoadBalancer</div>
@@ -237,7 +227,7 @@ permalink: /octavia-manager/
           </div>
         </div>
 
-        <div class="om-tree-node om-tree-lvl1">
+        <div class="om-tree-node">
           <div class="om-tree-icon"><i class="fas fa-plug"></i></div>
           <div class="om-tree-body">
             <div class="om-tree-title">Listener <span class="om-tree-tag">HTTP · HTTPS · TCP · TERMINATED_HTTPS</span></div>
@@ -245,7 +235,7 @@ permalink: /octavia-manager/
           </div>
         </div>
 
-        <div class="om-tree-node om-tree-lvl2">
+        <div class="om-tree-node">
           <div class="om-tree-icon"><i class="fas fa-layer-group"></i></div>
           <div class="om-tree-body">
             <div class="om-tree-title">Pool <span class="om-tree-tag">default_pool</span></div>
@@ -253,7 +243,7 @@ permalink: /octavia-manager/
           </div>
         </div>
 
-        <div class="om-tree-node om-tree-lvl3">
+        <div class="om-tree-node">
           <div class="om-tree-icon"><i class="fas fa-desktop"></i></div>
           <div class="om-tree-body">
             <div class="om-tree-title">Pool Member <span class="om-tree-tag">× N</span></div>
@@ -261,7 +251,7 @@ permalink: /octavia-manager/
           </div>
         </div>
 
-        <div class="om-tree-node om-tree-lvl3">
+        <div class="om-tree-node">
           <div class="om-tree-icon"><i class="fas fa-heartbeat"></i></div>
           <div class="om-tree-body">
             <div class="om-tree-title">Health Monitor</div>
@@ -269,7 +259,7 @@ permalink: /octavia-manager/
           </div>
         </div>
 
-        <div class="om-tree-node om-tree-lvl2">
+        <div class="om-tree-node">
           <div class="om-tree-icon"><i class="fas fa-code-branch"></i></div>
           <div class="om-tree-body">
             <div class="om-tree-title">L7 Policy <span class="om-tree-tag">선택 · × N</span></div>
@@ -277,7 +267,7 @@ permalink: /octavia-manager/
           </div>
         </div>
 
-        <div class="om-tree-node om-tree-lvl1">
+        <div class="om-tree-node">
           <div class="om-tree-icon"><i class="fas fa-globe"></i></div>
           <div class="om-tree-body">
             <div class="om-tree-title">VIP</div>
@@ -285,7 +275,7 @@ permalink: /octavia-manager/
           </div>
         </div>
 
-        <div class="om-tree-node om-tree-lvl1">
+        <div class="om-tree-node">
           <div class="om-tree-icon"><i class="fas fa-sync-alt"></i></div>
           <div class="om-tree-body">
             <div class="om-tree-title">VRRP Group <span class="om-tree-tag">HA 구성 시</span></div>
