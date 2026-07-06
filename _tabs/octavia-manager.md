@@ -216,8 +216,8 @@ permalink: /octavia-manager/
 
   <div class="om-tabs">
     <button class="om-tab-btn active" data-panel="structure">리소스 구조</button>
-    <button class="om-tab-btn" data-panel="cli">CLI 명령어 / 로그</button>
     <button class="om-tab-btn" data-panel="cleanup">안 지워지는 LB 삭제</button>
+    <button class="om-tab-btn" data-panel="cli">CLI 명령어 / 로그</button>
     <button class="om-tab-btn" data-panel="service">서비스 상태/재시작</button>
     <button class="om-tab-btn" data-panel="troubleshoot">트러블슈팅</button>
   </div>
@@ -312,7 +312,69 @@ permalink: /octavia-manager/
     </div>
   </div>
 
-  <!-- CLI / 로그 -->
+  <!-- 안 지워지는 LB 삭제 -->
+  <div class="om-panel" id="panel-cleanup">
+    <div class="om-note info">
+      아래 절차는 순서대로 진행합니다: ① PENDING_* 상태를 ERROR로 전환 → ② 포탈/CLI로 cascade 삭제 시도 → ③ 그래도 안 지워지면 DB 직접 삭제(최후 수단).
+    </div>
+
+    <div class="om-card">
+      <h3><i class="fas fa-exchange-alt"></i> ① PENDING_* 상태를 ERROR로 전환</h3>
+      <p>생성/수정/삭제 도중 멈춰서 <code>PENDING_CREATE</code> / <code>PENDING_UPDATE</code> / <code>PENDING_DELETE</code>에 계속 머물러 있는 LB는, 상태를 <code>ERROR</code>로 바꿔줘야 이후 삭제가 가능합니다.</p>
+      <div class="om-copy-wrap">
+        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
+        <pre><code>mysql -u octavia -p
+# 비밀번호 입력
+
+use octavia;
+
+UPDATE load_balancer
+SET provisioning_status = 'ERROR'
+WHERE provisioning_status IN (
+    'PENDING_CREATE',
+    'PENDING_UPDATE',
+    'PENDING_DELETE'
+);
+
+-- 확인
+SELECT id, name, operating_status, provisioning_status
+FROM load_balancer
+WHERE provisioning_status != 'DELETED';</code></pre>
+      </div>
+    </div>
+
+    <div class="om-card">
+      <h3><i class="fas fa-trash-alt"></i> ② 포탈 / Horizon / CLI로 삭제</h3>
+      <p>상태가 <code>ERROR</code>로 바뀌면 콘트라베이스 포탈이나 Horizon에서 삭제하거나, CLI로 cascade 삭제합니다. LB ID를 입력하면 아래 명령어가 자동으로 채워집니다.</p>
+
+      <div class="om-id-form">
+        <input id="om-lb-id" type="text" placeholder="로드밸런서 ID 입력 (예: 91470ce0-f690-44d7-b26c-788fa1d4de89)" oninput="omRenderAll()">
+      </div>
+
+      <div class="om-copy-wrap">
+        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
+        <pre><code id="om-cascade-cmd">openstack loadbalancer delete --cascade &lt;lb-id&gt;</code></pre>
+      </div>
+    </div>
+
+    <div class="om-card">
+      <h3><i class="fas fa-search"></i> ③ 삭제 전 확인 — 대상 리소스 조회</h3>
+      <p>DB를 직접 삭제하기 전에, 이 LB에 딸린 리소스가 실제로 몇 개나 있는지 하나씩 조회해서 확인합니다. 각 쿼리는 개별적으로 복사할 수 있습니다.</p>
+      <span class="om-generated-badge" id="om-select-badge">위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)</span>
+      <div class="om-cmd-list" id="om-select-list"></div>
+    </div>
+
+    <div class="om-card">
+      <h3><i class="fas fa-database"></i> ④ 그래도 안 지워지면: DB 직접 삭제</h3>
+      <div class="om-note">
+        최후 수단입니다. 아래 순서(1→10)를 반드시 지켜야 참조 무결성 오류가 나지 않습니다. 한 단계씩 복사해서 실행하며 결과를 확인하는 걸 권장합니다. 실행 전 반드시 백업하고, 위 ③ 조회 결과로 대상이 맞는지 먼저 확인하세요.
+      </div>
+      <span class="om-generated-badge" id="om-sql-badge">위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)</span>
+      <div class="om-cmd-list" id="om-delete-list"></div>
+    </div>
+  </div>
+
+  <!-- CLI 명령어 / 로그 -->
   <div class="om-panel" id="panel-cli">
     <div class="om-card">
       <h3><i class="fas fa-terminal"></i> OpenStack CLI 사용 방법</h3>
@@ -441,68 +503,6 @@ permalink: /octavia-manager/
         </div>
       </div>
       <p>대부분의 생성/삭제/상태전이 관련 이슈는 <code>octavia-worker.log</code>에서 흔적을 찾을 수 있습니다.</p>
-    </div>
-  </div>
-
-  <!-- Pending 정리 -->
-  <div class="om-panel" id="panel-cleanup">
-    <div class="om-note info">
-      아래 절차는 순서대로 진행합니다: ① PENDING_* 상태를 ERROR로 전환 → ② 포탈/CLI로 cascade 삭제 시도 → ③ 그래도 안 지워지면 DB 직접 삭제(최후 수단).
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-exchange-alt"></i> ① PENDING_* 상태를 ERROR로 전환</h3>
-      <p>생성/수정/삭제 도중 멈춰서 <code>PENDING_CREATE</code> / <code>PENDING_UPDATE</code> / <code>PENDING_DELETE</code>에 계속 머물러 있는 LB는, 상태를 <code>ERROR</code>로 바꿔줘야 이후 삭제가 가능합니다.</p>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>mysql -u octavia -p
-# 비밀번호 입력
-
-use octavia;
-
-UPDATE load_balancer
-SET provisioning_status = 'ERROR'
-WHERE provisioning_status IN (
-    'PENDING_CREATE',
-    'PENDING_UPDATE',
-    'PENDING_DELETE'
-);
-
--- 확인
-SELECT id, name, operating_status, provisioning_status
-FROM load_balancer
-WHERE provisioning_status != 'DELETED';</code></pre>
-      </div>
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-trash-alt"></i> ② 포탈 / Horizon / CLI로 삭제</h3>
-      <p>상태가 <code>ERROR</code>로 바뀌면 콘트라베이스 포탈이나 Horizon에서 삭제하거나, CLI로 cascade 삭제합니다. LB ID를 입력하면 아래 명령어가 자동으로 채워집니다.</p>
-
-      <div class="om-id-form">
-        <input id="om-lb-id" type="text" placeholder="로드밸런서 ID 입력 (예: 91470ce0-f690-44d7-b26c-788fa1d4de89)" oninput="omRenderAll()">
-      </div>
-
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code id="om-cascade-cmd">openstack loadbalancer delete --cascade &lt;lb-id&gt;</code></pre>
-      </div>
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-search"></i> ③ 삭제 전 확인 — 대상 리소스 조회</h3>
-      <p>DB를 직접 삭제하기 전에, 이 LB에 딸린 리소스가 실제로 몇 개나 있는지 하나씩 조회해서 확인합니다. 각 쿼리는 개별적으로 복사할 수 있습니다.</p>
-      <span class="om-generated-badge" id="om-select-badge">위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)</span>
-      <div class="om-cmd-list" id="om-select-list"></div>
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-database"></i> ④ 그래도 안 지워지면: DB 직접 삭제</h3>
-      <div class="om-note">
-        최후 수단입니다. 아래 순서(1→10)를 반드시 지켜야 참조 무결성 오류가 나지 않습니다. 한 단계씩 복사해서 실행하며 결과를 확인하는 걸 권장합니다. 실행 전 반드시 백업하고, 위 ③ 조회 결과로 대상이 맞는지 먼저 확인하세요.
-      </div>
-      <span class="om-generated-badge" id="om-sql-badge">위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)</span>
-      <div class="om-cmd-list" id="om-delete-list"></div>
     </div>
   </div>
 
