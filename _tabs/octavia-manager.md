@@ -308,7 +308,7 @@ permalink: /octavia-manager/
     &#8594; A의 VRRP 광고 중단
     &#8594; B가 타임아웃 감지 &#8594; 스스로 MASTER로 승격 (VIP 인수)
     &#8594; health-manager가 A를 재생성(rebuild) 트리거 (필요 시)</code></pre>
-      <p style="margin-top:0.75rem">그래서 장애 시 VIP 자체는 끊기지 않고 유지되며, 문제가 있던 Amphora만 백그라운드에서 교체됩니다. 수동으로 즉시 전환하고 싶다면 "CLI / 로그" 탭의 <code>amphora failover</code> 명령을 사용합니다.</p>
+      <p style="margin-top:0.75rem">그래서 장애 시 VIP 자체는 끊기지 않고 유지되며, 문제가 있던 Amphora만 백그라운드에서 교체됩니다. 수동으로 즉시 전환하고 싶다면 "CLI 명령어 / 로그" 탭의 <code>amphora failover</code> 명령을 사용합니다.</p>
     </div>
   </div>
 
@@ -651,7 +651,7 @@ WHERE provisioning_status != 'DELETED';</code></pre>
         <tr><th>증상</th><th>참고</th></tr>
         <tr>
           <td><code>PENDING_*</code>에서 멈춘 LB</td>
-          <td>"Pending 정리" 탭 참고</td>
+          <td>"안 지워지는 LB 삭제" 탭 참고</td>
         </tr>
         <tr>
           <td>o-hm0 인터페이스 없어서 생성 실패</td>
