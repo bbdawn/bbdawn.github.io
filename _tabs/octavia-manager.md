@@ -226,6 +226,7 @@ permalink: /octavia-manager/
   <div class="om-panel active" id="panel-structure">
     <div class="om-card">
       <h3><i class="fas fa-sitemap"></i> 리소스 계층 구조</h3>
+      <img src="/assets/img/posts/octavia-loadbalancer-structure.png" alt="LoadBalancer 리소스 계층 구조도" style="max-width:100%; height:auto; display:block; margin:0.5rem auto 1.25rem; border-radius:8px;">
       <p>위에서 아래로 갈수록 하위 리소스입니다. 색상으로 계층 깊이를 구분했습니다.</p>
 
       <div class="om-tree">
