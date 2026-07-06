@@ -1,5 +1,5 @@
 ---
-title: "[Project] GPU mdev 관리 도구 개발 (1) — MIG 환경에서 orphan이 반복되는 이유"
+title: "[Project] GPU 관리 도구 개발 (1) — MIG 환경에서 orphan이 반복되는 이유"
 date: 2026-06-30 07:00:00 +0900
 categories: [Project, GPU]
 subcategory: Project
