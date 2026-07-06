@@ -200,6 +200,10 @@ permalink: /octavia-manager/
     font-size: 0.8rem; line-height: 1.85;
   }
 
+  #octavia-manager .om-sql-step { margin-bottom: 1rem; }
+  #octavia-manager .om-sql-step:last-child { margin-bottom: 0; }
+  #octavia-manager .om-sql-step .om-cmd-label { min-width: 0; margin-bottom: 0.3rem; font-weight: 600; opacity: 0.75; }
+
   @media (max-width: 576px) {
     #octavia-manager .om-tree-lvl1 { margin-left: 0.75rem; }
     #octavia-manager .om-tree-lvl2 { margin-left: 1.5rem; }
@@ -487,24 +491,18 @@ WHERE provisioning_status != 'DELETED';</code></pre>
 
     <div class="om-card">
       <h3><i class="fas fa-search"></i> ③ 삭제 전 확인 — 대상 리소스 조회</h3>
-      <p>DB를 직접 삭제하기 전에, 이 LB에 딸린 리소스가 실제로 몇 개나 있는지 먼저 조회해서 확인합니다.</p>
+      <p>DB를 직접 삭제하기 전에, 이 LB에 딸린 리소스가 실제로 몇 개나 있는지 하나씩 조회해서 확인합니다. 각 쿼리는 개별적으로 복사할 수 있습니다.</p>
       <span class="om-generated-badge" id="om-select-badge">위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)</span>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code id="om-select-sql"></code></pre>
-      </div>
+      <div class="om-cmd-list" id="om-select-list"></div>
     </div>
 
     <div class="om-card">
       <h3><i class="fas fa-database"></i> ④ 그래도 안 지워지면: DB 직접 삭제</h3>
       <div class="om-note">
-        최후 수단입니다. 삭제 순서를 반드시 지켜야 참조 무결성 오류가 나지 않습니다. 실행 전 반드시 백업하고, 위 ③ 조회 결과로 대상이 맞는지 먼저 확인하세요.
+        최후 수단입니다. 아래 순서(1→10)를 반드시 지켜야 참조 무결성 오류가 나지 않습니다. 한 단계씩 복사해서 실행하며 결과를 확인하는 걸 권장합니다. 실행 전 반드시 백업하고, 위 ③ 조회 결과로 대상이 맞는지 먼저 확인하세요.
       </div>
       <span class="om-generated-badge" id="om-sql-badge">위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)</span>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code id="om-delete-sql"></code></pre>
-      </div>
+      <div class="om-cmd-list" id="om-delete-list"></div>
     </div>
   </div>
 
@@ -723,72 +721,66 @@ function omRenderAll() {
     if (b) b.textContent = badgeText;
   });
 
-  var selectEl = document.getElementById('om-select-sql');
-  if (selectEl) {
-    selectEl.textContent =
-'SELECT * FROM load_balancer WHERE id = \'' + id + '\';\n\n' +
-'SELECT * FROM listener WHERE load_balancer_id = \'' + id + '\';\n\n' +
-'SELECT * FROM pool WHERE load_balancer_id = \'' + id + '\';\n\n' +
-'SELECT * FROM member\n' +
-'WHERE pool_id IN (SELECT id FROM pool WHERE load_balancer_id = \'' + id + '\');\n\n' +
-'SELECT * FROM health_monitor\n' +
-'WHERE pool_id IN (SELECT id FROM pool WHERE load_balancer_id = \'' + id + '\');\n\n' +
-'SELECT * FROM amphora WHERE load_balancer_id = \'' + id + '\';\n\n' +
-'SELECT * FROM vip WHERE load_balancer_id = \'' + id + '\';\n\n' +
-'SELECT * FROM vrrp_group WHERE load_balancer_id = \'' + id + '\';';
-  }
+  omRenderSteps('om-select-list', [
+    { label: 'LoadBalancer', sql: "SELECT * FROM load_balancer WHERE id = '" + id + "';" },
+    { label: 'Listener', sql: "SELECT * FROM listener WHERE load_balancer_id = '" + id + "';" },
+    { label: 'Pool', sql: "SELECT * FROM pool WHERE load_balancer_id = '" + id + "';" },
+    { label: 'Pool Member', sql: "SELECT * FROM member\nWHERE pool_id IN (SELECT id FROM pool WHERE load_balancer_id = '" + id + "');" },
+    { label: 'Health Monitor', sql: "SELECT * FROM health_monitor\nWHERE pool_id IN (SELECT id FROM pool WHERE load_balancer_id = '" + id + "');" },
+    { label: 'Amphora', sql: "SELECT * FROM amphora WHERE load_balancer_id = '" + id + "';" },
+    { label: 'VIP', sql: "SELECT * FROM vip WHERE load_balancer_id = '" + id + "';" },
+    { label: 'VRRP Group', sql: "SELECT * FROM vrrp_group WHERE load_balancer_id = '" + id + "';" }
+  ]);
 
   var cascadeEl = document.getElementById('om-cascade-cmd');
   if (cascadeEl) {
     cascadeEl.textContent = 'openstack loadbalancer delete --cascade ' + id;
   }
 
-  var sqlEl = document.getElementById('om-delete-sql');
-  if (sqlEl) {
-    sqlEl.textContent =
-'-- 1. Health Monitor 삭제\n' +
-'DELETE FROM health_monitor\n' +
-'WHERE pool_id IN (\n' +
-'    SELECT id FROM pool\n' +
-"    WHERE load_balancer_id = '" + id + "'\n" +
-');\n\n' +
-'-- 2. Pool Member 삭제\n' +
-'DELETE FROM member\n' +
-'WHERE pool_id IN (\n' +
-'    SELECT id FROM pool\n' +
-"    WHERE load_balancer_id = '" + id + "'\n" +
-');\n\n' +
-'-- 3. Listener -> default_pool_id 참조 끊기\n' +
-'UPDATE listener\n' +
-"SET default_pool_id = NULL\n" +
-'WHERE default_pool_id IN (\n' +
-'    SELECT id FROM pool\n' +
-"    WHERE load_balancer_id = '" + id + "'\n" +
-');\n\n' +
-'-- 4. Pool 삭제\n' +
-'DELETE FROM pool\n' +
-"WHERE load_balancer_id = '" + id + "';\n\n" +
-'-- 5. Listener 삭제\n' +
-'DELETE FROM listener\n' +
-"WHERE load_balancer_id = '" + id + "';\n\n" +
-'-- 6. amphora_health 삭제\n' +
-'DELETE FROM amphora_health\n' +
-'WHERE amphora_id IN (\n' +
-'    SELECT id FROM amphora\n' +
-"    WHERE load_balancer_id = '" + id + "'\n" +
-');\n\n' +
-'-- 7. amphora 삭제\n' +
-'DELETE FROM amphora\n' +
-"WHERE load_balancer_id = '" + id + "';\n\n" +
-'-- 8. VIP 삭제\n' +
-'DELETE FROM vip\n' +
-"WHERE load_balancer_id = '" + id + "';\n\n" +
-'-- 9. vrrp_group 삭제 (Amphora HA 메타 테이블)\n' +
-'DELETE FROM vrrp_group\n' +
-"WHERE load_balancer_id = '" + id + "';\n\n" +
-'-- 10. LoadBalancer 삭제\n' +
-'DELETE FROM load_balancer\n' +
-"WHERE id = '" + id + "';";
-  }
+  omRenderSteps('om-delete-list', [
+    { label: 'Health Monitor 삭제', sql: "DELETE FROM health_monitor\nWHERE pool_id IN (\n    SELECT id FROM pool\n    WHERE load_balancer_id = '" + id + "'\n);" },
+    { label: 'Pool Member 삭제', sql: "DELETE FROM member\nWHERE pool_id IN (\n    SELECT id FROM pool\n    WHERE load_balancer_id = '" + id + "'\n);" },
+    { label: 'Listener → default_pool_id 참조 끊기', sql: "UPDATE listener\nSET default_pool_id = NULL\nWHERE default_pool_id IN (\n    SELECT id FROM pool\n    WHERE load_balancer_id = '" + id + "'\n);" },
+    { label: 'Pool 삭제', sql: "DELETE FROM pool\nWHERE load_balancer_id = '" + id + "';" },
+    { label: 'Listener 삭제', sql: "DELETE FROM listener\nWHERE load_balancer_id = '" + id + "';" },
+    { label: 'amphora_health 삭제', sql: "DELETE FROM amphora_health\nWHERE amphora_id IN (\n    SELECT id FROM amphora\n    WHERE load_balancer_id = '" + id + "'\n);" },
+    { label: 'amphora 삭제', sql: "DELETE FROM amphora\nWHERE load_balancer_id = '" + id + "';" },
+    { label: 'VIP 삭제', sql: "DELETE FROM vip\nWHERE load_balancer_id = '" + id + "';" },
+    { label: 'vrrp_group 삭제 (Amphora HA 메타 테이블)', sql: "DELETE FROM vrrp_group\nWHERE load_balancer_id = '" + id + "';" },
+    { label: 'LoadBalancer 삭제', sql: "DELETE FROM load_balancer\nWHERE id = '" + id + "';" }
+  ]);
+}
+
+function omRenderSteps(containerId, steps) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  steps.forEach(function (step, i) {
+    var wrap = document.createElement('div');
+    wrap.className = 'om-sql-step';
+
+    var label = document.createElement('div');
+    label.className = 'om-cmd-label';
+    label.textContent = (i + 1) + '. ' + step.label;
+
+    var copyWrap = document.createElement('div');
+    copyWrap.className = 'om-copy-wrap';
+
+    var btn = document.createElement('button');
+    btn.className = 'om-copy-btn';
+    btn.textContent = '복사';
+    btn.onclick = function () { omCopy(btn); };
+
+    var pre = document.createElement('pre');
+    var code = document.createElement('code');
+    code.textContent = step.sql;
+    pre.appendChild(code);
+
+    copyWrap.appendChild(btn);
+    copyWrap.appendChild(pre);
+    wrap.appendChild(label);
+    wrap.appendChild(copyWrap);
+    container.appendChild(wrap);
+  });
 }
 </script>
