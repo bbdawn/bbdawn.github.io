@@ -164,12 +164,6 @@ permalink: /octavia-manager/
     margin-left: 0.3rem;
   }
 
-  #octavia-manager .om-subhead {
-    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.02em;
-    text-transform: uppercase; opacity: 0.55;
-    margin: 1rem 0 0.4rem;
-  }
-
   #octavia-manager .om-tree { display: flex; flex-direction: column; gap: 0.55rem; }
   #octavia-manager .om-tree-node {
     display: flex; align-items: flex-start; gap: 0.75rem;
@@ -400,45 +394,6 @@ permalink: /octavia-manager/
           <td><code>openstack loadbalancer amphora show &lt;amphora-id&gt;</code><button class="om-cmd-copy" onclick="omCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button></td>
         </tr>
       </table>
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-hammer"></i> 생성 흐름 (전체 구성 예시)</h3>
-      <p>구조 탭의 계층과 동일한 순서로 생성합니다. 이전 단계 결과의 ID를 다음 단계에 넣어주세요.</p>
-
-      <div class="om-subhead">1. LoadBalancer 생성</div>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>openstack loadbalancer create --name my-lb --vip-subnet-id &lt;subnet-id&gt;</code></pre>
-      </div>
-
-      <div class="om-subhead">2. Listener 생성</div>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>openstack loadbalancer listener create --name my-listener \
-  --protocol HTTP --protocol-port 80 &lt;lb-id&gt;</code></pre>
-      </div>
-
-      <div class="om-subhead">3. Pool 생성</div>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>openstack loadbalancer pool create --name my-pool \
-  --lb-algorithm ROUND_ROBIN --listener &lt;listener-id&gt; --protocol HTTP</code></pre>
-      </div>
-
-      <div class="om-subhead">4. Pool Member 추가</div>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>openstack loadbalancer member create --address 10.0.0.21 \
-  --protocol-port 8080 &lt;pool-id&gt;</code></pre>
-      </div>
-
-      <div class="om-subhead">5. Health Monitor 생성</div>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>openstack loadbalancer healthmonitor create --delay 5 --timeout 3 \
-  --max-retries 3 --type HTTP &lt;pool-id&gt;</code></pre>
-      </div>
     </div>
 
     <div class="om-card">
