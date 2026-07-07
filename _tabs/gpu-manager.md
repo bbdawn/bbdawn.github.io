@@ -103,6 +103,16 @@ permalink: /gpu-manager/
   #gpu-manager .gm-cmd-copy:hover { color: var(--link-color); background: rgba(0,0,0,0.06); }
   #gpu-manager .gm-cmd-copy.copied { color: #28a745; }
 
+  #gpu-manager .gm-copy-wrap { position: relative; }
+  #gpu-manager .gm-copy-btn {
+    position: absolute; top: 0.5rem; right: 0.5rem;
+    font-size: 0.75rem; padding: 0.2rem 0.55rem;
+    border: 1px solid var(--border-color, #dee2e6);
+    background: var(--main-bg, #fff); border-radius: 5px; cursor: pointer;
+    opacity: 0.7;
+  }
+  #gpu-manager .gm-copy-btn:hover { opacity: 1; }
+
   #gpu-manager .gm-github-btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
     background: #24292f; color: #fff !important;
@@ -298,31 +308,69 @@ permalink: /gpu-manager/
     </div>
 
     <div class="gm-card">
-      <h3><i class="fas fa-search"></i> mdev orphan 판단 — 수동 명령어 조합</h3>
-      <p><span class="gm-compare-badge before">BEFORE</span>여러 명령어를 조합해 mdev가 실제로 어떤 인스턴스에 연결되어 있는지 하나씩 대조해야 했고, 본인 기준으로도 판단까지 약 10분이 걸렸습니다.</p>
-      <div class="gm-cmd-list">
-        <div class="gm-cmd-row">
-          <span class="gm-cmd-label">현재 mdev 목록</span>
-          <code>ls /sys/class/mdev_bus/*/mdev_supported_types/*/devices/</code>
-          <button class="gm-cmd-copy" onclick="gmCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
-        </div>
-        <div class="gm-cmd-row">
-          <span class="gm-cmd-label">GPU MIG 인스턴스 목록</span>
-          <code>nvidia-smi mig -lgi</code>
-          <button class="gm-cmd-copy" onclick="gmCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
-        </div>
-        <div class="gm-cmd-row">
-          <span class="gm-cmd-label">Nova가 인식 중인 VM-mdev 매핑</span>
-          <code>virsh dumpxml &lt;instance-id&gt; | grep mdev</code>
-          <button class="gm-cmd-copy" onclick="gmCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
-        </div>
-        <div class="gm-cmd-row">
-          <span class="gm-cmd-label">DB상 인스턴스 존재 여부 확인</span>
-          <code>openstack server show &lt;instance-id&gt;</code>
-          <button class="gm-cmd-copy" onclick="gmCopyInline(this)" title="복사"><i class="fas fa-copy"></i></button>
-        </div>
+      <h3><i class="fas fa-search"></i> mdev orphan 판단 — 이전에 쓰던 쉘 스크립트</h3>
+      <p><span class="gm-compare-badge before">BEFORE</span>mdev 판단 로직 자체는 스크립트로 자동화해뒀지만, 각 호스트에 이 스크립트를 직접 배치해 SSH로 접속·실행해야 했고, 출력된 <code>mdevctl stop</code> 명령어는 매번 복사해서 수동으로 다시 실행해야 했습니다. GPU 현황 조회·MIG 프로파일 관리 같은 다른 작업과도 분리되어 있어, 이 스크립트를 아는 사람만 상황을 판단할 수 있었습니다.</p>
+      <div class="gm-copy-wrap">
+        <button class="gm-copy-btn" onclick="gmCopy(this)">복사</button>
+        <pre><code>#!/bin/bash
+
+HOST=$(hostname)
+GHOST_MDEVS=()
+
+echo "===================================================="
+echo "🔍 SYSFS MDEV → VM MAPPING (${HOST})"
+echo "===================================================="
+
+printf "%-40s %-12s %-30s %-20s\n" "MDEV UUID" "PCI" "VM" "STATE"
+echo "------------------------------------------------------------------------------------------------"
+
+for d in /sys/bus/mdev/devices/*; do
+  [ -e "$d" ] || continue
+
+  uuid=$(basename "$d")
+  pci=$(readlink "$d" | awk -F/ '{print $(NF-1)}')
+
+  # Check if this mdev UUID is referenced by any running qemu process
+  qemu_pid=$(ps -eo pid,cmd | grep qemu-system | grep "$uuid" | grep -v grep | awk '{print $1}')
+
+  vm="(none)"
+  if [ -n "$qemu_pid" ]; then
+    vm=$(virsh list --all --name | while read v; do
+      [ -z "$v" ] &amp;&amp; continue
+      virsh dumpxml "$v" 2>/dev/null | grep -q "$uuid" &amp;&amp; echo "$v"
+    done)
+  fi
+
+  if [ -n "$qemu_pid" ] &amp;&amp; [ -n "$vm" ]; then
+    state="🟢 IN-USE"
+  else
+    state="👻 GHOST"
+    GHOST_MDEVS+=("$uuid")
+  fi
+
+  printf "%-40s %-12s %-30s %-20s\n" "$uuid" "$pci" "$vm" "$state"
+done
+
+echo
+echo "------------------------------------------------------------------------------------------------"
+echo "🧹 GHOST MDEV CLEANUP COMMANDS"
+echo "------------------------------------------------------------------------------------------------"
+
+if [ ${#GHOST_MDEVS[@]} -eq 0 ]; then
+  echo "# No ghost mdev devices found."
+else
+  echo "# The following mdev devices exist in sysfs but are not attached to any VM."
+  echo "# You may safely remove them using the commands below."
+  echo
+  for u in "${GHOST_MDEVS[@]}"; do
+    echo "mdevctl stop -u $u"
+  done
+fi
+
+echo
+echo "✔ Scan completed safely."</code></pre>
       </div>
-      <p style="margin-top:0.75rem; font-size:0.85rem; opacity:0.6;">※ 위 명령어는 대표적인 조합을 재구성한 예시입니다. 실제로 조합하신 정확한 명령어로 교체해주세요.</p>
+      <p style="margin-top:0.75rem; font-size:0.85rem; opacity:0.7;">qemu-system 프로세스와 virsh dumpxml을 대조해 sysfs상의 mdev가 실제 VM에 물려 있는지 판단하고, 연결이 끊긴(GHOST) mdev만 골라 정리 명령어를 생성합니다. gpu-manager는 이 로직을 TUI 안으로 그대로 가져오면서, 스크립트를 찾아 실행하는 과정과 정리 명령어를 복사·재실행하는 과정 자체를 없앴습니다.</p>
     </div>
 
     <div class="gm-card">
@@ -381,6 +429,16 @@ permalink: /gpu-manager/
     });
   });
 })();
+
+function gmCopy(btn) {
+  var pre = btn.parentElement.querySelector('pre');
+  var text = pre.innerText;
+  navigator.clipboard.writeText(text).then(function () {
+    var orig = btn.textContent;
+    btn.textContent = '복사됨';
+    setTimeout(function () { btn.textContent = orig; }, 1200);
+  });
+}
 
 function gmCopyInline(btn) {
   var code = btn.previousElementSibling;
