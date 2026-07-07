@@ -260,9 +260,6 @@ permalink: /gpu-manager/
       <h3><i class="fas fa-images"></i> 주요 기능</h3>
 
       <p><strong>1. GPU 현황 대시보드</strong></p>
-      <div class="gm-feature-shot">
-        (스크린샷 자리 — GPU Host/Instance 전체 현황 화면)
-      </div>
       <p>호스트별 GPU 목록, 각 GPU의 Passthrough/MIG 사용 여부, 할당된 인스턴스를 한 화면에서 조회합니다.</p>
 
       <p><strong>2. mdev orphan 탐지 및 정리</strong></p>
@@ -305,8 +302,6 @@ permalink: /gpu-manager/
         </div>
       </div>
       <p>현재 GPU의 MIG 디바이스 현황(<code>nvidia-smi</code> 출력)과 프로파일 목록(<code>nvidia-smi -L</code>)을 함께 보여준 뒤, 삭제할 슬라이스를 GI·CI·프로파일 단위로 목록에서 선택(↑/↓)합니다. 이때 바로 삭제하지 않고 실행될 <code>nvidia-smi mig -dci</code>/<code>-dgi</code> 명령어를 먼저 보여준 뒤 Enter로 최종 확인을 받도록 만들었습니다 — 삭제는 되돌리기 어려운 작업이라, 자동 실행보다 사용자가 마지막으로 판단하고 실행하는 것을 의도적으로 택했습니다.</p>
-
-      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드 화면은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
     </div>
   </div>
 
