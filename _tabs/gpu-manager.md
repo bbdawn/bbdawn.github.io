@@ -233,9 +233,9 @@ permalink: /gpu-manager/
 
       <p><strong>2. mdev orphan 탐지 및 정리</strong></p>
       <div class="gm-feature-shot">
-        (스크린샷 자리 — orphan mdev 탐지 목록 및 삭제 화면)
+        <img src="/assets/img/posts/gpu-manager-mdev-orphan.png" alt="mdev orphan 탐지 및 정리 화면">
       </div>
-      <p>더 이상 어떤 인스턴스에도 연결되지 않은 mdev 디바이스를 자동으로 판별해 목록으로 보여주고, 클릭 한 번으로 삭제까지 실행합니다.</p>
+      <p>sysfs의 mdev ↔ VM 매핑을 스캔해 어떤 인스턴스에도 연결되지 않은 mdev를 GHOST로 표시하고, PCI 주소까지 함께 보여줍니다. 바로 아래에 각 GHOST mdev를 정리할 수 있는 <code>mdevctl stop</code> 명령어를 그대로 생성해줘서, 원인 조사부터 정리 명령어 작성까지 걸리던 시간을 없앴습니다.</p>
 
       <p><strong>3. MIG 프로파일 관리 — 생성</strong></p>
       <div class="gm-feature-shot">
@@ -245,11 +245,11 @@ permalink: /gpu-manager/
 
       <p><strong>4. MIG 프로파일 관리 — 삭제</strong></p>
       <div class="gm-feature-shot">
-        (스크린샷 자리 — MIG 프로파일 삭제 화면)
+        <img src="/assets/img/posts/gpu-manager-mig-delete.jpeg" alt="MIG 프로파일 삭제 화면">
       </div>
-      <p>더 이상 필요 없는 GPU Instance/Compute Instance를 선택해 명령어 없이 삭제합니다.</p>
+      <p>현재 GPU의 MIG 디바이스 현황(<code>nvidia-smi</code> 출력)과 프로파일 목록(<code>nvidia-smi -L</code>)을 함께 보여준 뒤, 삭제할 슬라이스를 GI·CI·프로파일 단위로 목록에서 선택(↑/↓, Enter)해 명령어 없이 삭제합니다.</p>
 
-      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 위 스크린샷 4장은 자리만 잡아둔 상태입니다. reorder 도구의 글 편집 모드로 이미지를 업로드하신 뒤, 실제 경로로 교체해주세요.</p>
+      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드, MIG 프로파일 생성 화면은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
     </div>
   </div>
 
