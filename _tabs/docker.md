@@ -1,7 +1,7 @@
 ---
 layout: filtered-posts
-title: Docker
+title: Docker & Kubernetes
 icon: fab fa-docker
 order: 7
-filter_category: Docker
+filter_category: Docker & Kubernetes
 ---

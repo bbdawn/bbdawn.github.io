@@ -1,7 +1,7 @@
 ---
 title: "[Study] Docker 학습 (2) — 실무 활용: Docker Compose, 멀티 스테이지 빌드, 레지스트리"
 date: 2026-07-02 10:00:00 +0900
-categories: [Study, Docker]
+categories: [Study, "Docker & Kubernetes"]
 subcategory: Study
 tags: [docker, docker-compose, multi-stage-build, registry, security, optimization]
 ---

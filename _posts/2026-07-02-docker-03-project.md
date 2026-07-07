@@ -1,7 +1,7 @@
 ---
 title: "[Study] Docker 학습 (3) — 실습 프로젝트: Docker Compose로 컨테이너 모니터링 스택 구성"
 date: 2026-07-02 11:00:00 +0900
-categories: [Study, Docker]
+categories: [Study, "Docker & Kubernetes"]
 subcategory: Study
 tags: [docker, docker-compose, cadvisor, node-exporter, prometheus, grafana, monitoring]
 ---

@@ -1,7 +1,7 @@
 ---
 title: "[Study] Kubernetes 자주 쓰는 명령어 정리"
 date: 2026-07-02 12:00:00 +0900
-categories: [Study, Kubernetes]
+categories: [Study, "Docker & Kubernetes"]
 subcategory: Study
 tags: [kubernetes, kubectl, cheatsheet, cli]
 ---

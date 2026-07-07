@@ -30,11 +30,11 @@ layout: page
 
 {% include lang.html %}
 
-{% assign sections      = "Openstack,GPU,Infra,Linux,Docker,Kubernetes" | split: "," %}
-{% assign section_names = "Openstack,GPU,Rack Topology,Linux,Docker,Kubernetes" | split: "," %}
+{% assign sections      = "Openstack,GPU,Infra,Linux,Docker & Kubernetes" | split: "," %}
+{% assign section_names = "Openstack,GPU,Rack Topology,Linux,Docker & Kubernetes" | split: "," %}
 {% assign section_subs  = "Feature,Troubleshooting,Project,Hands-on,Study" | split: "," %}
 
-{% for i in (0..5) %}
+{% for i in (0..4) %}
   {% assign cat   = sections[i] %}
   {% assign _raw  = site.categories[cat] %}
   {% if _raw %}
