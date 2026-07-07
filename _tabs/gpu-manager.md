@@ -209,10 +209,6 @@ permalink: /gpu-manager/
 
   <!-- ══════════ gpu-manager 소개 ══════════ -->
   <div class="gm-panel" id="panel-tool">
-    <div class="gm-note warn">
-      <strong>TODO</strong>: 아래 GitHub 링크는 placeholder입니다. 실제 저장소 URL로 교체해주세요.
-    </div>
-
     <div class="gm-card">
       <h3><i class="fas fa-lightbulb"></i> 왜 만들었는가</h3>
       <p>GPU를 MIG로 운영하다 보면 mdev 자원이 orphan 상태로 남는 경우가 있는데, 이를 판단하려면 여러 명령어를 조합해 직접 확인해야 했고 판단까지 약 10분이 걸렸습니다. 이 지식이 특정인(본인)에게만 있다 보니, 도메인을 모르는 QA에게 판단 기준을 설명하는 데도 오랜 시간이 걸렸고 관련 문의가 항상 본인에게 돌아왔습니다. GPU Passthrough/MIG 할당 현황을 매번 여러 명령어로 조회하고, 문제 있는 리소스를 수동으로 정리하는 반복 작업 자체를 도구로 없애기 위해 gpu-manager를 만들었습니다.</p>
@@ -220,7 +216,7 @@ permalink: /gpu-manager/
 
     <div class="gm-card">
       <h3><i class="fab fa-github"></i> 저장소</h3>
-      <a class="gm-github-btn" href="#" target="_blank" rel="noopener">
+      <a class="gm-github-btn" href="https://github.com/bbdawn/gpu-manager" target="_blank" rel="noopener">
         <i class="fab fa-github"></i> GitHub에서 gpu-manager 보기
       </a>
       <p>CLI/TUI 형태로 동작하며, GPU Passthrough·MIG 인스턴스 현황 조회, mdev orphan 탐지 및 정리, MIG 프로파일 생성/삭제를 UI 조작만으로 처리할 수 있게 만든 도구입니다.</p>
