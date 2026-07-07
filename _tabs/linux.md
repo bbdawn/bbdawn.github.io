@@ -2,6 +2,6 @@
 layout: filtered-posts
 title: Linux
 icon: fas fa-terminal
-order: 5
+order: 6
 filter_category: Linux
 ---
