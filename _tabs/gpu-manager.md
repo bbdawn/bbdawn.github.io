@@ -126,6 +126,30 @@ permalink: /gpu-manager/
   }
   #gpu-manager .gm-feature-shot img { max-width: 100%; height: auto; border-radius: 6px; display: block; margin: 0 auto; }
 
+  #gpu-manager .gm-feature-shot.gm-shot-multi {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    text-align: left;
+    opacity: 1;
+  }
+  #gpu-manager .gm-shot-item { position: relative; }
+  #gpu-manager .gm-shot-item img { max-width: 100%; height: auto; border-radius: 6px; display: block; margin: 0 auto; }
+  #gpu-manager .gm-shot-caption {
+    font-size: 0.8rem;
+    opacity: 0.65;
+    margin-top: 0.35rem;
+    text-align: center;
+  }
+  #gpu-manager .gm-shot-step {
+    position: absolute; top: 0.5rem; left: 0.5rem;
+    width: 1.7rem; height: 1.7rem; border-radius: 50%;
+    background: var(--link-color); color: #fff;
+    font-size: 0.85rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  }
+
   #gpu-manager .gm-compare-badge {
     display: inline-block; font-size: 0.72rem; font-weight: 700;
     border-radius: 4px; padding: 0.1rem 0.5rem; margin-right: 0.4rem;
@@ -238,8 +262,22 @@ permalink: /gpu-manager/
       <p>sysfs의 mdev ↔ VM 매핑을 스캔해 어떤 인스턴스에도 연결되지 않은 mdev를 GHOST로 표시하고, PCI 주소까지 함께 보여줍니다. 바로 아래에 각 GHOST mdev를 정리할 수 있는 <code>mdevctl stop</code> 명령어를 그대로 생성해줘서, 원인 조사부터 정리 명령어 작성까지 걸리던 시간을 없앴습니다.</p>
 
       <p><strong>3. MIG 프로파일 관리 — 생성</strong></p>
-      <div class="gm-feature-shot">
-        (스크린샷 자리 — MIG 프로파일 생성 화면)
+      <div class="gm-feature-shot gm-shot-multi">
+        <div class="gm-shot-item">
+          <div class="gm-shot-step">1</div>
+          (스크린샷 자리 — GPU/프로파일 선택 화면)
+          <div class="gm-shot-caption">GPU와 생성할 MIG 프로파일 선택</div>
+        </div>
+        <div class="gm-shot-item">
+          <div class="gm-shot-step">2</div>
+          (스크린샷 자리 — 생성 확인 화면)
+          <div class="gm-shot-caption">선택한 프로파일로 GPU Instance/Compute Instance 생성 확인</div>
+        </div>
+        <div class="gm-shot-item">
+          <div class="gm-shot-step">3</div>
+          (스크린샷 자리 — 생성 결과 화면)
+          <div class="gm-shot-caption">생성 완료 후 반영된 MIG 디바이스 목록</div>
+        </div>
       </div>
       <p>GPU별로 어떤 MIG 프로파일이 몇 개 만들어져 있는지 보여주고, 새 GPU Instance/Compute Instance 생성을 명령어 없이 처리합니다.</p>
 
@@ -249,7 +287,7 @@ permalink: /gpu-manager/
       </div>
       <p>현재 GPU의 MIG 디바이스 현황(<code>nvidia-smi</code> 출력)과 프로파일 목록(<code>nvidia-smi -L</code>)을 함께 보여준 뒤, 삭제할 슬라이스를 GI·CI·프로파일 단위로 목록에서 선택(↑/↓, Enter)해 명령어 없이 삭제합니다.</p>
 
-      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드, MIG 프로파일 생성 화면은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
+      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드 화면, MIG 프로파일 생성 3단계 화면(총 3장)은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
     </div>
   </div>
 
