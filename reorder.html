@@ -930,7 +930,8 @@ async function openPost(path,sha,name){
     document.getElementById('f-date').value=(fm.date||'').replace(/\s*\+0900$/,'').trim();
     document.getElementById('f-tags').value=(fm.tags||'').replace(/^\[|\]$/g,'');
     var catMatch=(fm.categories||'').match(/\[([^,\]]+),?\s*([^\]]*)\]/);
-    if(catMatch){setSelectVal('f-sub',catMatch[1].trim());setSelectVal('f-cat',catMatch[2].trim());}
+    var stripQuotes=function(s){return s.trim().replace(/^["']|["']$/g,'');};
+    if(catMatch){setSelectVal('f-sub',stripQuotes(catMatch[1]));setSelectVal('f-cat',stripQuotes(catMatch[2]));}
     var slugMatch=name.match(/^\d{4}-\d{2}-\d{2}-(.+)\.md$/);
     document.getElementById('f-slug').value=slugMatch?slugMatch[1]:name.replace('.md','');
     var protectedRes=protectLiquidTags(parsed.body.replace(/^\n/,''));
@@ -979,7 +980,7 @@ async function submitPost(){
   var fm=['---',
     'title: '+JSON.stringify(fmTitle),
     'date: '+date+' +0900',
-    'categories: ['+sub+', '+cat+']',
+    'categories: ['+sub+', '+JSON.stringify(cat)+']',
     'subcategory: '+sub,
     'tags: ['+tagArr.join(', ')+']',
     '---',''].join('\n');
