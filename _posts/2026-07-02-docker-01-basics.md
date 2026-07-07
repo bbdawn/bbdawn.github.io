@@ -117,6 +117,11 @@ docker run -d -p 3000:3000 my-app:1.0
 
 레이어 캐시를 활용하기 위해 자주 바뀌지 않는 `package.json` 설치 단계를 소스 코드 복사보다 먼저 배치하는 것이 핵심입니다.
 
+<!-- 📷 실습 스크린샷 (여러 장 첨부 가능)
+![](/assets/img/posts/파일명1.png)
+![](/assets/img/posts/파일명2.png)
+-->
+
 ### 3\. 볼륨으로 데이터 영속화
 
 컨테이너를 삭제해도 데이터가 남아야 하는 경우(DB 등) 볼륨을 사용합니다.
@@ -126,6 +131,11 @@ docker volume create app-data
 docker run -d -v app-data:/var/lib/data --name db postgres
 docker volume inspect app-data
 ```
+
+<!-- 📷 실습 스크린샷 (여러 장 첨부 가능)
+![](/assets/img/posts/파일명1.png)
+![](/assets/img/posts/파일명2.png)
+-->
 
 ### 4\. 네트워크로 컨테이너 간 통신
 
@@ -137,6 +147,11 @@ docker run -d --network app-net --name web my-app:1.0
 
 같은 네트워크에 속한 컨테이너는 컨테이너 이름을 호스트명처럼 사용해 서로 통신할 수 있습니다 (`db:5432`).
 
+<!-- 📷 실습 스크린샷 (여러 장 첨부 가능)
+![](/assets/img/posts/파일명1.png)
+![](/assets/img/posts/파일명2.png)
+-->
+
 ### 5\. 컨테이너 로그/상태 확인
 
 ```bash
@@ -144,6 +159,11 @@ docker logs -f web
 docker inspect web
 docker exec -it web sh
 ```
+
+<!-- 📷 실습 스크린샷 (여러 장 첨부 가능)
+![](/assets/img/posts/파일명1.png)
+![](/assets/img/posts/파일명2.png)
+-->
 
 ***
 
