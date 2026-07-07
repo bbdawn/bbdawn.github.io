@@ -51,6 +51,10 @@ order: 0
     <div class="ph-title"><i class="fas fa-server"></i> Rack Topology 시각화</div>
     <div class="ph-desc">DB 설계부터 API까지 직접 구현한 데이터센터 랙/자원 시각화 프로젝트 — OpenStack 연동 가상 네트워크 토폴로지, 물리 네트워크 토폴로지 기능 포함</div>
   </a>
+  <a class="ph-card" href="{% post_url 2026-06-30-iac-rag-01-overview %}">
+    <div class="ph-title"><i class="fas fa-project-diagram"></i> IaC + RAG 파이프라인</div>
+    <div class="ph-desc">Terraform·Ansible로 GPU 인프라를 자동 구성하고, 그 위에 로컬 LLM 기반 RAG 파이프라인을 얹은 개인 프로젝트</div>
+  </a>
 </div>
 
 ---
