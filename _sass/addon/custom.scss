@@ -29,15 +29,31 @@ span.read-time {
   display: none !important;
 }
 
-/* Placeholder box for screenshots to be attached later */
-.photo-slot {
-  display: block;
+/* Screenshot guide slots for posts still awaiting photos (gpu-manager 스타일) */
+.shot-multi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
   margin: 1rem 0;
-  padding: 1.25rem 1rem;
+}
+.shot-item { position: relative; }
+.shot-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
   border: 2px dashed var(--link-color);
-  border-radius: 8px;
-  text-align: center;
-  font-size: 0.85rem;
-  opacity: 0.6;
+  border-radius: 6px;
   background: var(--code-bg, #f6f6f6);
+  color: var(--link-color);
+  font-size: 0.85rem;
+  opacity: 0.75;
+  text-align: center;
+  padding: 1rem;
+}
+.shot-caption {
+  font-size: 0.8rem;
+  opacity: 0.65;
+  margin-top: 0.35rem;
+  text-align: center;
 }

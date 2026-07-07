@@ -117,7 +117,16 @@ docker run -d -p 3000:3000 my-app:1.0
 
 레이어 캐시를 활용하기 위해 자주 바뀌지 않는 `package.json` 설치 단계를 소스 코드 복사보다 먼저 배치하는 것이 핵심입니다.
 
-<div class="photo-slot">📷 실습 스크린샷 추가 예정 (여러 장 첨부 가능)</div>
+<div class="shot-multi">
+  <div class="shot-item">
+    <div class="shot-placeholder">📷 스크린샷 추가 예정</div>
+    <div class="shot-caption">docker build 실행 로그</div>
+  </div>
+  <div class="shot-item">
+    <div class="shot-placeholder">📷 스크린샷 추가 예정</div>
+    <div class="shot-caption">docker run 실행 후 docker images로 확인한 이미지 목록</div>
+  </div>
+</div>
 
 ### 3\. 볼륨으로 데이터 영속화
 
@@ -129,7 +138,16 @@ docker run -d -v app-data:/var/lib/data --name db postgres
 docker volume inspect app-data
 ```
 
-<div class="photo-slot">📷 실습 스크린샷 추가 예정 (여러 장 첨부 가능)</div>
+<div class="shot-multi">
+  <div class="shot-item">
+    <div class="shot-placeholder">📷 스크린샷 추가 예정</div>
+    <div class="shot-caption">docker volume create / inspect 실행 결과</div>
+  </div>
+  <div class="shot-item">
+    <div class="shot-placeholder">📷 스크린샷 추가 예정</div>
+    <div class="shot-caption">컨테이너 삭제 후 재생성해도 데이터가 남아있는지 확인</div>
+  </div>
+</div>
 
 ### 4\. 네트워크로 컨테이너 간 통신
 
@@ -141,7 +159,16 @@ docker run -d --network app-net --name web my-app:1.0
 
 같은 네트워크에 속한 컨테이너는 컨테이너 이름을 호스트명처럼 사용해 서로 통신할 수 있습니다 (`db:5432`).
 
-<div class="photo-slot">📷 실습 스크린샷 추가 예정 (여러 장 첨부 가능)</div>
+<div class="shot-multi">
+  <div class="shot-item">
+    <div class="shot-placeholder">📷 스크린샷 추가 예정</div>
+    <div class="shot-caption">docker network create 실행 결과</div>
+  </div>
+  <div class="shot-item">
+    <div class="shot-placeholder">📷 스크린샷 추가 예정</div>
+    <div class="shot-caption">컨테이너 이름으로 통신 테스트 (docker exec ping/curl)</div>
+  </div>
+</div>
 
 ### 5\. 컨테이너 로그/상태 확인
 
@@ -151,7 +178,16 @@ docker inspect web
 docker exec -it web sh
 ```
 
-<div class="photo-slot">📷 실습 스크린샷 추가 예정 (여러 장 첨부 가능)</div>
+<div class="shot-multi">
+  <div class="shot-item">
+    <div class="shot-placeholder">📷 스크린샷 추가 예정</div>
+    <div class="shot-caption">docker logs -f 실시간 로그 출력</div>
+  </div>
+  <div class="shot-item">
+    <div class="shot-placeholder">📷 스크린샷 추가 예정</div>
+    <div class="shot-caption">docker exec -it 로 컨테이너 내부 접속 화면</div>
+  </div>
+</div>
 
 ***
 
