@@ -237,13 +237,19 @@ permalink: /gpu-manager/
       </div>
       <p>더 이상 어떤 인스턴스에도 연결되지 않은 mdev 디바이스를 자동으로 판별해 목록으로 보여주고, 클릭 한 번으로 삭제까지 실행합니다.</p>
 
-      <p><strong>3. MIG 프로파일 관리</strong></p>
+      <p><strong>3. MIG 프로파일 관리 — 생성</strong></p>
       <div class="gm-feature-shot">
-        (스크린샷 자리 — MIG 프로파일 생성/삭제 화면)
+        (스크린샷 자리 — MIG 프로파일 생성 화면)
       </div>
-      <p>GPU별로 어떤 MIG 프로파일이 몇 개 만들어져 있는지 보여주고, 새 GPU Instance/Compute Instance 생성이나 삭제를 명령어 없이 처리합니다.</p>
+      <p>GPU별로 어떤 MIG 프로파일이 몇 개 만들어져 있는지 보여주고, 새 GPU Instance/Compute Instance 생성을 명령어 없이 처리합니다.</p>
 
-      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 위 스크린샷 3장은 자리만 잡아둔 상태입니다. reorder 도구의 글 편집 모드로 이미지를 업로드하신 뒤, 실제 경로로 교체해주세요.</p>
+      <p><strong>4. MIG 프로파일 관리 — 삭제</strong></p>
+      <div class="gm-feature-shot">
+        (스크린샷 자리 — MIG 프로파일 삭제 화면)
+      </div>
+      <p>더 이상 필요 없는 GPU Instance/Compute Instance를 선택해 명령어 없이 삭제합니다.</p>
+
+      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 위 스크린샷 4장은 자리만 잡아둔 상태입니다. reorder 도구의 글 편집 모드로 이미지를 업로드하신 뒤, 실제 경로로 교체해주세요.</p>
     </div>
   </div>
 
