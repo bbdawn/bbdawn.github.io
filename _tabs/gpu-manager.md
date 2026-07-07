@@ -151,15 +151,6 @@ permalink: /gpu-manager/
     margin-top: 0.35rem;
     text-align: center;
   }
-  #gpu-manager .gm-shot-step {
-    position: absolute; top: 0.5rem; left: 0.5rem;
-    width: 1.7rem; height: 1.7rem; border-radius: 50%;
-    background: var(--link-color); color: #fff;
-    font-size: 0.85rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
-  }
-
   #gpu-manager .gm-compare-badge {
     display: inline-block; font-size: 0.72rem; font-weight: 700;
     border-radius: 4px; padding: 0.1rem 0.5rem; margin-right: 0.4rem;
@@ -271,17 +262,14 @@ permalink: /gpu-manager/
       <p><strong>3. MIG 프로파일 관리 — 생성</strong></p>
       <div class="gm-feature-shot gm-shot-multi">
         <div class="gm-shot-item">
-          <div class="gm-shot-step">1</div>
           <img src="/assets/img/posts/gpu-manager-mig-create-1-select.png" alt="GPU/프로파일 선택 화면">
           <div class="gm-shot-caption">GPU와 생성할 MIG 프로파일 선택</div>
         </div>
         <div class="gm-shot-item">
-          <div class="gm-shot-step">2</div>
           <img src="/assets/img/posts/gpu-manager-mig-create-2-confirm.png" alt="생성 확인 화면">
           <div class="gm-shot-caption">선택한 프로파일로 GPU Instance/Compute Instance 생성 확인</div>
         </div>
         <div class="gm-shot-item">
-          <div class="gm-shot-step">3</div>
           <img src="/assets/img/posts/gpu-manager-mig-create-3-result.png" alt="생성 결과 화면">
           <div class="gm-shot-caption">생성 완료 후 반영된 MIG 디바이스 목록</div>
         </div>
@@ -291,12 +279,10 @@ permalink: /gpu-manager/
       <p><strong>4. MIG 프로파일 관리 — 삭제</strong></p>
       <div class="gm-feature-shot gm-shot-multi">
         <div class="gm-shot-item">
-          <div class="gm-shot-step">1</div>
           <img src="/assets/img/posts/gpu-manager-mig-delete-1-select.png" alt="삭제할 슬라이스 선택 화면">
           <div class="gm-shot-caption">현재 MIG 디바이스 현황과 프로파일 목록에서 삭제할 슬라이스 선택</div>
         </div>
         <div class="gm-shot-item">
-          <div class="gm-shot-step">2</div>
           <img src="/assets/img/posts/gpu-manager-mig-delete-2-confirm.png" alt="삭제 명령어 확인 화면">
           <div class="gm-shot-caption">선택한 GI/CI에 대해 실행할 삭제 명령어를 보여주고, Enter로 최종 확인 후 실행</div>
         </div>
