@@ -292,12 +292,21 @@ permalink: /gpu-manager/
       <p>GPU별로 어떤 MIG 프로파일이 몇 개 만들어져 있는지 보여주고, 새 GPU Instance/Compute Instance 생성을 명령어 없이 처리합니다.</p>
 
       <p><strong>4. MIG 프로파일 관리 — 삭제</strong></p>
-      <div class="gm-feature-shot">
-        <img src="/assets/img/posts/gpu-manager-mig-delete.jpeg" alt="MIG 프로파일 삭제 화면">
+      <div class="gm-feature-shot gm-shot-multi">
+        <div class="gm-shot-item">
+          <div class="gm-shot-step">1</div>
+          (스크린샷 자리 — 삭제할 슬라이스 선택 화면)
+          <div class="gm-shot-caption">현재 MIG 디바이스 현황과 프로파일 목록에서 삭제할 슬라이스 선택</div>
+        </div>
+        <div class="gm-shot-item">
+          <div class="gm-shot-step">2</div>
+          (스크린샷 자리 — 삭제 결과 화면)
+          <div class="gm-shot-caption">삭제 완료 후 반영된 MIG 디바이스 목록</div>
+        </div>
       </div>
       <p>현재 GPU의 MIG 디바이스 현황(<code>nvidia-smi</code> 출력)과 프로파일 목록(<code>nvidia-smi -L</code>)을 함께 보여준 뒤, 삭제할 슬라이스를 GI·CI·프로파일 단위로 목록에서 선택(↑/↓, Enter)해 명령어 없이 삭제합니다.</p>
 
-      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드 화면은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
+      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드 화면, MIG 프로파일 삭제 화면(2장)은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
     </div>
   </div>
 
