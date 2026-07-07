@@ -285,7 +285,7 @@ permalink: /gpu-manager/
         </div>
         <div class="gm-shot-item">
           <div class="gm-shot-step">3</div>
-          (스크린샷 자리 — 생성 결과 화면)
+          <img src="/assets/img/posts/gpu-manager-mig-create-3-result.png" alt="생성 결과 화면">
           <div class="gm-shot-caption">생성 완료 후 반영된 MIG 디바이스 목록</div>
         </div>
       </div>
@@ -297,7 +297,7 @@ permalink: /gpu-manager/
       </div>
       <p>현재 GPU의 MIG 디바이스 현황(<code>nvidia-smi</code> 출력)과 프로파일 목록(<code>nvidia-smi -L</code>)을 함께 보여준 뒤, 삭제할 슬라이스를 GI·CI·프로파일 단위로 목록에서 선택(↑/↓, Enter)해 명령어 없이 삭제합니다.</p>
 
-      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드 화면, MIG 프로파일 생성 3단계 화면(총 3장)은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
+      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드 화면은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
     </div>
   </div>
 
