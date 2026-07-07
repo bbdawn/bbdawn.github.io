@@ -275,12 +275,12 @@ permalink: /gpu-manager/
       <div class="gm-feature-shot gm-shot-multi">
         <div class="gm-shot-item">
           <div class="gm-shot-step">1</div>
-          (스크린샷 자리 — GPU/프로파일 선택 화면)
+          <img src="/assets/img/posts/gpu-manager-mig-create-1-select.png" alt="GPU/프로파일 선택 화면">
           <div class="gm-shot-caption">GPU와 생성할 MIG 프로파일 선택</div>
         </div>
         <div class="gm-shot-item">
           <div class="gm-shot-step">2</div>
-          (스크린샷 자리 — 생성 확인 화면)
+          <img src="/assets/img/posts/gpu-manager-mig-create-2-confirm.png" alt="생성 확인 화면">
           <div class="gm-shot-caption">선택한 프로파일로 GPU Instance/Compute Instance 생성 확인</div>
         </div>
         <div class="gm-shot-item">
