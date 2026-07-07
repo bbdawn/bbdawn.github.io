@@ -33,7 +33,6 @@ order: 0
   }
 </style>
 
-<p style="font-size: 0.88rem; opacity: 0.55; margin: 0 0 1rem;">전체 글이 많아서, 먼저 보시면 좋은 프로젝트 4개를 추렸습니다.</p>
 
 <div class="ph-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; margin-bottom: 2rem;">
   <a class="ph-card" href="/octavia-manager/">
