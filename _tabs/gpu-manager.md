@@ -300,13 +300,13 @@ permalink: /gpu-manager/
         </div>
         <div class="gm-shot-item">
           <div class="gm-shot-step">2</div>
-          (스크린샷 자리 — 삭제 결과 화면)
-          <div class="gm-shot-caption">삭제 완료 후 반영된 MIG 디바이스 목록</div>
+          <img src="/assets/img/posts/gpu-manager-mig-delete-2-confirm.png" alt="삭제 명령어 확인 화면">
+          <div class="gm-shot-caption">선택한 GI/CI에 대해 실행할 삭제 명령어를 보여주고, Enter로 최종 확인 후 실행</div>
         </div>
       </div>
-      <p>현재 GPU의 MIG 디바이스 현황(<code>nvidia-smi</code> 출력)과 프로파일 목록(<code>nvidia-smi -L</code>)을 함께 보여준 뒤, 삭제할 슬라이스를 GI·CI·프로파일 단위로 목록에서 선택(↑/↓, Enter)해 명령어 없이 삭제합니다.</p>
+      <p>현재 GPU의 MIG 디바이스 현황(<code>nvidia-smi</code> 출력)과 프로파일 목록(<code>nvidia-smi -L</code>)을 함께 보여준 뒤, 삭제할 슬라이스를 GI·CI·프로파일 단위로 목록에서 선택(↑/↓)합니다. 이때 바로 삭제하지 않고 실행될 <code>nvidia-smi mig -dci</code>/<code>-dgi</code> 명령어를 먼저 보여준 뒤 Enter로 최종 확인을 받도록 만들었습니다 — 삭제는 되돌리기 어려운 작업이라, 자동 실행보다 사용자가 마지막으로 판단하고 실행하는 것을 의도적으로 택했습니다.</p>
 
-      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드 화면, MIG 프로파일 삭제 화면(2장)은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
+      <p style="margin-top:1rem; font-size:0.85rem; opacity:0.6;">※ 대시보드 화면은 아직 자리만 잡아둔 상태입니다. 스크린샷 주시면 채워드리겠습니다.</p>
     </div>
   </div>
 
