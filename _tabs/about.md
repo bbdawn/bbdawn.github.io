@@ -28,11 +28,14 @@ order: 0
   .ph-card .ph-title { font-size: 0.98rem; font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.45rem; }
   .ph-card .ph-title i { color: var(--link-color); opacity: 0.85; }
   .ph-card .ph-desc { font-size: 0.85rem; line-height: 1.65; opacity: 0.65; }
+  @media (max-width: 480px) {
+    .ph-grid { grid-template-columns: 1fr !important; }
+  }
 </style>
 
 <p style="font-size: 0.88rem; opacity: 0.55; margin: 0 0 1rem;">전체 글이 많아서, 먼저 보시면 좋은 프로젝트 4개를 추렸습니다.</p>
 
-<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.9rem; margin-bottom: 2rem;">
+<div class="ph-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; margin-bottom: 2rem;">
   <a class="ph-card" href="/octavia-manager/">
     <div class="ph-title"><i class="fas fa-random"></i> Octavia Manager</div>
     <div class="ph-desc">안 지워지는 로드밸런서 삭제부터 CLI 운영, 트러블슈팅까지 정리한 인터랙티브 운영 도구</div>
