@@ -16,6 +16,43 @@ order: 0
 
 ---
 
+## 포트폴리오 하이라이트
+
+<style>
+  .ph-card {
+    display: block; border: 1px solid var(--main-border-color, #e0e0e0);
+    border-radius: 10px; padding: 1rem 1.15rem; text-decoration: none !important;
+    color: inherit; transition: border-color 0.15s, transform 0.15s;
+  }
+  .ph-card:hover { border-color: var(--link-color); transform: translateY(-1px); }
+  .ph-card .ph-title { font-size: 0.98rem; font-weight: 700; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.45rem; }
+  .ph-card .ph-title i { color: var(--link-color); opacity: 0.85; }
+  .ph-card .ph-desc { font-size: 0.85rem; line-height: 1.65; opacity: 0.65; }
+</style>
+
+<p style="font-size: 0.88rem; opacity: 0.55; margin: 0 0 1rem;">전체 글이 많아서, 먼저 보시면 좋은 프로젝트 4개를 추렸습니다.</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.9rem; margin-bottom: 2rem;">
+  <a class="ph-card" href="/octavia-manager/">
+    <div class="ph-title"><i class="fas fa-random"></i> Octavia Manager</div>
+    <div class="ph-desc">안 지워지는 로드밸런서 삭제부터 CLI 운영, 트러블슈팅까지 정리한 인터랙티브 운영 도구</div>
+  </a>
+  <a class="ph-card" href="/gpu-manager/">
+    <div class="ph-title"><i class="fas fa-toolbox"></i> GPU Manager</div>
+    <div class="ph-desc">GPU Passthrough·vGPU·MIG 개념 정리와, 직접 만든 gpu-manager CLI 소개 (GitHub 링크 포함)</div>
+  </a>
+  <a class="ph-card" href="{% post_url 2026-06-30-mdev-orphan-cause %}">
+    <div class="ph-title"><i class="fas fa-ghost"></i> mdev orphan 자동화</div>
+    <div class="ph-desc">수동 10분 걸리던 GPU mdev 판단 작업을, 도구화해서 비전문가도 바로 처리할 수 있게 만든 과정</div>
+  </a>
+  <a class="ph-card" href="{% post_url 2026-06-30-iac-rag-01-overview %}">
+    <div class="ph-title"><i class="fas fa-project-diagram"></i> IaC + RAG 파이프라인</div>
+    <div class="ph-desc">Terraform·Ansible로 GPU 인프라를 자동 구성하고, 그 위에 로컬 LLM 기반 RAG 파이프라인을 얹은 개인 프로젝트</div>
+  </a>
+</div>
+
+---
+
 ## 경력
 
 <div style="margin: 1.5rem 0 2rem;">
