@@ -295,7 +295,7 @@ permalink: /gpu-manager/
       <div class="gm-feature-shot gm-shot-multi">
         <div class="gm-shot-item">
           <div class="gm-shot-step">1</div>
-          (스크린샷 자리 — 삭제할 슬라이스 선택 화면)
+          <img src="/assets/img/posts/gpu-manager-mig-delete-1-select.png" alt="삭제할 슬라이스 선택 화면">
           <div class="gm-shot-caption">현재 MIG 디바이스 현황과 프로파일 목록에서 삭제할 슬라이스 선택</div>
         </div>
         <div class="gm-shot-item">
