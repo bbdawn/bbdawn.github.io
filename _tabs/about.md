@@ -41,10 +41,6 @@ order: 0
   </a>
   <a class="ph-card" href="/gpu-manager/">
     <div class="ph-title"><i class="fas fa-toolbox"></i> GPU Manager</div>
-    <div class="ph-desc">GPU Passthrough·vGPU·MIG 개념 정리와, 직접 만든 gpu-manager CLI 소개 (GitHub 링크 포함)</div>
-  </a>
-  <a class="ph-card" href="{% post_url 2026-06-30-mdev-orphan-cause %}">
-    <div class="ph-title"><i class="fas fa-ghost"></i> mdev orphan 자동화</div>
     <div class="ph-desc">수동 10분 걸리던 GPU mdev 판단 작업을, 도구화해서 비전문가도 바로 처리할 수 있게 만든 과정</div>
   </a>
   <a class="ph-card" href="{% post_url 2026-06-30-rack-topology %}">
