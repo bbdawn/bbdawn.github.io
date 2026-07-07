@@ -16,7 +16,7 @@ order: 0
 
 ---
 
-## 포트폴리오 하이라이트
+## <i class="fas fa-thumbtack"></i> Pinned
 
 <style>
   .ph-card {
