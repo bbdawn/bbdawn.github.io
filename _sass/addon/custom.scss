@@ -28,3 +28,16 @@ span.read-time {
 .archive-item .post-date {
   display: none !important;
 }
+
+/* Placeholder box for screenshots to be attached later */
+.photo-slot {
+  display: block;
+  margin: 1rem 0;
+  padding: 1.25rem 1rem;
+  border: 2px dashed var(--link-color);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.6;
+  background: var(--code-bg, #f6f6f6);
+}

@@ -112,11 +112,7 @@ open http://localhost:3000
 
 `Node Exporter Full`(dashboard ID `1860`)은 가장 널리 쓰이는 호스트 모니터링 대시보드로, CPU/메모리/디스크/네트워크를 즉시 시각화해줍니다. cAdvisor 메트릭은 컨테이너별 리소스 사용량 패널을 직접 구성하며 PromQL을 익히는 용도로 다뤘습니다.
 
-<!-- 📷 실습 스크린샷 (여러 장 첨부 가능)
-![](/assets/img/posts/파일명1.png)
-![](/assets/img/posts/파일명2.png)
-![](/assets/img/posts/파일명3.png)
--->
+<div class="photo-slot">📷 실습 스크린샷 추가 예정 (여러 장 첨부 가능)</div>
 
 ---
 
@@ -130,10 +126,7 @@ cAdvisor는 공식적으로 Linux를 대상으로 하며, `/sys`, `/var/lib/dock
 
 Compose 네트워크 안에서 서비스명으로 통신하는지 확인합니다. `prometheus.yml`에 컨테이너 IP를 직접 넣으면 컨테이너 재시작 시 IP가 바뀌어 target을 잃어버리므로, 반드시 서비스명(`cadvisor:8080`, `node-exporter:9100`)을 사용해야 합니다.
 
-<!-- 📷 실습 스크린샷 (여러 장 첨부 가능)
-![](/assets/img/posts/파일명1.png)
-![](/assets/img/posts/파일명2.png)
--->
+<div class="photo-slot">📷 실습 스크린샷 추가 예정 (여러 장 첨부 가능)</div>
 
 ---
 
