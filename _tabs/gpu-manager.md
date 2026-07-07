@@ -141,13 +141,13 @@ permalink: /gpu-manager/
 <div id="gpu-manager">
 
   <div class="gm-tabs">
-    <button class="gm-tab-btn active" data-panel="concept">GPU 가상화 개념 (IaaS 관점)</button>
-    <button class="gm-tab-btn" data-panel="tool">gpu-manager 소개</button>
+    <button class="gm-tab-btn active" data-panel="tool">gpu-manager 소개</button>
     <button class="gm-tab-btn" data-panel="before">이전 방식 (수동 스크립트)</button>
+    <button class="gm-tab-btn" data-panel="concept">GPU 가상화 개념 (IaaS 관점)</button>
   </div>
 
   <!-- ══════════ GPU 가상화 개념 ══════════ -->
-  <div class="gm-panel active" id="panel-concept">
+  <div class="gm-panel" id="panel-concept">
     <div class="gm-card">
       <h3><i class="fas fa-layer-group"></i> IaaS에서 GPU를 인스턴스에 제공하는 3가지 방식</h3>
       <p>OpenStack 같은 IaaS 플랫폼에서 물리 GPU를 가상 인스턴스에 할당하는 방법은 격리 수준과 자원 활용률이 서로 트레이드오프 관계에 있는 세 가지로 나뉩니다.</p>
@@ -208,7 +208,7 @@ permalink: /gpu-manager/
   </div>
 
   <!-- ══════════ gpu-manager 소개 ══════════ -->
-  <div class="gm-panel" id="panel-tool">
+  <div class="gm-panel active" id="panel-tool">
     <div class="gm-card">
       <h3><i class="fas fa-lightbulb"></i> 왜 만들었는가</h3>
       <p>GPU를 MIG로 운영하다 보면 mdev 자원이 orphan 상태로 남는 경우가 있는데, 이를 판단하려면 여러 명령어를 조합해 직접 확인해야 했고 판단까지 약 10분이 걸렸습니다. 이 지식이 특정인(본인)에게만 있다 보니, 도메인을 모르는 QA에게 판단 기준을 설명하는 데도 오랜 시간이 걸렸고 관련 문의가 항상 본인에게 돌아왔습니다. GPU Passthrough/MIG 할당 현황을 매번 여러 명령어로 조회하고, 문제 있는 리소스를 수동으로 정리하는 반복 작업 자체를 도구로 없애기 위해 gpu-manager를 만들었습니다.</p>
