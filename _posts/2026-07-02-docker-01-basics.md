@@ -114,15 +114,16 @@ docker build -t my-app:1.0 .
 docker run -d -p 3000:3000 my-app:1.0
 ```
 
-
 [이미지 확인]
+my-app:1.0 이미지가 생성된 것을 확인할 수 있습니다.
 ![image.png](/assets/img/posts/1783424555128-image.png)
-my-app:1.0 이미지가 생성된 것을 확인할 수 있습니다. 
 
+<br>
 [실행 중인 컨테이너 확인]
+my-app 컨테이너가 Up인 상태를 확인할 수 있습니다.
 ![image.png](/assets/img/posts/1783425081373-image.png)
-my-app 컨테이너가 Up인 상태를 확인할 수 있습니다. 
 
+<br>
 [로그 확인]
 ![image.png](/assets/img/posts/1783425110434-image.png)
 
