@@ -1,7 +1,7 @@
 ---
 title: "[Project] GPU IaC 자동화 + RAG 파이프라인 (2) — Terraform으로 인스턴스 프로비저닝"
 date: 2026-06-30 11:10:00 +0900
-categories: [Project, GPU]
+categories: [Project, "GPU"]
 subcategory: Project
 tags: [openstack, gpu, terraform, iac, automation]
 ---
@@ -10,8 +10,18 @@ tags: [openstack, gpu, terraform, iac, automation]
 
 Terraform으로 OpenStack에 GPU 인스턴스와 Qdrant 인스턴스를 프로비저닝합니다. 출력값(output)으로 IP를 뽑아 Ansible inventory에 바로 연결할 수 있게 구성했습니다.
 
----
+***
 
+<br>
+Terraform 설치 
+`brew install hashicorp/tap/terraform`
+![image.png](/assets/img/posts/1783497292070-image.png)
+
+<br>
+<br>
+<br>
+<br>
+<br>
 ## 디렉토리 구조
 
 ```
@@ -22,7 +32,7 @@ terraform/
 └── terraform.tfvars  # 실제 값 (gitignore 권장)
 ```
 
----
+***
 
 ## main.tf
 
@@ -69,7 +79,7 @@ resource "openstack_compute_instance_v2" "qdrant" {
 }
 ```
 
----
+***
 
 ## variables.tf
 
@@ -95,7 +105,7 @@ variable "network_name" {
 }
 ```
 
----
+***
 
 ## outputs.tf
 
@@ -111,7 +121,7 @@ output "qdrant_ip" {
 }
 ```
 
----
+***
 
 ## 실행
 
@@ -132,7 +142,7 @@ terraform output gpu_ip
 terraform output qdrant_ip
 ```
 
----
+***
 
 ## Ansible inventory 연결
 
@@ -152,13 +162,13 @@ ${QDRANT_IP} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
 EOF
 ```
 
----
+***
 
 ## Security Group 참고
 
 Terraform으로 Security Group을 생성하거나 OpenStack 대시보드에서 수동으로 추가합니다.
 
 | Security Group | 인바운드 포트 | 대상 |
-|----------------|-------------|------|
+| -------------- | ------- | --- |
 | ollama-access | 11434/tcp | 로컬 PC IP |
 | qdrant-access | 6333/tcp | 로컬 PC IP |
