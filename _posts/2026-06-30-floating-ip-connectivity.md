@@ -50,66 +50,15 @@ Floating IP 연동이 성공하려면 아래 경로가 모두 연결되어 있�
 
 ### 1. 라우팅 가능한 네트워크 목록 추출
 
-Neutron API를 통해 라우터와 인터페이스 정보를 수집합니다.
-
-```java
-// 1. External Gateway가 설정된 라우터 목록 조회
-List<Router> routers = neutronClient.getRouters().stream()
-    .filter(r -> r.getExternalGatewayInfo() != null)
-    .collect(toList());
-
-// 2. 해당 라우터들의 인터페이스(서브넷) 조회
-Set<String> routableNetworkIds = new HashSet<>();
-for (Router router : routers) {
-    List<Port> routerPorts = neutronClient.getPorts().stream()
-        .filter(p -> p.getDeviceId().equals(router.getId()))
-        .filter(p -> p.getDeviceOwner().equals("network:router_interface"))
-        .collect(toList());
-
-    routerPorts.stream()
-        .map(Port::getNetworkId)
-        .forEach(routableNetworkIds::add);
-}
-```
+Neutron API를 통해 External Gateway가 설정된 라우터 목록을 조회하고, 그 라우터들의 인터페이스(`network:router_interface`) 포트가 속한 네트워크 ID를 모아 "라우팅 가능한 네트워크" 집합을 만듭니다.
 
 ### 2. 포트 목록 조회 시 연동 가능 여부 표시
 
-포트 목록을 반환할 때 `routableNetworkIds` 기준으로 연동 가능 여부를 함께 반환합니다.
-
-```java
-List<PortResponse> portList = ports.stream()
-    .map(port -> PortResponse.builder()
-        .id(port.getId())
-        .name(port.getName())
-        .networkId(port.getNetworkId())
-        .fixedIps(port.getFixedIps())
-        .floatingIpAssociatable(routableNetworkIds.contains(port.getNetworkId()))
-        .build())
-    .collect(toList());
-```
+포트 목록을 반환할 때, 각 포트의 네트워크 ID가 앞서 구한 라우팅 가능 네트워크 집합에 포함되는지를 `floatingIpAssociatable` 필드로 함께 내려줍니다.
 
 ### 3. 응답 구조
 
-```json
-{
-  "ports": [
-    {
-      "id": "port-uuid-1",
-      "name": "vm-port-1",
-      "networkId": "net-uuid-a",
-      "fixedIps": [{ "ipAddress": "10.0.1.5", "subnetId": "subnet-uuid" }],
-      "floatingIpAssociatable": true
-    },
-    {
-      "id": "port-uuid-2",
-      "name": "vm-port-2",
-      "networkId": "net-uuid-b",
-      "fixedIps": [{ "ipAddress": "192.168.10.3", "subnetId": "subnet-uuid-2" }],
-      "floatingIpAssociatable": false
-    }
-  ]
-}
-```
+포트 응답에는 id, name, networkId, fixedIps와 함께 `floatingIpAssociatable`(연동 가능 여부, boolean) 필드가 포함됩니다.
 
 ---
 

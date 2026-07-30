@@ -42,25 +42,11 @@ Octavia 로드밸런서의 Listener를 `TERMINATED_HTTPS` 프로토콜로 생성
 
 ### Barbican Secret 목록 조회
 
-```java
-List<BarbicanSecret> secrets = barbicanClient.listSecrets().stream()
-    .filter(s -> "application/octet-stream".equals(s.getContentType()))
-    .collect(toList());
-```
+Barbican API로 Secret 목록을 조회한 뒤, 인증서(`application/octet-stream`) 타입만 필터링해 노출합니다.
 
 ### Listener 생성 요청
 
-```java
-ListenerCreateRequest request = ListenerCreateRequest.builder()
-    .loadbalancerId(loadbalancerId)
-    .protocol("TERMINATED_HTTPS")
-    .protocolPort(443)
-    .name(listenerName)
-    .defaultTlsContainerRef(selectedSecretRef)  // Barbican Secret URL
-    .build();
-
-octaviaClient.createListener(request);
-```
+Listener 생성 요청 시 프로토콜을 `TERMINATED_HTTPS`, 포트를 443으로 지정하고, 선택된 Barbican Secret의 참조 URL을 `default_tls_container_ref`에 담아 Octavia에 전달합니다.
 
 ---
 
@@ -68,15 +54,7 @@ octaviaClient.createListener(request);
 
 ### 기존 방식의 불편함
 
-Barbican에 인증서를 등록하려면 `.p12` 파일을 **직접 base64로 인코딩**한 뒤 API로 전송해야 합니다.
-
-```bash
-# 기존 방식 — 사용자가 직접 수행
-base64 -w 0 certificate.p12 > certificate.b64
-# 이 base64 문자열을 Barbican API에 직접 전송
-```
-
-실제 사용자 입장에서는 번거롭고 실수가 생기기 쉬운 과정입니다.
+Barbican에 인증서를 등록하려면 `.p12` 파일을 **직접 base64로 인코딩**한 뒤 API로 전송해야 합니다. 실제 사용자 입장에서는 번거롭고 실수가 생기기 쉬운 과정입니다.
 
 ### 개선: 포탈에서 .p12 직접 업로드
 
@@ -96,35 +74,7 @@ base64 -w 0 certificate.p12 > certificate.b64
   Secret 목록에서 선택 → Listener 생성
 ```
 
-### 구현 코드
-
-```java
-@PostMapping("/secrets/upload")
-public ResponseEntity<SecretUploadResponse> uploadCertificate(
-        @RequestParam("file") MultipartFile file,
-        @RequestParam("name") String secretName) {
-
-    // 1. .p12 파일을 base64로 인코딩
-    byte[] fileBytes = file.getBytes();
-    String base64Payload = Base64.getEncoder().encodeToString(fileBytes);
-
-    // 2. Barbican Secret 생성
-    BarbicanSecretCreateRequest request = BarbicanSecretCreateRequest.builder()
-        .name(secretName)
-        .secretType("opaque")
-        .payloadContentType("application/octet-stream")
-        .payloadContentEncoding("base64")
-        .payload(base64Payload)
-        .build();
-
-    BarbicanSecret created = barbicanClient.createSecret(request);
-
-    return ResponseEntity.ok(SecretUploadResponse.builder()
-        .secretRef(created.getSecretRef())
-        .name(created.getName())
-        .build());
-}
-```
+업로드 API는 전달받은 `.p12` 파일을 base64로 인코딩한 뒤, Barbican Secret 생성 요청(`opaque` 타입, `application/octet-stream` 콘텐츠 타입)을 보내고, 생성된 Secret 참조 URL을 응답으로 반환합니다.
 
 ---
 
