@@ -108,9 +108,9 @@ order: 0
     <div class="ph-title"><i class="fas fa-random"></i> Octavia Manager</div>
     <div class="ph-desc">안 지워지는 로드밸런서 삭제부터 CLI 운영, 트러블슈팅까지 정리한 인터랙티브 운영 도구</div>
   </a>
-  <a class="ph-card" href="{% post_url 2026-06-30-iac-rag-01-overview %}">
-    <div class="ph-title"><i class="fas fa-project-diagram"></i> IaC + RAG 파이프라인</div>
-    <div class="ph-desc">Terraform·Ansible로 GPU 인프라를 자동 구성하고, 그 위에 로컬 LLM 기반 RAG 파이프라인을 얹은 개인 프로젝트</div>
+  <a class="ph-card" href="{% post_url 2026-06-30-octavia-ssl-offloading %}">
+    <div class="ph-title"><i class="fas fa-lock"></i> Octavia SSL Offloading</div>
+    <div class="ph-desc">Octavia 로드밸런서에 TERMINATED_HTTPS 리스너와 Barbican 인증서 연동을 붙여 SSL Offloading 기능을 구현한 과정</div>
   </a>
   <a class="ph-card" href="{% post_url 2026-06-30-rack-topology %}">
     <div class="ph-title"><i class="fas fa-server"></i> 데이터센터 Rack Topology</div>
