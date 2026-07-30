@@ -8,7 +8,7 @@ tags: [kubernetes, kubectl, cheatsheet, cli]
 
 ## 개요
 
-minikube 실습([Kubernetes 학습 (1)]({% post_url 2026-07-01-k8s-minikube-basics %}))과 OpenStack GPU 인스턴스 위 클러스터 구성([Kubernetes 학습 (2)]({% post_url 2026-07-01-k8s-openstack-gpu-kubeadm %}))을 진행하면서 반복해서 찾아보게 되는 `kubectl` 명령어를 용도별로 정리했습니다.
+minikube 실습([Kubernetes 학습]({% post_url 2026-07-01-k8s-minikube-basics %}))을 진행하면서 반복해서 찾아보게 되는 `kubectl` 명령어를 용도별로 정리했습니다.
 
 ---
 
@@ -88,7 +88,7 @@ kubectl config set-context --current --namespace=<namespace>
 kubectl get ns
 ```
 
-여러 클러스터(minikube, 사내 OpenStack GPU 클러스터 등)를 오가며 작업할 때는 `use-context`로 전환하지 않으면 엉뚱한 클러스터에 명령이 나가는 사고가 나기 쉬워, 작업 전 `current-context` 확인이 습관이 되어야 합니다.
+여러 클러스터를 오가며 작업할 때는 `use-context`로 전환하지 않으면 엉뚱한 클러스터에 명령이 나가는 사고가 나기 쉬워, 작업 전 `current-context` 확인이 습관이 되어야 합니다.
 
 ---
 
@@ -111,8 +111,6 @@ kubectl run tmp-shell --rm -it --image=busybox -- sh
 # YAML로 현재 정의 뽑아보기 (수정 없이 확인만)
 kubectl get deployment <name> -o yaml
 ```
-
-GPU 노드에서는 `kubectl describe node <gpu-node> | grep nvidia`로 Device Plugin이 리소스를 정상적으로 광고하고 있는지 확인하는 것이 GPU Pod가 `Pending`에 머물 때 가장 먼저 확인하는 지점입니다.
 
 ---
 
@@ -139,5 +137,5 @@ complete -o default -F __start_kubectl k
 | 역할 | 기술 |
 |------|------|
 | CLI | kubectl |
-| 클러스터 | minikube, kubeadm (OpenStack GPU 인스턴스) |
+| 클러스터 | minikube |
 | 메트릭 조회 | metrics-server (`kubectl top`) |

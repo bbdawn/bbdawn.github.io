@@ -1,5 +1,5 @@
 ---
-title: "[Study] Docker 학습 (1) — 기본 개념: 컨테이너, 이미지, Dockerfile"
+title: "[Study] Docker 학습 — 기본 개념: 컨테이너, 이미지, Dockerfile"
 date: 2026-07-02 09:00:00 +0900
 categories: [Study, "Docker & Kubernetes"]
 subcategory: Study
@@ -17,8 +17,6 @@ OpenStack에서 VM 단위로 인프라를 다뤄왔지만, 애플리케이션 �
                   └── Volume (데이터 영속화)
                   └── Network (컨테이너 간 통신)
 ```
-
-실무에서 자주 쓰는 Compose, 멀티 스테이지 빌드, 레지스트리 운영은 다음 글([Docker 학습 (2)]({% post_url 2026-07-02-docker-02-practical %}))에서 다룹니다.
 
 ***
 
@@ -198,11 +196,3 @@ docker system prune
 | 이미지 빌드 | Dockerfile |
 | 데이터 영속화 | Docker Volume |
 | 네트워킹 | Docker Network (bridge) |
-
-***
-
-## 시리즈 구성
-
-* **(1)**: 기본 개념 — 컨테이너, 이미지, Dockerfile (현재)
-* **(2)**: 실무 활용 — Docker Compose, 멀티 스테이지 빌드, 레지스트리
-* **(3)**: 실습 프로젝트 — Docker Compose로 컨테이너 모니터링 스택 구성

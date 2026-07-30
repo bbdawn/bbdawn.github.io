@@ -1,5 +1,5 @@
 ---
-title: "[Study] Kubernetes 학습 (1) — minikube로 로컬 클러스터 구성 및 기본 오브젝트 실습"
+title: "[Study] Kubernetes 학습 — minikube로 로컬 클러스터 구성 및 기본 오브젝트 실습"
 date: 2026-07-01 09:00:00 +0900
 categories: [Study, "Docker & Kubernetes"]
 subcategory: Study
@@ -18,8 +18,6 @@ tags: [kubernetes, k8s, minikube, pod, deployment, service, configmap, daemonset
     └── DaemonSet (node_exporter)
                 └── Prometheus 메트릭 수집
 ```
-
-GPU 워크로드까지 다루는 실전 환경 구성은 다음 글([Kubernetes 학습 (2)]({% post_url 2026-07-01-k8s-openstack-gpu-kubeadm %}))에서 이어집니다.
 
 ---
 
@@ -134,7 +132,7 @@ kubectl get daemonset
 
 ### 7. Prometheus 연동
 
-node_exporter가 노출하는 메트릭을 Prometheus가 수집하도록 연동하고, GPU 환경에서도 동일한 방식(DCGM Exporter)이 적용된다는 점을 확인했습니다.
+node_exporter가 노출하는 메트릭을 Prometheus가 수집하도록 연동해, "메트릭 노출 → 수집"이라는 기본적인 모니터링 흐름을 확인했습니다.
 
 ---
 
@@ -158,10 +156,3 @@ kubectl exec -it <pod> -- bash
 | CLI | kubectl |
 | 모니터링 | node_exporter, Prometheus |
 | OS | macOS |
-
----
-
-## 시리즈 구성
-
-- **(1)**: minikube로 로컬 클러스터 구성 및 기본 오브젝트 실습 (현재)
-- **(2)**: OpenStack GPU 인스턴스 위에 Kubernetes 구성 (kubeadm + NVIDIA Device Plugin + DCGM Exporter)
