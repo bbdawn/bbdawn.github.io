@@ -3,6 +3,7 @@ title: "[Study] Docker 학습 — 기본 개념: 컨테이너, 이미지, Docker
 date: 2026-07-02 09:00:00 +0900
 categories: [Study, "Docker & Kubernetes"]
 subcategory: Study
+order: 1
 tags: [docker, container, image, dockerfile, volume, network]
 ---
 

@@ -3,6 +3,7 @@ title: "[Study] Kubernetes 학습 — minikube로 로컬 클러스터 구성 및
 date: 2026-07-01 09:00:00 +0900
 categories: [Study, "Docker & Kubernetes"]
 subcategory: Study
+order: 2
 tags: [kubernetes, k8s, minikube, pod, deployment, service, configmap, daemonset, prometheus]
 ---
 
