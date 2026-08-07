@@ -33,6 +33,8 @@ nginx 설치 + pool member별 index.html 배포
 
 VM마다 다른 색상의 페이지를 붙여서, 로드밸런서가 두 pool member에 트래픽을 어떻게 분배하는지 브라우저에서 바로 눈으로 확인할 수 있게 만드는 것이 목적입니다.
 
+전체 코드는 GitHub 저장소에서 확인할 수 있습니다. ([bbdawn/terraform-ansible-lab](https://github.com/bbdawn/terraform-ansible-lab))
+
 ***
 
 ## 디렉토리 구조
