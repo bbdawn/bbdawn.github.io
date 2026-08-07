@@ -303,3 +303,9 @@ curl http://<pool-member-2_IP>/   # 🔥 VM2 Red Server
 | pool member 구분 | 접속해서 직접 확인 | VM별 페이지 색상으로 즉시 구분 |
 
 `terraform apply` 한 번으로 VM 생성부터 로드밸런서 pool member 동작 확인까지 이어지는 구조를 만들어, 반복적인 테스트 환경 구축 시간을 크게 줄였습니다.
+
+***
+
+## 관련 글
+
+- [Octavia API로 삭제 안 되는 LB, 운영 자동화하기](/posts/loadbalancer-automation/)
