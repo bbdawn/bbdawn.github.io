@@ -6,6 +6,9 @@ subcategory: Project
 tags: [openstack, terraform, ansible, loadbalancer, pool-member, nginx, iac, automation]
 ---
 
+![pool-member-1(Blue), pool-member-2(Red) 결과 미리보기](/assets/img/posts/pool-member-nginx-pages.png)
+_Terraform + Ansible로 자동 구축한 pool-member-1(Blue), pool-member-2(Red) 결과 화면_
+
 ## 개요
 
 OpenStack Octavia 로드밸런서의 Pool Member 역할을 할 VM 2대를 Terraform으로 생성하고, VM이 뜨자마자 Ansible로 nginx를 설치 + 서버별로 다른 페이지를 배포하는 과정을 자동화했습니다.
