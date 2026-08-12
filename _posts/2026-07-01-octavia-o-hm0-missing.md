@@ -3,19 +3,16 @@ title: "[Troubleshooting] Loadbalancer 생성 실패 원인(2) : o-hm0 인터페
 date: 2026-07-01 10:00:00 +0900
 categories: [Troubleshooting, Openstack]
 subcategory: Troubleshooting
-tags: [openstack, octavia, loadbalancer, o-hm0, health-manager, amphora, troubleshooting]
+tags: [openstack, octavia, loadbalancer, o-hm0, health-manager, amphora, ovs, troubleshooting]
 ---
 
-## 오류 메시지
+## 오류 상황
 
-```
-Loadbalancer provisioning_status: ERROR
-```
+노드 재부팅 등의 작업 이후 Health Manager와 Amphora 간 통신이 끊기면서, Loadbalancer가 정상적으로 생성되지 않는 경우가 있습니다. 이때 컨트롤 노드에서 `o-hm0` 인터페이스를 조회하면 다음과 같이 나옵니다.
 
-Octavia Loadbalancer를 생성했을 때 Amphora 인스턴스는 뜨는데 `provisioning_status`가 `ERROR`로 빠지는 경우, 또는 Health Manager 로그에 아래와 같은 메시지가 반복되는 경우.
-
-```
-ERROR octavia.amphorae.drivers.haproxy.rest_api_driver [...] Failed to get status from amphora
+```bash
+$ ip link show o-hm0
+Device "o-hm0" does not exist.
 ```
 
 ---
@@ -34,143 +31,99 @@ ERROR octavia.amphorae.drivers.haproxy.rest_api_driver [...] Failed to get statu
    haproxy 실행                                haproxy 실행
 ```
 
-### 역할 요약
-
 | 역할 | 설명 |
 |------|------|
 | Health Check | Amphora에 주기적으로 heartbeat를 보내 생존 여부 확인 |
 | 설정 전달 | Listener, Pool, Member 설정을 REST API로 Amphora에 push |
-| 상태 수신 | Amphora가 보내는 heartbeat UDP 패킷 수신 (기본 포트 5555) |
+| 상태 수신 | Amphora가 보내는 heartbeat UDP 패킷 수신 |
 
-`o-hm0`이 없으면 Health Manager가 Amphora에 도달할 수 없어 **설정 전달 자체가 불가능**해집니다. Amphora 인스턴스가 정상적으로 생성되더라도 Loadbalancer는 `ERROR` 상태가 됩니다.
-
----
-
-## 확인 방법
-
-```bash
-ip link show o-hm0
-```
-
-정상이라면 다음과 같이 출력됩니다.
-
-```
-5: o-hm0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default qlen 1000
-    link/ether fa:16:3e:xx:xx:xx brd ff:ff:ff:ff:ff:ff
-```
-
-인터페이스가 없으면 다음과 같이 출력됩니다.
-
-```
-Device "o-hm0" does not exist.
-```
-
-### Health Manager 로그 추가 확인
-
-```bash
-journalctl -u octavia-health-manager -n 100 --no-pager
-# 또는
-tail -f /var/log/octavia/health-manager.log
-```
-
----
-
-## 원인
-
-`o-hm0`은 **Octavia 설치 시 한 번만 생성**하도록 설계된 인터페이스입니다. 다음 상황에서 사라질 수 있습니다.
-
-| 원인 | 상황 |
-|------|------|
-| 노드 재부팅 | 재부팅 후 자동 복구 설정이 없으면 사라짐 |
-| `ip link delete` 실수 | 운영 중 수동 삭제 |
-| 초기 설치 누락 | Octavia 설치 시 `create_mgmt_network` 단계 스킵 |
-| Neutron port 삭제 | lb-mgmt-net의 Health Manager port가 삭제됨 |
+`o-hm0`이 없으면 Health Manager가 Amphora에 도달할 수 없어 설정 전달 자체가 불가능해지고, Amphora 인스턴스가 정상적으로 생성되더라도 Loadbalancer는 `ERROR` 상태가 됩니다.
 
 ---
 
 ## 해결 방법
 
-### 1. Health Manager port 및 인터페이스 재생성
+### 1단계: dhclient로 복구 시도
 
-Octavia Health Manager에 할당된 Neutron port를 확인하고, 그 MAC 주소를 이용해 `o-hm0`을 다시 생성합니다.
-
-#### 1단계: Health Manager용 Neutron port 확인
+가장 먼저 시도해볼 수 있는 방법은 `dhclient`로 인터페이스를 되살리는 것입니다.
 
 ```bash
-# lb-mgmt-net에서 Health Manager에 할당된 port 확인
-openstack port list --network lb-mgmt-net
-
-# 또는 octavia.conf에서 직접 확인
-grep -i "bind_ip\|health_manager" /etc/octavia/octavia.conf
+sudo dhclient -v o-hm0
 ```
 
-#### 2단계: port가 없으면 새로 생성
+### 2단계: OVS 상태 확인
+
+1단계로 복구되지 않으면 OVS 브릿지 상태를 확인합니다. `br-int`에 `o-hm0` 포트 정의는 남아있지만 실제 device는 없는 상태(`no device`)인 경우가 대부분입니다.
 
 ```bash
-# lb-mgmt-net ID 확인
-MGMT_NET_ID=$(openstack network show lb-mgmt-net -f value -c id)
-
-# Health Manager용 port 생성
-openstack port create \
-  --network $MGMT_NET_ID \
-  --device-owner Octavia:health-mgr \
-  --security-group lb-health-mgr-sec-grp \
-  octavia-health-manager-port
+ovs-vsctl show
 ```
 
-#### 3단계: port의 MAC 주소로 o-hm0 생성
+### 3단계: Health Manager port 정보 조회
+
+Neutron에 등록된 Octavia Health Manager용 포트 목록을 조회해, 각 컨트롤 노드에 매핑된 MAC 주소와 port id(iface-id)를 확인합니다.
 
 ```bash
-# port의 MAC 주소 확인
-HM_PORT_MAC=$(openstack port show octavia-health-manager-port -f value -c mac_address)
-HM_PORT_ID=$(openstack port show octavia-health-manager-port -f value -c id)
-
-# o-hm0 인터페이스 생성
-sudo ip link add o-hm0 type veth peer name o-hm0@if
-
-# 또는 OVS/linuxbridge 환경에 따라 tap 방식으로 생성
-sudo ip link add o-hm0 type dummy
-sudo ip link set o-hm0 address $HM_PORT_MAC
-sudo ip link set o-hm0 up
+openstack port list | grep octavia-he
 ```
 
-#### 4단계: IP 주소 부여
-
-```bash
-# Health Manager bind_ip 확인
-HM_IP=$(grep bind_ip /etc/octavia/octavia.conf | awk -F= '{print $2}' | tr -d ' ')
-
-sudo ip addr add ${HM_IP}/24 dev o-hm0
-sudo ip link set o-hm0 up
+```
+| 0b982ee1-fba1-4ac8-a91e-621998da418c | octavia-health-manager-listen-port-con3 | fa:16:3e:0e:65:34 | ip_address='172.16.0.4', subnet_id='6dffc781-...' | ACTIVE |
+| 619bf3e5-fdc9-42f9-9884-b38f2e09e9eb | octavia-health-manager-listen-port-con1 | fa:16:3e:06:55:23 | ip_address='172.16.0.2', subnet_id='6dffc781-...' | ACTIVE |
+| 65d8971c-3ada-4e9f-a992-516153766830 | octavia-health-manager-listen-port-con2 | fa:16:3e:ac:ff:51 | ip_address='172.16.0.3', subnet_id='6dffc781-...' | ACTIVE |
 ```
 
-#### 5단계: Octavia 재시작
+이 중 **인터페이스가 사라진 물리 서버(컨트롤 노드)에 해당하는 port**를 찾아 MAC 주소와 port id를 확인합니다.
+
+### 4단계: o-hm0 인터페이스 재생성
+
+확인한 MAC 주소(`attached-mac`)와 port id(`iface-id`)를 이용해 `br-int`에 `o-hm0`을 다시 붙여줍니다.
 
 ```bash
-sudo systemctl restart octavia-health-manager octavia-worker
+# 기존 포트 정의 제거
+ovs-vsctl del-port br-int o-hm0
+
+# 해당 노드의 MAC / port id로 재생성
+ovs-vsctl add-port br-int o-hm0 \
+  -- set Interface o-hm0 type=internal \
+  -- set Interface o-hm0 external-ids:iface-status=active \
+  -- set Interface o-hm0 external-ids:attached-mac=fa:16:3e:3d:e7:80 \
+  -- set Interface o-hm0 external-ids:iface-id=36ffa58c-37d3-4580-82f3-afa379439c49
+
+# MTU 설정 (lb-mgmt-net 기준 1450)
+ovs-vsctl set Interface o-hm0 mtu_request=1450
+
+# 인터페이스 MAC 주소 적용
+sudo ip link set dev o-hm0 address fa:16:3e:3d:e7:80
+
+# DHCP로 IP 재할당
+sudo dhclient -v o-hm0
 ```
 
----
+> 노드가 여러 대라면 각 컨트롤 노드마다 자신의 `octavia-health-manager-listen-port-conN`에 해당하는 MAC / port id를 사용해야 합니다.
 
-### 2. 재부팅 후에도 유지되도록 systemd 설정 (재발 방지)
+### 5단계: 재발 방지용 스크립트
 
-`/etc/systemd/network/` 또는 `networkd-dispatcher`를 이용해 o-hm0을 부팅 시 자동 복구하도록 설정합니다.
+부팅 시마다 반복된다면, 아래와 같이 하나의 스크립트로 묶어 `octavia-interface.service`로 등록해두면 편리합니다.
 
 ```bash
-# /etc/octavia/post-up.d/o-hm0-up.sh 같은 스크립트를 작성해두면 편리합니다
-cat << 'EOF' > /usr/local/bin/octavia-hm-interface.sh
 #!/bin/bash
-HM_MAC="fa:16:3e:xx:xx:xx"   # 실제 MAC으로 교체
-HM_IP="192.168.200.1"        # 실제 bind_ip로 교체
 
-if ! ip link show o-hm0 > /dev/null 2>&1; then
-    ip link add o-hm0 type dummy
-    ip link set o-hm0 address $HM_MAC
-    ip addr add ${HM_IP}/24 dev o-hm0
-    ip link set o-hm0 up
-fi
-EOF
-chmod +x /usr/local/bin/octavia-hm-interface.sh
+ovs-vsctl del-port br-int o-hm0
+
+ovs-vsctl add-port br-int o-hm0 \
+  -- set Interface o-hm0 type=internal \
+  -- set Interface o-hm0 external-ids:iface-status=active \
+  -- set Interface o-hm0 external-ids:attached-mac=fa:16:3e:d6:d0:1d \
+  -- set Interface o-hm0 external-ids:iface-id=84eeeb25-342b-4d4a-ba60-bbee2e60d870
+
+sudo ip link set dev o-hm0 address fa:16:3e:d6:d0:1d
+
+ovs-vsctl set Interface o-hm0 mtu_request=1450
+
+sudo dhclient -v o-hm0
+
+systemctl restart octavia-interface.service
 ```
 
 ---
@@ -179,6 +132,7 @@ chmod +x /usr/local/bin/octavia-hm-interface.sh
 
 | 증상 | 원인 | 해결 |
 |------|------|------|
-| Loadbalancer ERROR, Amphora는 정상 | o-hm0 없어서 Health Manager → Amphora 통신 불가 | o-hm0 재생성 + octavia 재시작 |
-| 재부팅 후 반복 발생 | o-hm0 지속성 설정 없음 | 부팅 스크립트 등록 |
-| Amphora heartbeat timeout | o-hm0 IP 잘못 설정 | octavia.conf의 bind_ip와 일치하는지 확인 |
+| `ip link show o-hm0` → Device does not exist | 노드 재부팅 등으로 o-hm0 인터페이스 소실 | `dhclient -v o-hm0`로 우선 복구 시도 |
+| dhclient로도 복구 안 됨 | `br-int`에 포트 정의만 남고 실제 device가 없음 (`ovs-vsctl show`로 확인) | `ovs-vsctl del-port` 후 해당 노드의 MAC/iface-id로 `add-port` 재생성 |
+| Loadbalancer ERROR, Amphora는 정상 | o-hm0 없어서 Health Manager ↔ Amphora 통신 불가 | 위 재생성 절차 진행 후 정상 확인 |
+| 재부팅 후 반복 발생 | o-hm0 복구 로직이 시스템에 등록되어 있지 않음 | 재생성 절차를 스크립트로 묶어 `octavia-interface.service`로 등록 |
