@@ -36,24 +36,6 @@ Cinder API를 통해 아래 CRUD를 콘트라베이스 UI에서 제공하도록 
 | 그룹 조회 | 그룹에 속한 볼륨 목록 및 상태 조회 |
 | 그룹 삭제 | 그룹 및 그룹 내 볼륨 처리 옵션 포함 삭제 |
 
-```java
-// Volume Group 생성 예시
-VolumeGroup group = cinderClient.createVolumeGroup(
-    VolumeGroupCreateRequest.builder()
-        .name(groupName)
-        .groupType(groupTypeId)
-        .volumeTypes(volumeTypeIds)
-        .build()
-);
-
-// 기존 볼륨을 그룹에 추가
-cinderClient.updateVolumeGroup(group.getId(),
-    VolumeGroupUpdateRequest.builder()
-        .addVolumes(List.of(volumeId))
-        .build()
-);
-```
-
 ---
 
 ## 이후 활용: 인스턴스 복제 기능의 기반
