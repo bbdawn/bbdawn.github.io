@@ -9,7 +9,7 @@ tags: [kubernetes, k8s, minikube, pod, deployment, service, configmap, daemonset
 
 ## 개요
 
-기본 K8s 운영 능력을 확보하기 위해 학습을 시작했습니다. GPU 없이도 핵심 개념을 익힐 수 있도록 로컬 macOS 환경에 minikube로 단일 노드 클러스터를 구성하고, Pod부터 모니터링 연동까지 기본 오브젝트를 하나씩 실습했습니다.
+기본 K8s 운영 능력을 확보하기 위해 학습을 시작했습니다. 로컬 macOS 환경에 minikube로 단일 노드 클러스터를 구성하고, Pod부터 모니터링 연동까지 기본 오브젝트를 하나씩 실습했습니다.
 
 ```
 [로컬 macOS]
