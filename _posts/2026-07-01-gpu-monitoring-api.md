@@ -10,22 +10,33 @@ tags: [openstack, gpu, dcgm-exporter, prometheus, monitoring, api]
 
 ## 개발 배경
 
-DCGM Exporter가 각 GPU 호스트/인스턴스에서 메트릭을 노출하더라도, 이를 Prometheus에 적재하는 파이프라인과 실제로 화면에 보여줄 API는 별도로 필요합니다. 이번 프로젝트에서는 역할을 다음과 같이 나눴습니다.
+GPU 모니터링은 **GPU Host Monitoring**과 **GPU VM Monitoring** 두 갈래로 구성됩니다. 메트릭을 노출하는 지점(DCGM Exporter)은 같지만, Host는 Prometheus가 직접 접근할 수 있는 반면 VM은 네트워크상 직접 접근이 어려워 수집 경로가 다릅니다.
+
+- **GPU Host Monitoring**: 호스트에 DCGM Exporter를 설치해 GPU 메트릭을 노출합니다.
+- **GPU VM Monitoring**: VM에 DCGM Exporter와 qemu-guest-agent를 설치합니다. 모든 물리 호스트에 설치되는 Contrabass agent **mole**이 qemu-guest-agent를 통해 VM 내부에 접근해 DCGM Exporter 메트릭을 수집합니다.
 
 ```
-[GPU 호스트/인스턴스]
-  DCGM Exporter (4편에서 설치)
-        ↓
-  Prometheus 적재 파이프라인   ← 인프라팀 담당
-        ↓
-  Prometheus HTTP API
-        ↓
-  GPU 모니터링 API (단건 조회 / 시계열 조회)   ← 본인 개발
-        ↓
-  UI (현재 상태 / 그래프)
+[GPU Host]                       [GPU 인스턴스(VM)]
+  DCGM Exporter                    DCGM Exporter
+       │                           qemu-guest-agent
+       │                                  │
+       │                                  │ mole이 qemu-guest-agent로 접근해
+       │                                  │ DCGM Exporter 메트릭 수집
+       │                                  ▼
+       │                     mole (Contrabass Agent, 전 호스트 설치)
+       │                                  │
+       └────────────────┬─────────────────┘
+                         ▼
+               Prometheus (호스트)   ← 수집·적재: 데이터엔지니어 담당
+                         ▼
+               Prometheus HTTP API
+                         ▼
+     GPU 모니터링 API (단건 조회 / 시계열 조회)   ← 본인 개발
+                         ▼
+              UI (GPU Host / GPU VM)
 ```
 
-DCGM Exporter → Prometheus 적재는 인프라팀에서 구성했고, 저는 Prometheus에 쌓인 데이터를 **Prometheus HTTP API로 조회해서 UI에서 쓸 수 있는 형태로 가공하는 API**를 개발했습니다.
+DCGM Exporter 메트릭을 mole로 수집해 Prometheus에 적재하는 부분은 데이터엔지니어가 구성했고, 저는 Prometheus에 쌓인 데이터를 **Prometheus HTTP API로 조회해서 UI에서 쓸 수 있는 형태로 가공하는 API**를 Host/VM 각각에 대해 개발했습니다.
 
 ---
 
@@ -87,8 +98,9 @@ nvidia-smi
 
 | 역할 | 기술 |
 |------|------|
-| 메트릭 수집 | DCGM Exporter |
-| 적재 | Prometheus (인프라팀 구성) |
+| 메트릭 노출 | DCGM Exporter |
+| VM 메트릭 접근 | mole (Contrabass Agent) + qemu-guest-agent |
+| 수집·적재 | Prometheus (데이터엔지니어 구성) |
 | 조회 API | Prometheus HTTP API (query / query_range) |
 | 검증 | nvidia-smi, dcgmi |
 
