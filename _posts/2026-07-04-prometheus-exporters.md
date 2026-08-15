@@ -32,6 +32,7 @@ tags: [openstack, prometheus, monitoring, node-exporter, libvirt-exporter, opens
 
 - **대상**: NVIDIA GPU
 - **주요 메트릭**: GPU 사용률, 메모리, 온도, ECC 에러 등
+- **연동 방식**: Host에 설치된 경우 Prometheus가 직접 scrape하지만, GPU 인스턴스(VM) 내부에 설치된 경우 네트워크상 직접 접근이 불가능해 전 호스트에 설치된 Contrabass agent **mole**이 qemu-guest-agent를 통해 인스턴스 내부로 접근, 메트릭을 수집해 Prometheus에 적재합니다.
 - **실무 연계**: [GPU 모니터링 API 개발 — Prometheus 연동]({% post_url 2026-07-01-gpu-monitoring-api %})에서 다룬 파이프라인의 핵심 컴포넌트입니다.
 
 ---
@@ -42,7 +43,12 @@ tags: [openstack, prometheus, monitoring, node-exporter, libvirt-exporter, opens
 [Compute Host]
   ├── node_exporter     → 호스트 자체(OS) 메트릭
   ├── libvirt_exporter  → 그 호스트에서 도는 VM별 메트릭
-  └── dcgm_exporter     → GPU 인스턴스라면 GPU 메트릭까지
+  └── dcgm_exporter     → Host GPU 메트릭 (Prometheus 직접 scrape)
+
+[GPU 인스턴스(VM) 내부]
+  └── dcgm_exporter     → VM GPU 메트릭
+         ↑ qemu-guest-agent 경유로 접근
+      mole (Contrabass Agent, Host에 설치) 이 수집·적재
 
 [별도 위치 / API 게이트웨이]
   └── openstack_exporter → 개별 호스트가 아닌, 클러스터 전체의 서비스 단위 지표
@@ -57,7 +63,7 @@ tags: [openstack, prometheus, monitoring, node-exporter, libvirt-exporter, opens
 | node_exporter | 호스트 자체 | OS / 하드웨어 | 어디서든 실행 가능, 의존성 없음 |
 | libvirt_exporter | KVM/QEMU VM | 하이퍼바이저 | libvirtd 접근 필요 |
 | openstack_exporter | OpenStack API | 서비스 / 클러스터 | OpenStack API 엔드포인트·자격 증명 필요 |
-| dcgm_exporter | NVIDIA GPU | 하드웨어 | NVIDIA GPU + 드라이버 필요 |
+| dcgm_exporter | NVIDIA GPU | 하드웨어 | NVIDIA GPU + 드라이버 필요 (VM은 qemu-guest-agent + mole 경유 수집) |
 
 ---
 
@@ -66,6 +72,7 @@ tags: [openstack, prometheus, monitoring, node-exporter, libvirt-exporter, opens
 | 역할 | 기술 |
 |------|------|
 | 메트릭 수집 | node_exporter, libvirt_exporter, openstack_exporter, dcgm_exporter |
+| VM 메트릭 접근 | mole (Contrabass Agent) + qemu-guest-agent |
 | 저장 | Prometheus |
 | 시각화 | Grafana / 자체 개발 모니터링 API |
 | 인프라 | OpenStack (Nova, libvirt/KVM) |

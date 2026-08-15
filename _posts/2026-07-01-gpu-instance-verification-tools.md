@@ -20,6 +20,7 @@ tags: [openstack, gpu, nvidia-driver, dcgm-exporter, gpu-burn, ansible, golden-i
 |------|------|
 | nvidia-driver | 인스턴스에서 GPU를 인식하기 위한 드라이버 |
 | DCGM Exporter | GPU 메트릭 수집 (모니터링 연동, 5편에서 사용) |
+| qemu-guest-agent | 호스트의 mole이 인스턴스 내부에 접근해 DCGM Exporter 메트릭을 수집할 수 있게 하는 통신 채널 |
 | gpu-burn | GPU에 부하를 걸어 정상 동작 여부를 검증하는 스트레스 테스트 도구 |
 
 ---
@@ -34,6 +35,8 @@ nvidia-driver 설치
 nvidia-smi 로 GPU 인식 확인
         ↓
 dcgm-exporter 설치 및 실행
+        ↓
+qemu-guest-agent 설치 및 실행
         ↓
 gpu-burn 실행 (부하 테스트)
         ↓
@@ -51,7 +54,11 @@ GPU가 인스턴스에 정상적으로 전달됐다면 모델명과 메모리 �
 
 ### DCGM Exporter 설치
 
-GPU 메트릭을 외부에서 수집할 수 있도록 인스턴스에 DCGM Exporter를 설치하고 실행합니다. 이 데이터는 (5)편의 모니터링 API에서 사용됩니다.
+GPU 메트릭을 외부에서 수집할 수 있도록 인스턴스에 DCGM Exporter를 설치하고 실행합니다. 인스턴스 내부의 메트릭은 Prometheus가 직접 접근할 수 없어, 호스트에 설치된 Contrabass agent **mole**이 qemu-guest-agent를 통해 인스턴스 내부로 접근해 이 메트릭을 수집합니다. 이 데이터는 (5)편의 모니터링 API에서 사용됩니다.
+
+### qemu-guest-agent 설치
+
+mole이 호스트에서 인스턴스 내부로 접근할 수 있는 통신 채널입니다. 설치되어 있지 않으면 mole이 인스턴스 내부의 DCGM Exporter 메트릭을 가져올 방법이 없어 GPU VM Monitoring이 동작하지 않습니다.
 
 ### gpu-burn으로 부하 테스트
 
@@ -80,6 +87,7 @@ GPU 메트릭을 외부에서 수집할 수 있도록 인스턴스에 DCGM Expor
 |------|------|
 | GPU 드라이버 | NVIDIA Driver |
 | 모니터링 에이전트 | DCGM Exporter |
+| 메트릭 수집 채널 | qemu-guest-agent (mole 접근용) |
 | 부하 테스트 | gpu-burn |
 | 향후 자동화 | Ansible, Golden Image |
 

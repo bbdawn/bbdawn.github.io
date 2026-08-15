@@ -37,7 +37,7 @@ tags: [openstack, gpu, mig, passthrough, nova, precheck, validation]
 ```
 [UI] 인스턴스 생성 화면 → 호스트 목록 조회
         ↓
-[Backend] 호스트별 GPU 디바이스 조회
+[Backend] 호스트별 GPU 디바이스 조회 (mole 경유)
         ↓
    GPU 카드 있음?  ── No  → "GPU 없음" 표시, 선택 비활성화
         │ Yes
@@ -54,7 +54,7 @@ tags: [openstack, gpu, mig, passthrough, nova, precheck, validation]
 
 ### GPU 카드/모드 조회
 
-호스트의 GPU 디바이스 정보(PCI 디바이스, MIG 인스턴스 목록)를 조회해 카드 유무와 현재 모드를 판별합니다.
+호스트의 GPU 디바이스 정보(PCI 디바이스, MIG 인스턴스 목록)를 조회해 카드 유무와 현재 모드를 판별합니다. 이 조회는 전 호스트에 설치된 Contrabass agent **mole**이 담당합니다. mole이 각 호스트에서 `lspci`로 PCI 디바이스 목록을 확인해 GPU 카드 유무를 판별하고, MIG 인스턴스 목록을 조회해 현재 모드를 판별합니다. (`lspci` 경로 인식 문제는 [별도 글]({% post_url 2026-07-01-linux-lspci-path %})에서 다뤘습니다.)
 
 ### nova.conf 정합성 체크
 
@@ -92,7 +92,7 @@ compute-gpu-04    -          -              GPU 없음
 | 역할 | 기술 |
 |------|------|
 | 백엔드 | OpenStack Nova, Placement API |
-| GPU 조회 | PCI 디바이스 조회, nvidia-smi / MIG 정보 |
+| GPU 조회 | mole (Contrabass Agent)을 통한 PCI 디바이스 조회, nvidia-smi / MIG 정보 |
 | 검증 대상 | nova.conf |
 
 ---
