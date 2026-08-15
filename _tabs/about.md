@@ -72,7 +72,7 @@ order: 0
       </div>
       <ul style="font-size: 0.95rem; line-height: 1.85; padding-left: 1rem; margin: 0; opacity: 0.8;">
         <li>전환형 인턴</li>
-        <li>MLOps CI/CD 솔루션 "Trumpet.ai" 백엔드 및 프론트엔드 개발</li>
+        <li>MLOps CI/CD 솔루션 "Trumpet.ai" Backend 및 Frontend 개발</li>
       </ul>
     </div>
 
