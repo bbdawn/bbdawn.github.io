@@ -10,12 +10,6 @@ tags: [openstack, neutron, floating-ip, network, router, java, spring]
 
 OpenStack Neutron에서 Floating IP를 포트에 연동할 때, **라우터가 연결되지 않은 네트워크의 포트**와 연동을 시도하면 실패합니다.
 
-```
-FloatingIP 연동 실패
-  └── ExternalGatewayForFloatingIPNotFound
-       "포트가 속한 네트워크가 외부 네트워크에 연결된 라우터를 통해 접근 가능하지 않음"
-```
-
 기존 UI에서는 포트 목록을 그대로 보여줬기 때문에, 사용자가 연동 불가능한 포트를 선택해 오류를 만나는 상황이 반복됐습니다.
 
 ---
