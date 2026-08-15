@@ -61,7 +61,7 @@ OS × OpenStack Version × GPU 모드를 키로 하는 설정 템플릿을 관�
 
 ### nova.conf 생성 항목
 
-GPU 모드에 따라 아래와 같은 항목이 자동으로 채워집니다.
+GPU 모드에 따라 flavor metadata 항목이 자동으로 채워집니다.
 
 - Passthrough: PCI 디바이스 화이트리스트/스펙 설정
 - MIG: mdev 타입 활성화 설정, MIG 프로파일 관련 설정
