@@ -64,7 +64,6 @@ API가 반환하는 값이 실제 GPU 상태와 일치하는지 직접 확인하
 ```bash
 # GPU 호스트에서
 nvidia-smi
-dcgmi dmon -s u
 
 # GPU 인스턴스 내부에서
 nvidia-smi
