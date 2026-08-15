@@ -64,15 +64,15 @@ tags: [openstack, gpu, mig, passthrough, nova, precheck, validation]
 
 ## UI 표시
 
-호스트 목록에서 상태별로 구분되어 표시됩니다.
+호스트 목록에서 상태별로 구분되어 표시됩니다. 호스트 한 대에 GPU 카드가 최대 8개까지 꽂힐 수 있고, 카드별로 MIG/Passthrough 모드가 섞일 수 있어 모드는 호스트 단위가 아니라 카드 단위로 집계해서 보여줍니다.
 
 ```
-호스트명          GPU        모드           상태
-──────────────    ───────    ───────────    ─────────────
-compute-gpu-01    A100 ×4    MIG            생성 가능
-compute-gpu-02    A100 ×4    Passthrough    생성 가능
-compute-gpu-03    H100 ×2    MIG            설정 불일치 ⚠
-compute-gpu-04    -          -              GPU 없음
+호스트명          GPU         모드                        상태
+──────────────    ────────    ─────────────────────────  ─────────────
+compute-gpu-01    A100 ×8     MIG ×5 / Passthrough ×3     생성 가능
+compute-gpu-02    A100 ×4     MIG ×4                      생성 가능
+compute-gpu-03    H100 ×2     Passthrough ×2               설정 불일치 ⚠
+compute-gpu-04    -           -                            GPU 없음
 ```
 
 ---
