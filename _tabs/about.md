@@ -59,7 +59,8 @@ order: 0
         <span style="font-size: 0.82rem; opacity: 0.45;">2022.12 ~ 2023.03 (4개월)</span>
       </div>
       <ul style="font-size: 0.95rem; line-height: 1.85; padding-left: 1rem; margin: 0; opacity: 0.8;">
-        <li>Samsung Cloud Platform PaaS(Kubernetes) 관리 포탈 Frontend 개발</li>
+        <li>Samsung Cloud Platform PaaS(Kubernetes) 관리 포탈 Frontend 개발 및 산출물 작성</li>
+        <li>Cloud Management Platform 개발을 위한 Terraform, Keycloak 도입 검토</li>
       </ul>
     </div>
 
