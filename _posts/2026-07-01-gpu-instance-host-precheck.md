@@ -80,7 +80,7 @@ tags: [openstack, gpu, mig, passthrough, nova, precheck, validation]
 
 | 역할 | 기술 |
 |------|------|
-| 백엔드 | OpenStack Nova, Placement API |
+| 백엔드 | OpenStack Nova |
 | GPU 조회 | mole (Contrabass Agent)을 통한 PCI 디바이스 조회, nvidia-smi / MIG 정보 |
 | 검증 대상 | nova.conf |
 
