@@ -30,6 +30,10 @@ tags: [openstack, gpu, mig, passthrough, nova, precheck, validation]
 | 동작 모드 | MIG인지 Passthrough인지, 몇 개의 슬라이스/디바이스가 있는지 |
 | nova.conf 정합성 | (2)편에서 생성된 기대 설정값과 호스트의 실제 설정값이 일치하는지 |
 
+실제 인스턴스 생성 화면에서 호스트를 지정하면, 가용성 존 목록에 호스트별 GPU 생성 가능 여부가 Yes/No로 표시됩니다. 아래 예시에서는 gpu01만 생성 가능(Yes)하고, gpu02·gpu03은 생성 불가(No)로 표시됩니다.
+
+![인스턴스 생성 화면 - 호스트별 GPU 인스턴스 생성 가능 여부(Yes/No) 표시](/assets/img/posts/gpu-instance-host-precheck-result.png)
+
 ---
 
 ## 동작 흐름
