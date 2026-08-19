@@ -48,14 +48,14 @@ Cinder
 
 여기에 Volume Type을 두 개 만듭니다.
 
-```plain text
+```text
 volume-type-a
 volume-type-b
 ```
 
 그리고 각 Volume Type의 `extra_specs`에 아래처럼 백엔드를 매핑합니다.
 
-```plain text
+```text
 volume-type-a
  └── storage_backend=powerflex
 
@@ -118,13 +118,13 @@ volume_driver = cinder.volume.drivers.dell_emc.powerflex.driver.PowerFlexDriver
 
 `--default--` 타입에 아래처럼 조건이 걸려 있으면:
 
-```plain text
+```text
 volume_backend_name = powerflex
 ```
 
 Backend 후보가 그 하나로 **제한**됩니다.
 
-```plain text
+```text
 --default--
      │
      ▼
@@ -136,7 +136,7 @@ PowerFlex Backend
 
 반대로 아무 조건이 없다면, Scheduler가 등록된 백엔드들을 상태·용량·Capabilities 기준으로 직접 필터링해서 선택합니다.
 
-```plain text
+```text
 --default--
      │
      ▼
