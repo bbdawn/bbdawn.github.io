@@ -10,6 +10,8 @@ tags: [openstack, gpu, terraform, iac, automation]
 
 Terraform으로 OpenStack에 GPU 인스턴스(`gpu-vm`)와 Qdrant 인스턴스(`qdrant-vm`), 총 2대를 프로비저닝합니다. 두 인스턴스가 서로 다른 flavor를 쓸 수 있도록 변수를 분리했고, 생성된 IP는 output으로 뽑아 Ansible inventory 파일에 자동으로 기록되도록 구성했습니다.
 
+![terraform apply 결과](/assets/img/posts/terraform-apply-gpu-qdrant-vm.png)
+
 ***
 
 ## 디렉토리 구조
@@ -294,11 +296,3 @@ clouds:
 두 인스턴스 모두 정상적으로 생성되고 IP가 할당됐습니다. `local_file.ansible_inventory`도 같이 생성되면서 `../ansible/inventory.ini`에 두 VM의 IP가 자동으로 기록됩니다.
 
 ![terraform apply 결과](/assets/img/posts/terraform-apply-gpu-qdrant-vm.png)
-
-***
-
-## 남은 작업
-
-- `gpu_flavor_id` / `qdrant_flavor_id`에 실제로 다른 값 채워 넣기 (현재는 동일한 플레이버로 임시 적용된 상태)
-- GPU 드라이버 / Qdrant 설치용 Ansible 플레이북 작성 후 `null_resource.run_ansible` 다시 활성화
-- 다음 편에서는 이 인벤토리를 받아서 Ansible로 실제 소프트웨어를 설치하는 과정을 다룹니다.
