@@ -6,7 +6,7 @@ sitemap: false
 ---
 
 <style>
-  /* ── Password overlay ── */
+  /* Password overlay */
   #pw-overlay {
     position: fixed; inset: 0; z-index: 9999;
     display: flex; align-items: center; justify-content: center;
@@ -32,13 +32,13 @@ sitemap: false
   #pw-error { font-size: 0.8rem; color: #dc3545; margin-top: 0.6rem; min-height: 1.2em; }
   #main-content.hidden { display: none; }
 
-  /* ── Layout ── */
+  /* Layout */
   .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
   .page-header h4 { margin: 0; font-weight: 700; }
   .updated-hint { font-size: 0.78rem; color: var(--text-muted-color, #6c757d); }
   .card-section { margin-bottom: 1.75rem; }
 
-  /* ── Fear & Greed gauge ── */
+  /* Fear & Greed gauge */
   .fng-top { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
   .fng-gauge-wrap { width: 260px; flex-shrink: 0; text-align: center; }
   .fng-gauge-svg { width: 100%; height: auto; }
@@ -61,17 +61,14 @@ sitemap: false
   .fng-comp-score { width: 32px; text-align: right; font-weight: 700; flex-shrink: 0; }
   #fng-error { font-size: 0.85rem; color: #dc3545; }
 
-  /* ── Watchlist ── */
-  .wl-add-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-end; }
-  .wl-add-row .form-group { flex: 1; min-width: 120px; }
-  .wl-add-row label { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.2rem; display: block; }
-  .wl-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem; }
+  /* Watchlist */
+  .wl-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
   @media (max-width: 640px) { .wl-columns { grid-template-columns: 1fr; } }
   .wl-col-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem; }
   .wl-col-title i { color: var(--link-color); margin-right: 0.3rem; }
   .stock-item {
-    position: relative; border: 1px solid var(--border-color, #dee2e6); border-radius: 8px;
-    padding: 0.65rem 2rem 0.65rem 0.85rem; margin-bottom: 0.5rem;
+    border: 1px solid var(--border-color, #dee2e6); border-radius: 8px;
+    padding: 0.65rem 0.85rem; margin-bottom: 0.5rem;
   }
   .stock-main { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
   .stock-name { font-weight: 600; font-size: 0.92rem; }
@@ -81,13 +78,6 @@ sitemap: false
   .stock-up { color: #e53935; }
   .stock-down { color: #1e88e5; }
   .stock-flat { color: var(--text-muted-color, #6c757d); }
-  .stock-del-btn {
-    position: absolute; top: 0.5rem; right: 0.4rem; border: none; background: none;
-    color: #aaa; opacity: 0; transition: opacity .15s; padding: 0.2rem 0.35rem;
-  }
-  .stock-item:hover .stock-del-btn { opacity: 1; }
-  .stock-del-btn:hover { color: #dc3545; }
-  .token-badge { font-size: 0.78rem; }
 </style>
 
 <!-- Password overlay -->
@@ -119,9 +109,7 @@ sitemap: false
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
-     공포탐욕지수 (Fear & Greed Index)
-════════════════════════════════════ -->
+<!-- 공포탐욕지수 -->
 <div class="card categories card-section">
   <div class="card-header d-flex justify-content-between align-items-center hide-border-bottom">
     <span class="ms-2 fw-bold"><i class="fas fa-gauge-high fa-fw me-1"></i>공포탐욕지수 <span class="text-muted small fw-normal">(CNN Fear &amp; Greed Index · 미국 시장 기준)</span></span>
@@ -148,64 +136,7 @@ sitemap: false
   </div>
 </div>
 
-<!-- ═══════════════════════════════════
-     관심종목
-════════════════════════════════════ -->
-<div class="card categories card-section">
-  <div class="card-header d-flex justify-content-between align-items-center hide-border-bottom">
-    <span class="ms-2 fw-bold"><i class="fab fa-github fa-fw me-1"></i>GitHub 연동</span>
-    <span id="token-badge" class="badge bg-secondary token-badge">미설정</span>
-  </div>
-  <div class="card-body py-2">
-    <p class="small text-muted mb-2">
-      관심종목을 다른 기기에서도 동일하게 보려면 GitHub Personal Access Token(Fine-grained / Contents: Read and write)을 설정하세요.
-      설정하지 않으면 이 브라우저에만 저장됩니다. 시세는 30분마다 자동으로 갱신됩니다.
-    </p>
-    <div class="d-flex gap-2">
-      <input id="gh-token-input" type="password" class="form-control form-control-sm"
-             placeholder="github_pat_..." autocomplete="off"
-             onkeydown="if(event.key==='Enter')saveToken()">
-      <button class="btn btn-primary btn-sm flex-shrink-0" onclick="saveToken()">저장</button>
-      <button class="btn btn-outline-danger btn-sm flex-shrink-0" onclick="clearToken()" title="토큰 삭제">
-        <i class="fas fa-trash-alt"></i>
-      </button>
-    </div>
-    <div id="token-status" class="small mt-1"></div>
-  </div>
-</div>
-
-<div class="card categories card-section">
-  <div class="card-header hide-border-bottom">
-    <span class="ms-2 fw-bold"><i class="fas fa-star fa-fw me-1"></i>관심종목 추가</span>
-  </div>
-  <div class="card-body py-3">
-    <div class="wl-add-row">
-      <div class="form-group">
-        <label>심볼</label>
-        <input id="add-symbol" type="text" class="form-control form-control-sm" placeholder="AAPL / 005930.KS">
-      </div>
-      <div class="form-group">
-        <label>이름</label>
-        <input id="add-name" type="text" class="form-control form-control-sm" placeholder="삼성전자">
-      </div>
-      <div class="form-group" style="flex:0 0 110px;">
-        <label>시장</label>
-        <select id="add-market" class="form-select form-select-sm">
-          <option value="KR">국내</option>
-          <option value="US">해외</option>
-        </select>
-      </div>
-      <div class="form-group" style="flex:0 0 auto;">
-        <button class="btn btn-success btn-sm" onclick="addSymbol()">
-          <i class="fas fa-plus fa-fw me-1"></i>추가
-        </button>
-      </div>
-    </div>
-    <p class="small text-muted mt-2 mb-0">국내 종목은 <code>.KS</code>(코스피)/<code>.KQ</code>(코스닥) 접미사를 붙여주세요. 예: 삼성전자 <code>005930.KS</code></p>
-    <div id="wl-status" class="small mt-1"></div>
-  </div>
-</div>
-
+<!-- 관심종목 -->
 <div class="card categories card-section">
   <div class="card-header hide-border-bottom">
     <span class="ms-2 fw-bold"><i class="fas fa-list fa-fw me-1"></i>내 관심종목</span>
@@ -227,33 +158,26 @@ sitemap: false
 </div><!-- #main-content -->
 
 <script>
-/* ════════════════════════════════════
+/* ============================================================
    CONFIG
-════════════════════════════════════ */
-var REPO      = 'bbdawn/bbdawn.github.io';
-var API_BASE  = 'https://api.github.com/repos/' + REPO;
-var RAW_BASE  = 'https://raw.githubusercontent.com/' + REPO + '/main/assets/data/';
-var TOKEN_KEY = 'bbdawn-github-token';
+   watchlist / stocks / fear-greed 데이터는 GitHub Actions가
+   assets/data/*.json 으로 30분마다 커밋하고, 이 페이지는
+   raw.githubusercontent.com 에서 그 파일을 읽어와 표시만 한다.
+   (관심종목 구성은 저장소의 assets/data/watchlist.json 파일을
+   직접 수정해서 관리한다.)
+   ============================================================ */
+var REPO     = 'bbdawn/bbdawn.github.io';
+var RAW_BASE = 'https://raw.githubusercontent.com/' + REPO + '/main/assets/data/';
 var WL_CACHE_KEY = 'bbdawn-watchlist-cache';
 
-var watchlist  = [];                          // [{symbol,name,market}]
+var watchlist  = [];
 var quotesData = { updatedAt: null, quotes: {} };
 
-/* ════════════════════════════════════
+/* ============================================================
    HELPERS
-════════════════════════════════════ */
-function getToken(){ return localStorage.getItem(TOKEN_KEY) || ''; }
+   ============================================================ */
 function escHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function strToB64(str){
-  var bytes=new TextEncoder().encode(str), bin='';
-  bytes.forEach(function(b){bin+=String.fromCharCode(b);}); return btoa(bin);
-}
-function b64ToStr(b64){
-  var bin=atob(b64.replace(/\n/g,'')), bytes=new Uint8Array(bin.length);
-  for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
-  return new TextDecoder().decode(bytes);
 }
 function timeAgo(iso){
   if(!iso) return '-';
@@ -271,92 +195,11 @@ function fmtCurrency(n, currency){
   return '$'+Number(n).toLocaleString('en-US',{maximumFractionDigits:2});
 }
 
-/* ════════════════════════════════════
-   GITHUB (watchlist persistence)
-════════════════════════════════════ */
-function ghFetch(path, opts){
-  var headers={'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
-  return fetch(API_BASE+path, Object.assign({headers:headers}, opts||{}));
-}
-async function fetchWatchlistFile(){
-  var res = await ghFetch('/contents/assets/data/watchlist.json');
-  if(!res.ok) throw new Error('watchlist.json 조회 실패 ('+res.status+')');
-  var data = await res.json();
-  return { arr: JSON.parse(b64ToStr(data.content)), sha: data.sha };
-}
-async function commitWatchlist(arr, sha, message){
-  var body = JSON.stringify(arr, null, 2) + '\n';
-  var reqBody = { message: message, content: strToB64(body) };
-  if(sha) reqBody.sha = sha;
-  var res = await ghFetch('/contents/assets/data/watchlist.json', {method:'PUT', body:JSON.stringify(reqBody)});
-  if(!res.ok){
-    var err = await res.json().catch(function(){return{};});
-    throw new Error(err.message || ('저장 실패 ('+res.status+')'));
-  }
-  return res.json();
-}
-async function syncWatchlistToGitHub(message){
-  var statusEl = document.getElementById('wl-status');
-  statusEl.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>저장 중...';
-  try{
-    var file = await fetchWatchlistFile().catch(function(){ return null; });
-    await commitWatchlist(watchlist, file ? file.sha : undefined, message);
-    statusEl.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>저장됨 — 시세는 최대 30분 내 자동 반영</span>';
-  }catch(e){
-    statusEl.innerHTML = '<span class="text-danger">저장 실패: '+escHtml(e.message)+'</span>';
-  }
-}
-
-/* ── Token UI ── */
-function updateTokenBadge(){
-  var badge=document.getElementById('token-badge'); if(!badge) return;
-  if(getToken()){ badge.className='badge bg-success token-badge'; badge.textContent='연결됨'; }
-  else{ badge.className='badge bg-secondary token-badge'; badge.textContent='미설정'; }
-}
-function saveToken(){
-  var val=document.getElementById('gh-token-input').value.trim(); if(!val) return;
-  localStorage.setItem(TOKEN_KEY,val);
-  document.getElementById('gh-token-input').value='';
-  document.getElementById('token-status').innerHTML='<span class="text-success"><i class="fas fa-check me-1"></i>저장되었습니다.</span>';
-  updateTokenBadge();
-}
-function clearToken(){
-  localStorage.removeItem(TOKEN_KEY);
-  document.getElementById('token-status').innerHTML='<span class="text-muted">토큰이 삭제되었습니다.</span>';
-  updateTokenBadge();
-}
-
-/* ════════════════════════════════════
-   WATCHLIST
-════════════════════════════════════ */
+/* ============================================================
+   WATCHLIST (읽기 전용 표시)
+   ============================================================ */
 function loadWatchlistLocal(){ try{ return JSON.parse(localStorage.getItem(WL_CACHE_KEY)||'null'); }catch(e){ return null; } }
 function saveWatchlistLocal(arr){ localStorage.setItem(WL_CACHE_KEY, JSON.stringify(arr)); }
-
-async function addSymbol(){
-  var symbol = document.getElementById('add-symbol').value.trim();
-  var name   = document.getElementById('add-name').value.trim();
-  var market = document.getElementById('add-market').value;
-  if(!symbol){ alert('심볼을 입력해주세요 (예: AAPL, 005930.KS)'); return; }
-  if(watchlist.some(function(w){ return w.symbol===symbol; })){ alert('이미 등록된 심볼입니다.'); return; }
-  watchlist.push({ symbol: symbol, name: name || symbol, market: market });
-  saveWatchlistLocal(watchlist);
-  renderWatchlist();
-  document.getElementById('add-symbol').value='';
-  document.getElementById('add-name').value='';
-  if(!getToken()){
-    document.getElementById('wl-status').innerHTML =
-      '<span class="text-muted">GitHub 토큰이 없어 이 브라우저에만 추가됐습니다.</span>';
-    return;
-  }
-  await syncWatchlistToGitHub('Add watchlist symbol: '+symbol);
-}
-async function removeSymbol(symbol){
-  watchlist = watchlist.filter(function(w){ return w.symbol!==symbol; });
-  saveWatchlistLocal(watchlist);
-  renderWatchlist();
-  if(!getToken()) return;
-  await syncWatchlistToGitHub('Remove watchlist symbol: '+symbol);
-}
 
 function renderWatchlist(){
   var krList = document.getElementById('wl-kr'), usList = document.getElementById('wl-us');
@@ -397,21 +240,15 @@ function renderWatchlist(){
         '</div>'+
         '<div class="stock-sub"><span class="text-muted small">가격 정보 대기 중 (최대 30분)</span></div>';
     }
-    var delBtn = document.createElement('button'); delBtn.className='stock-del-btn'; delBtn.title='삭제';
-    delBtn.innerHTML = '<i class="fas fa-times"></i>';
-    delBtn.addEventListener('click', function(){
-      if(confirm(w.symbol+' 을(를) 관심종목에서 삭제할까요?')) removeSymbol(w.symbol);
-    });
-    item.appendChild(delBtn);
     target.appendChild(item);
   });
   if(!any.KR) krList.innerHTML = '<div class="text-muted small py-3 text-center">등록된 국내 종목이 없습니다.</div>';
   if(!any.US) usList.innerHTML  = '<div class="text-muted small py-3 text-center">등록된 해외 종목이 없습니다.</div>';
 }
 
-/* ════════════════════════════════════
+/* ============================================================
    FEAR & GREED GAUGE
-════════════════════════════════════ */
+   ============================================================ */
 var FNG_LABELS = {
   'extreme fear':'극단적 공포', 'fear':'공포', 'neutral':'중립', 'greed':'탐욕', 'extreme greed':'극단적 탐욕'
 };
@@ -497,9 +334,9 @@ function renderFearGreed(data){
   document.getElementById('fng-updated').textContent = data.updatedAt ? ('갱신: '+timeAgo(data.updatedAt)) : '';
 }
 
-/* ════════════════════════════════════
+/* ============================================================
    DATA LOAD
-════════════════════════════════════ */
+   ============================================================ */
 async function fetchRaw(name){
   var res = await fetch(RAW_BASE + name + '?t=' + Date.now(), { cache: 'no-store' });
   if(!res.ok) throw new Error(name + ' 조회 실패 ('+res.status+')');
@@ -531,19 +368,18 @@ async function loadAll(){
   }
 }
 
-/* ════════════════════════════════════
+/* ============================================================
    INIT
-════════════════════════════════════ */
+   ============================================================ */
 document.addEventListener('DOMContentLoaded', function(){
-  updateTokenBadge();
   loadAll();
 });
 </script>
 
 <script>
-/* ════════════════════════════════════
+/* ============================================================
    PASSWORD
-════════════════════════════════════ */
+   ============================================================ */
 (function(){
   var PW='031677', SESSION_KEY='bbdawn-admin-auth';
   function unlock(){

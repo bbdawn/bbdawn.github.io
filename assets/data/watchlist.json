@@ -1,6 +1,11 @@
 [
   { "symbol": "005930.KS", "name": "삼성전자", "market": "KR" },
   { "symbol": "000660.KS", "name": "SK하이닉스", "market": "KR" },
-  { "symbol": "AAPL", "name": "Apple", "market": "US" },
-  { "symbol": "NVDA", "name": "NVIDIA", "market": "US" }
+  { "symbol": "005380.KS", "name": "현대자동차", "market": "KR" },
+  { "symbol": "^KS11", "name": "코스피 지수", "market": "KR" },
+  { "symbol": "GC=F", "name": "금", "market": "US" },
+  { "symbol": "BTC-USD", "name": "비트코인", "market": "US" },
+  { "symbol": "QQQ", "name": "QQQ", "market": "US" },
+  { "symbol": "QLD", "name": "QLD", "market": "US" },
+  { "symbol": "GDXU", "name": "GDXU", "market": "US" }
 ]

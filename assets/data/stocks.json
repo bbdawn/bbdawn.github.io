@@ -1,32 +1,67 @@
 {
-  "updatedAt": "2026-08-21T06:11:41Z",
+  "updatedAt": "2026-08-21T06:34:25Z",
   "quotes": {
     "005930.KS": {
-      "price": 281000.0,
+      "price": 281250.0,
       "previousClose": 271000.0,
       "currency": "KRW",
-      "name": "삼성전자",
-      "time": 1787291491
+      "name": "Samsung Electronics Co., Ltd.",
+      "time": 1787292867
     },
     "000660.KS": {
-      "price": 1726000.0,
+      "price": 1730000.0,
       "previousClose": 1691000.0,
       "currency": "KRW",
-      "name": "SK하이닉스",
-      "time": 1787291490
+      "name": "SK hynix Inc.",
+      "time": 1787292866
     },
-    "AAPL": {
-      "price": 311.3,
-      "previousClose": 316.83,
-      "currency": "USD",
-      "name": "Apple Inc.",
-      "time": 1787256001
+    "005380.KS": {
+      "price": 415500.0,
+      "previousClose": 417500.0,
+      "currency": "KRW",
+      "name": "Hyundai Motor Company",
+      "time": 1787292867
     },
-    "NVDA": {
-      "price": 216.85,
-      "previousClose": 217.56001,
+    "^KS11": {
+      "price": 6909.78,
+      "previousClose": 6852.58,
+      "currency": "KRW",
+      "name": "KOSPI Composite Index",
+      "time": 1787292860
+    },
+    "GC=F": {
+      "price": 4607.7,
+      "previousClose": 4571.4,
       "currency": "USD",
-      "name": "NVIDIA Corporation",
+      "name": "Gold Dec 26",
+      "time": 1787293465
+    },
+    "BTC-USD": {
+      "price": 75550.8,
+      "previousClose": 73013.0,
+      "currency": "USD",
+      "name": "Bitcoin USD",
+      "time": 1787294068
+    },
+    "QQQ": {
+      "price": 710.93,
+      "previousClose": 716.08,
+      "currency": "USD",
+      "name": "Invesco QQQ Trust",
+      "time": 1787256000
+    },
+    "QLD": {
+      "price": 88.95,
+      "previousClose": 90.25,
+      "currency": "USD",
+      "name": "ProShares Ultra QQQ",
+      "time": 1787256000
+    },
+    "GDXU": {
+      "price": 170.52,
+      "previousClose": 158.63,
+      "currency": "USD",
+      "name": "MicroSectors Gold Miners 3X Leveraged ETNs",
       "time": 1787256000
     }
   }
