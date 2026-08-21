@@ -61,15 +61,31 @@ sitemap: false
   .fng-comp-score { width: 32px; text-align: right; font-weight: 700; flex-shrink: 0; }
   #fng-error { font-size: 0.85rem; color: #dc3545; }
 
+  /* 오늘의 요약 */
+  .summary-banner {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem 1rem;
+    border: 1px solid var(--border-color, #dee2e6); border-radius: 8px;
+    margin-bottom: 1.25rem; font-size: 0.88rem; background: var(--sidebar-bg, #f8f9fa);
+  }
+  .summary-banner i { color: var(--link-color); flex-shrink: 0; }
+
   /* Watchlist */
-  .wl-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-  @media (max-width: 640px) { .wl-columns { grid-template-columns: 1fr; } }
+  .wl-group { margin-bottom: 1.25rem; }
+  .wl-group:last-child { margin-bottom: 0; }
   .wl-col-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem; }
   .wl-col-title i { color: var(--link-color); margin-right: 0.3rem; }
+  .wl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; }
   .stock-item {
     border: 1px solid var(--border-color, #dee2e6); border-radius: 8px;
-    padding: 0.65rem 0.85rem; margin-bottom: 0.5rem;
+    padding: 0.65rem 0.85rem; position: relative;
   }
+  .stock-item.stock-top-mover { border-color: var(--link-color); }
+  .stock-mover-badge {
+    position: absolute; top: -0.55rem; right: 0.6rem; font-size: 0.68rem; font-weight: 700;
+    padding: 0.05rem 0.45rem; border-radius: 10px; color: #fff;
+  }
+  .stock-mover-badge.up-badge { background: #e53935; }
+  .stock-mover-badge.down-badge { background: #1e88e5; }
   .stock-main { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
   .stock-name { font-weight: 600; font-size: 0.92rem; }
   .stock-symbol { font-size: 0.72rem; color: var(--text-muted-color, #6c757d); margin-left: 0.4rem; font-family: monospace; }
@@ -78,6 +94,27 @@ sitemap: false
   .stock-up { color: #e53935; }
   .stock-down { color: #1e88e5; }
   .stock-flat { color: var(--text-muted-color, #6c757d); }
+  .stock-spark-svg { width: 100%; height: 34px; display: block; margin-top: 0.4rem; }
+  .stock-spark-line { fill: none; stroke-width: 1.6; }
+  .stock-range { margin-top: 0.45rem; }
+  .stock-range-track {
+    position: relative; height: 4px; border-radius: 2px; background: var(--border-color, #dee2e6);
+  }
+  .stock-range-dot {
+    position: absolute; top: 50%; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--link-color); transform: translate(-50%, -50%);
+  }
+  .stock-range-labels {
+    display: flex; justify-content: space-between; font-size: 0.68rem;
+    color: var(--text-muted-color, #6c757d); margin-top: 0.2rem;
+  }
+  .stock-memo-wrap { margin-top: 0.4rem; }
+  .stock-memo-input {
+    width: 100%; font-size: 0.78rem; padding: 0.25rem 0.5rem; border-radius: 6px;
+    border: 1px solid var(--border-color, #dee2e6); background: var(--main-bg, #fff);
+    color: var(--text-color, #333);
+  }
+  .stock-memo-input::placeholder { color: var(--text-muted-color, #6c757d); opacity: 0.7; }
 </style>
 
 <!-- Password overlay -->
@@ -107,6 +144,11 @@ sitemap: false
     </button>
     <div class="updated-hint mt-1" id="stocks-updated">불러오는 중...</div>
   </div>
+</div>
+
+<div id="summary-banner" class="summary-banner" style="display:none;">
+  <i class="fas fa-bolt"></i>
+  <span id="summary-text"></span>
 </div>
 
 <!-- 공포탐욕지수 -->
@@ -142,15 +184,17 @@ sitemap: false
     <span class="ms-2 fw-bold"><i class="fas fa-list fa-fw me-1"></i>내 관심종목</span>
   </div>
   <div class="card-body">
-    <div class="wl-columns">
-      <div>
-        <div class="wl-col-title"><i class="fas fa-flag"></i>국내</div>
-        <div id="wl-kr"></div>
-      </div>
-      <div>
-        <div class="wl-col-title"><i class="fas fa-globe-americas"></i>해외</div>
-        <div id="wl-us"></div>
-      </div>
+    <div class="wl-group">
+      <div class="wl-col-title"><i class="fas fa-flag"></i>국내</div>
+      <div id="wl-kr" class="wl-grid"></div>
+    </div>
+    <div class="wl-group">
+      <div class="wl-col-title"><i class="fas fa-globe-americas"></i>해외</div>
+      <div id="wl-us" class="wl-grid"></div>
+    </div>
+    <div class="wl-group">
+      <div class="wl-col-title"><i class="fas fa-chart-bar"></i>지표</div>
+      <div id="wl-idx" class="wl-grid"></div>
     </div>
   </div>
 </div>
@@ -201,49 +245,145 @@ function fmtCurrency(n, currency){
 function loadWatchlistLocal(){ try{ return JSON.parse(localStorage.getItem(WL_CACHE_KEY)||'null'); }catch(e){ return null; } }
 function saveWatchlistLocal(arr){ localStorage.setItem(WL_CACHE_KEY, JSON.stringify(arr)); }
 
+var MEMO_KEY = 'bbdawn-stock-memo';
+function loadMemos(){ try{ return JSON.parse(localStorage.getItem(MEMO_KEY)||'{}'); }catch(e){ return {}; } }
+function saveMemo(symbol, text){
+  var memos = loadMemos();
+  if(text) memos[symbol] = text; else delete memos[symbol];
+  localStorage.setItem(MEMO_KEY, JSON.stringify(memos));
+}
+
+function computeChange(q){
+  var change = q.price - q.previousClose;
+  var pct = q.previousClose ? (change/q.previousClose*100) : 0;
+  return { change: change, pct: pct, up: change > 0.0000001, down: change < -0.0000001 };
+}
+
+function buildSparkSvg(history, colorClass){
+  if(!history || history.length < 2) return '';
+  var w=200, h=34, pad=2;
+  var ys = history.map(function(p){ return p.y; });
+  var minY = Math.min.apply(null, ys), maxY = Math.max.apply(null, ys);
+  var range = (maxY - minY) || 1;
+  function px(i){ return pad + (w-2*pad) * (i/(history.length-1)); }
+  function py(y){ return h-pad - (h-2*pad) * ((y-minY)/range); }
+  var pts = history.map(function(p,i){ return px(i).toFixed(1)+','+py(p.y).toFixed(1); }).join(' ');
+  return '<svg viewBox="0 0 '+w+' '+h+'" class="stock-spark-svg" preserveAspectRatio="none">'+
+    '<polyline points="'+pts+'" class="stock-spark-line '+colorClass+'" style="stroke:currentColor"/>'+
+    '</svg>';
+}
+
+function buildRangeBar(q){
+  if(q.fiftyTwoWeekLow==null || q.fiftyTwoWeekHigh==null || q.fiftyTwoWeekHigh<=q.fiftyTwoWeekLow) return '';
+  var pct = (q.price - q.fiftyTwoWeekLow) / (q.fiftyTwoWeekHigh - q.fiftyTwoWeekLow) * 100;
+  pct = Math.max(0, Math.min(100, pct));
+  return '<div class="stock-range">'+
+    '<div class="stock-range-track"><div class="stock-range-dot" style="left:'+pct.toFixed(1)+'%"></div></div>'+
+    '<div class="stock-range-labels"><span>52주 최저 '+fmtCurrency(q.fiftyTwoWeekLow,q.currency)+'</span>'+
+    '<span>52주 최고 '+fmtCurrency(q.fiftyTwoWeekHigh,q.currency)+'</span></div>'+
+    '</div>';
+}
+
+function buildMemoField(symbol){
+  var memos = loadMemos();
+  var val = escHtml(memos[symbol]||'');
+  return '<div class="stock-memo-wrap">'+
+    '<input type="text" class="stock-memo-input" placeholder="메모 (이 브라우저에만 저장, 비공개)" '+
+    'value="'+val+'" data-symbol="'+escHtml(symbol)+'">'+
+    '</div>';
+}
+
+function renderStockItem(w, q, moverBadge){
+  var item = document.createElement('div');
+  item.className = 'stock-item' + (moverBadge ? ' stock-top-mover' : '');
+  var body = '';
+  if(moverBadge){
+    body += '<span class="stock-mover-badge '+moverBadge.cls+'">'+moverBadge.label+'</span>';
+  }
+  if(q && q.price!=null){
+    var c = computeChange(q);
+    var cls = c.up?'stock-up':(c.down?'stock-down':'stock-flat');
+    var sign = c.up?'+':'';
+    body +=
+      '<div class="stock-main">'+
+        '<div class="stock-name">'+escHtml(w.name||q.name||w.symbol)+'<span class="stock-symbol">'+escHtml(w.symbol)+'</span></div>'+
+        '<div class="stock-price '+cls+'">'+fmtCurrency(q.price,q.currency)+'</div>'+
+      '</div>'+
+      '<div class="stock-sub">'+
+        '<span class="'+cls+'"><i class="fas fa-caret-'+(c.up?'up':(c.down?'down':'right'))+' me-1"></i>'+
+        sign+fmtCurrency(c.change,q.currency)+' ('+sign+c.pct.toFixed(2)+'%)</span>'+
+        '<span class="text-muted small ms-2">'+timeAgo(quotesData.updatedAt)+'</span>'+
+      '</div>'+
+      buildSparkSvg(q.history, cls)+
+      buildRangeBar(q);
+  } else {
+    body +=
+      '<div class="stock-main">'+
+        '<div class="stock-name">'+escHtml(w.name||w.symbol)+'<span class="stock-symbol">'+escHtml(w.symbol)+'</span></div>'+
+        '<div class="stock-price text-muted">-</div>'+
+      '</div>'+
+      '<div class="stock-sub"><span class="text-muted small">가격 정보 대기 중 (최대 30분)</span></div>';
+  }
+  body += buildMemoField(w.symbol);
+  item.innerHTML = body;
+  var memoInput = item.querySelector('.stock-memo-input');
+  memoInput.addEventListener('change', function(){ saveMemo(w.symbol, memoInput.value.trim()); });
+  return item;
+}
+
+function computeTopMovers(){
+  var withChange = watchlist.map(function(w){
+    var q = quotesData.quotes[w.symbol];
+    if(!q || q.price==null || !q.previousClose) return null;
+    var c = computeChange(q);
+    return { w: w, q: q, pct: c.pct };
+  }).filter(Boolean);
+  if(!withChange.length) return { gainer:null, loser:null };
+  var sorted = withChange.slice().sort(function(a,b){ return b.pct - a.pct; });
+  return { gainer: sorted[0], loser: sorted[sorted.length-1] };
+}
+
+function renderSummary(){
+  var banner = document.getElementById('summary-banner');
+  var movers = computeTopMovers();
+  if(!movers.gainer && !movers.loser){ banner.style.display='none'; return; }
+  var parts = [];
+  if(movers.gainer && movers.gainer.pct > 0){
+    parts.push('오늘 가장 많이 오른 종목은 <b>'+escHtml(movers.gainer.w.name||movers.gainer.w.symbol)+'</b>(+'+movers.gainer.pct.toFixed(2)+'%)');
+  }
+  if(movers.loser && movers.loser.pct < 0){
+    parts.push('가장 많이 내린 종목은 <b>'+escHtml(movers.loser.w.name||movers.loser.w.symbol)+'</b>('+movers.loser.pct.toFixed(2)+'%)');
+  }
+  if(!parts.length){ banner.style.display='none'; return; }
+  document.getElementById('summary-text').innerHTML = parts.join(', ')+'입니다.';
+  banner.style.display = 'flex';
+}
+
 function renderWatchlist(){
-  var krList = document.getElementById('wl-kr'), usList = document.getElementById('wl-us');
-  krList.innerHTML=''; usList.innerHTML='';
+  var groups = { KR: document.getElementById('wl-kr'), US: document.getElementById('wl-us'), IDX: document.getElementById('wl-idx') };
+  var emptyLabel = { KR:'등록된 국내 종목이 없습니다.', US:'등록된 해외 종목이 없습니다.', IDX:'등록된 지표가 없습니다.' };
+  Object.keys(groups).forEach(function(k){ groups[k].innerHTML=''; });
   if(!watchlist.length){
-    krList.innerHTML = '<div class="text-muted small py-3 text-center">등록된 국내 종목이 없습니다.</div>';
-    usList.innerHTML  = '<div class="text-muted small py-3 text-center">등록된 해외 종목이 없습니다.</div>';
+    Object.keys(groups).forEach(function(k){
+      groups[k].innerHTML = '<div class="text-muted small py-3 text-center">'+emptyLabel[k]+'</div>';
+    });
     return;
   }
-  var any = { KR:false, US:false };
+  var movers = computeTopMovers();
+  var any = { KR:false, US:false, IDX:false };
   watchlist.forEach(function(w){
-    var isKR = w.market === 'KR';
-    var target = isKR ? krList : usList;
-    any[isKR?'KR':'US'] = true;
+    var key = groups[w.market] ? w.market : 'US';
+    any[key] = true;
     var q = quotesData.quotes[w.symbol];
-    var item = document.createElement('div'); item.className='stock-item';
-    if(q && q.price!=null){
-      var change = q.price - q.previousClose;
-      var pct = q.previousClose ? (change/q.previousClose*100) : 0;
-      var up = change > 0.0000001, down = change < -0.0000001;
-      var cls = up?'stock-up':(down?'stock-down':'stock-flat');
-      var sign = up?'+':'';
-      item.innerHTML =
-        '<div class="stock-main">'+
-          '<div class="stock-name">'+escHtml(w.name||q.name||w.symbol)+'<span class="stock-symbol">'+escHtml(w.symbol)+'</span></div>'+
-          '<div class="stock-price '+cls+'">'+fmtCurrency(q.price,q.currency)+'</div>'+
-        '</div>'+
-        '<div class="stock-sub">'+
-          '<span class="'+cls+'"><i class="fas fa-caret-'+(up?'up':(down?'down':'right'))+' me-1"></i>'+
-          sign+fmtCurrency(change,q.currency)+' ('+sign+pct.toFixed(2)+'%)</span>'+
-          '<span class="text-muted small ms-2">'+timeAgo(quotesData.updatedAt)+'</span>'+
-        '</div>';
-    } else {
-      item.innerHTML =
-        '<div class="stock-main">'+
-          '<div class="stock-name">'+escHtml(w.name||w.symbol)+'<span class="stock-symbol">'+escHtml(w.symbol)+'</span></div>'+
-          '<div class="stock-price text-muted">-</div>'+
-        '</div>'+
-        '<div class="stock-sub"><span class="text-muted small">가격 정보 대기 중 (최대 30분)</span></div>';
-    }
-    target.appendChild(item);
+    var badge = null;
+    if(movers.gainer && movers.gainer.w.symbol===w.symbol && movers.gainer.pct>0) badge = { cls:'up-badge', label:'최고 상승' };
+    if(movers.loser && movers.loser.w.symbol===w.symbol && movers.loser.pct<0) badge = { cls:'down-badge', label:'최고 하락' };
+    groups[key].appendChild(renderStockItem(w, q, badge));
   });
-  if(!any.KR) krList.innerHTML = '<div class="text-muted small py-3 text-center">등록된 국내 종목이 없습니다.</div>';
-  if(!any.US) usList.innerHTML  = '<div class="text-muted small py-3 text-center">등록된 해외 종목이 없습니다.</div>';
+  Object.keys(groups).forEach(function(k){
+    if(!any[k]) groups[k].innerHTML = '<div class="text-muted small py-3 text-center">'+emptyLabel[k]+'</div>';
+  });
+  renderSummary();
 }
 
 /* ============================================================

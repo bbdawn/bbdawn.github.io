@@ -7,5 +7,10 @@
   { "symbol": "BTC-USD", "name": "비트코인", "market": "US" },
   { "symbol": "QQQ", "name": "QQQ", "market": "US" },
   { "symbol": "QLD", "name": "QLD", "market": "US" },
-  { "symbol": "GDXU", "name": "GDXU", "market": "US" }
+  { "symbol": "GDXU", "name": "GDXU", "market": "US" },
+  { "symbol": "^IXIC", "name": "나스닥 종합지수", "market": "IDX" },
+  { "symbol": "^GSPC", "name": "S&P 500", "market": "IDX" },
+  { "symbol": "^VIX", "name": "VIX 변동성지수", "market": "IDX" },
+  { "symbol": "KRW=X", "name": "원/달러 환율", "market": "IDX" },
+  { "symbol": "CL=F", "name": "WTI 유가", "market": "IDX" }
 ]
