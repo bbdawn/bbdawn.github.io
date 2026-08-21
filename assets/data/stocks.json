@@ -1,0 +1,33 @@
+{
+  "updatedAt": "2026-08-21T06:11:41Z",
+  "quotes": {
+    "005930.KS": {
+      "price": 281000.0,
+      "previousClose": 271000.0,
+      "currency": "KRW",
+      "name": "삼성전자",
+      "time": 1787291491
+    },
+    "000660.KS": {
+      "price": 1726000.0,
+      "previousClose": 1691000.0,
+      "currency": "KRW",
+      "name": "SK하이닉스",
+      "time": 1787291490
+    },
+    "AAPL": {
+      "price": 311.3,
+      "previousClose": 316.83,
+      "currency": "USD",
+      "name": "Apple Inc.",
+      "time": 1787256001
+    },
+    "NVDA": {
+      "price": 216.85,
+      "previousClose": 217.56001,
+      "currency": "USD",
+      "name": "NVIDIA Corporation",
+      "time": 1787256000
+    }
+  }
+}

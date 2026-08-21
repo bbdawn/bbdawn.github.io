@@ -1,0 +1,94 @@
+name: "Update Stock & Fear-Greed Data"
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "stock-data"
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Fetch stock quotes & fear-greed index
+        run: |
+          set -euo pipefail
+          mkdir -p assets/data
+          [ -f assets/data/watchlist.json ] || echo '[]' > assets/data/watchlist.json
+
+          now="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+
+          # ── 종목 시세 (Yahoo Finance chart API) ──
+          quotes='{}'
+          while IFS= read -r sym; do
+            [ -z "$sym" ] && continue
+            enc="$(jq -rn --arg s "$sym" '$s|@uri')"
+            json="$(curl -fsS -H "User-Agent: $UA" "https://query1.finance.yahoo.com/v8/finance/chart/${enc}" || true)"
+            meta="$(printf '%s' "$json" | jq -c '.chart.result[0].meta // empty' 2>/dev/null || true)"
+            if [ -z "$meta" ] || [ "$meta" = "null" ]; then
+              echo "::warning::failed to fetch quote for $sym"
+              continue
+            fi
+            q="$(printf '%s' "$meta" | jq -c '{
+              price: .regularMarketPrice,
+              previousClose: .previousClose,
+              currency: .currency,
+              name: (.longName // .shortName // .symbol),
+              time: .regularMarketTime
+            }')"
+            quotes="$(printf '%s' "$quotes" | jq --arg k "$sym" --argjson v "$q" '. + {($k): $v}')"
+          done < <(jq -r '.[].symbol' assets/data/watchlist.json)
+
+          printf '%s' "$quotes" | jq --arg updatedAt "$now" '{updatedAt:$updatedAt, quotes:.}' > assets/data/stocks.json
+
+          # ── CNN Fear & Greed Index ──
+          fng_json="$(curl -fsS \
+            -H "User-Agent: $UA" \
+            -H "Referer: https://www.cnn.com/markets/fear-and-greed" \
+            "https://production.dataviz.cnn.io/index/fearandgreed/graphdata" || true)"
+
+          if [ -n "$fng_json" ]; then
+            printf '%s' "$fng_json" | jq --arg updatedAt "$now" '{
+              updatedAt: $updatedAt,
+              score: .fear_and_greed.score,
+              rating: .fear_and_greed.rating,
+              previousClose: .fear_and_greed.previous_close,
+              previousWeek: .fear_and_greed.previous_1_week,
+              previousMonth: .fear_and_greed.previous_1_month,
+              previousYear: .fear_and_greed.previous_1_year,
+              components: {
+                market_momentum_sp500: {score: .market_momentum_sp500.score, rating: .market_momentum_sp500.rating},
+                stock_price_strength:  {score: .stock_price_strength.score,  rating: .stock_price_strength.rating},
+                stock_price_breadth:   {score: .stock_price_breadth.score,   rating: .stock_price_breadth.rating},
+                put_call_options:      {score: .put_call_options.score,      rating: .put_call_options.rating},
+                market_volatility_vix: {score: .market_volatility_vix.score, rating: .market_volatility_vix.rating},
+                junk_bond_demand:      {score: .junk_bond_demand.score,      rating: .junk_bond_demand.rating},
+                safe_haven_demand:     {score: .safe_haven_demand.score,     rating: .safe_haven_demand.rating}
+              },
+              historical: [(.fear_and_greed_historical.data // [])[-120:][] | {x: (.x|floor), y: (.y*100|round/100)}]
+            }' > assets/data/fear-greed.json
+          else
+            echo "::warning::failed to fetch fear & greed index"
+          fi
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/data/stocks.json assets/data/fear-greed.json
+          if git diff --cached --quiet; then
+            echo "No data changes"
+          else
+            git commit -m "chore: update stock & fear-greed data"
+            git push
+          fi

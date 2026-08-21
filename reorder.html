@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Post Order Manager"
+title: "관심종목 · 공포탐욕지수"
 permalink: /reorder/
 sitemap: false
 ---
@@ -32,75 +32,62 @@ sitemap: false
   #pw-error { font-size: 0.8rem; color: #dc3545; margin-top: 0.6rem; min-height: 1.2em; }
   #main-content.hidden { display: none; }
 
-  /* ── Mode switcher ── */
-  .mode-switcher {
-    display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
-    padding-bottom: 1rem; border-bottom: 1px solid var(--border-color, #dee2e6);
-  }
+  /* ── Layout ── */
+  .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+  .page-header h4 { margin: 0; font-weight: 700; }
+  .updated-hint { font-size: 0.78rem; color: var(--text-muted-color, #6c757d); }
+  .card-section { margin-bottom: 1.75rem; }
 
-  /* ── Order/title section ── */
-  .sortable-item { display: flex; align-items: center; cursor: default; user-select: none; }
-  .drag-handle { cursor: grab; color: #aaa; flex-shrink: 0; padding: 0 0.4rem 0 0; }
-  .drag-handle:active { cursor: grabbing; }
-  .sortable-ghost { opacity: 0.35; background: rgba(var(--bs-primary-rgb),.08) !important; }
-  .sortable-chosen { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
-  .post-title-text { flex: 1; min-width: 0; }
-  .post-title-text.is-custom { color: var(--link-color); }
-  .post-title-input { flex: 1; min-width: 0; margin: 0 0.25rem; font-size: 0.9rem; }
-  .edit-title-btn {
-    flex-shrink: 0; opacity: 0; transition: opacity 0.15s;
-    padding: 0 0.3rem; line-height: 1; border: none; background: none; color: #aaa;
+  /* ── Fear & Greed gauge ── */
+  .fng-top { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+  .fng-gauge-wrap { width: 260px; flex-shrink: 0; text-align: center; }
+  .fng-gauge-svg { width: 100%; height: auto; }
+  .fng-score-big { font-size: 2.6rem; font-weight: 800; line-height: 1; margin-top: -2.4rem; }
+  .fng-rating-label { font-size: 1rem; font-weight: 700; margin-top: 0.15rem; }
+  .fng-compare { display: flex; flex-wrap: wrap; gap: 0.75rem; flex: 1; min-width: 240px; }
+  .fng-compare-item {
+    flex: 1; min-width: 100px; text-align: center; padding: 0.6rem 0.4rem;
+    border: 1px solid var(--border-color, #dee2e6); border-radius: 8px;
   }
-  .sortable-item:hover .edit-title-btn { opacity: 1; }
-  .edit-title-btn.is-editing { opacity: 1; color: var(--link-color); }
-  .visibility-btn {
-    flex-shrink: 0; opacity: 0; transition: opacity 0.15s;
-    padding: 0 0.3rem; line-height: 1; border: none; background: none; color: #aaa;
-  }
-  .sortable-item:hover .visibility-btn { opacity: 1; }
-  .visibility-btn.is-hidden { opacity: 1 !important; color: var(--bs-danger, #dc3545); }
-  .sortable-item.post-hidden .post-title-text { opacity: 0.4; text-decoration: line-through; }
-  .sortable-item.post-hidden .drag-handle,
-  .sortable-item.post-hidden .far { opacity: 0.3; }
-  .reorder-tabs .nav-link {
-    color: var(--text-muted-color, #6c757d); border-bottom: 2px solid transparent;
-    border-radius: 0; padding: 0.5rem 1rem; font-weight: 500;
-  }
-  .reorder-tabs .nav-link.active { color: var(--link-color); border-bottom-color: var(--link-color); background: none; }
-  .reorder-tabs .nav-link:hover { color: var(--link-color); }
-  .save-area { position: sticky; bottom: 1.5rem; z-index: 20; pointer-events: none; }
-  .save-area > * { pointer-events: auto; }
-  .hint-text { font-size: 0.8rem; color: var(--text-muted-color, #6c757d); }
+  .fng-compare-label { display: block; font-size: 0.75rem; color: var(--text-muted-color, #6c757d); }
+  .fng-compare-val { display: block; font-size: 1.25rem; font-weight: 700; margin-top: 0.15rem; }
+  .fng-history-svg { width: 100%; height: 90px; display: block; }
+  .fng-history-line { fill: none; stroke: var(--link-color); stroke-width: 2; }
+  .fng-grid { stroke: var(--border-color, #dee2e6); stroke-width: 1; stroke-dasharray: 3 3; }
+  .fng-comp-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.3rem 0; font-size: 0.82rem; }
+  .fng-comp-label { width: 110px; flex-shrink: 0; color: var(--text-color, #333); }
+  .fng-comp-bar { flex: 1; height: 8px; border-radius: 4px; background: var(--border-color, #dee2e6); overflow: hidden; }
+  .fng-comp-fill { display: block; height: 100%; border-radius: 4px; transition: width .3s; }
+  .fng-comp-score { width: 32px; text-align: right; font-weight: 700; flex-shrink: 0; }
+  #fng-error { font-size: 0.85rem; color: #dc3545; }
 
-  /* ── Post editor section ── */
-  .post-file-item {
-    display: flex; align-items: center; padding: 0.55rem 0.75rem;
-    border-bottom: 1px solid var(--border-color, #dee2e6); font-size: 0.85rem;
+  /* ── Watchlist ── */
+  .wl-add-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: flex-end; }
+  .wl-add-row .form-group { flex: 1; min-width: 120px; }
+  .wl-add-row label { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.2rem; display: block; }
+  .wl-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1rem; }
+  @media (max-width: 640px) { .wl-columns { grid-template-columns: 1fr; } }
+  .wl-col-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .wl-col-title i { color: var(--link-color); margin-right: 0.3rem; }
+  .stock-item {
+    position: relative; border: 1px solid var(--border-color, #dee2e6); border-radius: 8px;
+    padding: 0.65rem 2rem 0.65rem 0.85rem; margin-bottom: 0.5rem;
   }
-  .post-file-item:last-child { border-bottom: none; }
-  .post-file-item:hover { background: rgba(var(--bs-primary-rgb),.04); }
-  .img-uploading { font-size: 0.82rem; color: var(--text-muted-color, #6c757d); }
+  .stock-main { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+  .stock-name { font-weight: 600; font-size: 0.92rem; }
+  .stock-symbol { font-size: 0.72rem; color: var(--text-muted-color, #6c757d); margin-left: 0.4rem; font-family: monospace; }
+  .stock-price { font-weight: 700; font-size: 1rem; white-space: nowrap; }
+  .stock-sub { font-size: 0.78rem; margin-top: 0.15rem; }
+  .stock-up { color: #e53935; }
+  .stock-down { color: #1e88e5; }
+  .stock-flat { color: var(--text-muted-color, #6c757d); }
+  .stock-del-btn {
+    position: absolute; top: 0.5rem; right: 0.4rem; border: none; background: none;
+    color: #aaa; opacity: 0; transition: opacity .15s; padding: 0.2rem 0.35rem;
+  }
+  .stock-item:hover .stock-del-btn { opacity: 1; }
+  .stock-del-btn:hover { color: #dc3545; }
   .token-badge { font-size: 0.78rem; }
-  #section-posts.hidden, #section-order.hidden, #editor-panel.hidden { display: none; }
-
-  /* ── Toast UI 스타일 오버라이드 ── */
-  .toastui-editor-defaultUI {
-    border: 1px solid var(--border-color, #dee2e6) !important;
-    border-radius: 6px; overflow: hidden;
-    font-family: inherit !important;
-  }
-  .toastui-editor-toolbar {
-    background: var(--sidebar-bg, #f8f9fa) !important;
-    border-bottom: 1px solid var(--border-color, #dee2e6) !important;
-  }
-  .toastui-editor-main { background: var(--main-bg, #fff) !important; }
-  .toastui-editor { background: var(--main-bg, #fff) !important; color: var(--text-color, #333) !important; }
-  .toastui-editor-contents p,
-  .toastui-editor-contents li { font-size: 0.95rem; line-height: 1.8; }
-  #img-uploading-indicator {
-    display: none; font-size: 0.82rem;
-    color: var(--text-muted-color, #6c757d); margin-top: 0.4rem;
-  }
 </style>
 
 <!-- Password overlay -->
@@ -122,300 +109,143 @@ sitemap: false
 
 <div id="main-content" class="hidden">
 
-<!-- Mode switcher -->
-<div class="mode-switcher">
-  <button id="mode-btn-order" class="btn btn-sm btn-primary" onclick="setMode('order')">
-    <i class="fas fa-sort fa-fw me-1"></i>순서 · 제목 관리
-  </button>
-  <button id="mode-btn-posts" class="btn btn-sm btn-outline-secondary" onclick="setMode('posts')">
-    <i class="fas fa-edit fa-fw me-1"></i>글 편집 · 작성
-  </button>
+<div class="page-header">
+  <h4><i class="fas fa-chart-line me-2"></i>관심종목 대시보드</h4>
+  <div class="text-end">
+    <button class="btn btn-outline-secondary btn-sm" onclick="loadAll()">
+      <i class="fas fa-sync fa-fw me-1"></i>새로고침
+    </button>
+    <div class="updated-hint mt-1" id="stocks-updated">불러오는 중...</div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════
-     SECTION 1: 순서 · 제목 관리
+     공포탐욕지수 (Fear & Greed Index)
 ════════════════════════════════════ -->
-<div id="section-order">
-
-{% assign cat_keys  = "Openstack,GPU,Infra,Linux,Docker & Kubernetes" | split: "," %}
-{% assign cat_names = "Openstack,GPU,Rack Topology,Linux,Docker & Kubernetes" | split: "," %}
-{% assign sub_order = "Feature,Troubleshooting,Project,Hands-on,Study" | split: "," %}
-
-<!-- 사이드바 탭 순서 카드 -->
-<div class="card categories mb-4">
+<div class="card categories card-section">
   <div class="card-header d-flex justify-content-between align-items-center hide-border-bottom">
-    <span class="ms-2 fw-bold"><i class="fas fa-bars fa-fw me-1"></i>사이드바 탭 순서</span>
-    <span class="hint-text me-2"><i class="fas fa-grip-lines fa-fw"></i> 드래그로 순서 변경</span>
+    <span class="ms-2 fw-bold"><i class="fas fa-gauge-high fa-fw me-1"></i>공포탐욕지수 <span class="text-muted small fw-normal">(CNN Fear &amp; Greed Index · 미국 시장 기준)</span></span>
+    <span class="updated-hint me-2" id="fng-updated"></span>
   </div>
-  <ul class="list-group list-group-flush" id="tabSortList"></ul>
-  <div class="card-footer d-flex gap-2 py-2">
-    <button class="btn btn-primary btn-sm" onclick="saveTabOrder()">
-      <i class="fas fa-save fa-fw me-1"></i>탭 순서 저장
-    </button>
-    <button class="btn btn-outline-secondary btn-sm" onclick="resetTabOrder()">
-      <i class="fas fa-undo fa-fw me-1"></i>초기화
-    </button>
+  <div class="card-body">
+    <div id="fng-error"></div>
+    <div class="fng-top mb-3">
+      <div class="fng-gauge-wrap">
+        <svg viewBox="0 0 200 115" class="fng-gauge-svg">
+          <g id="fng-gauge-arcs"></g>
+          <line id="fng-needle" x1="100" y1="100" x2="100" y2="30" stroke="var(--text-color,#333)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="6" fill="var(--text-color,#333)"/>
+        </svg>
+        <div class="fng-score-big" id="fng-score">-</div>
+        <div class="fng-rating-label" id="fng-rating">-</div>
+      </div>
+      <div class="fng-compare" id="fng-compare"></div>
+    </div>
+    <div id="fng-history"></div>
+    <hr>
+    <div class="fw-bold small mb-2">세부 지표</div>
+    <div id="fng-components"></div>
   </div>
 </div>
 
-<!-- 새 탭 추가 카드 -->
-<div class="card mb-4">
+<!-- ═══════════════════════════════════
+     관심종목
+════════════════════════════════════ -->
+<div class="card categories card-section">
+  <div class="card-header d-flex justify-content-between align-items-center hide-border-bottom">
+    <span class="ms-2 fw-bold"><i class="fab fa-github fa-fw me-1"></i>GitHub 연동</span>
+    <span id="token-badge" class="badge bg-secondary token-badge">미설정</span>
+  </div>
+  <div class="card-body py-2">
+    <p class="small text-muted mb-2">
+      관심종목을 다른 기기에서도 동일하게 보려면 GitHub Personal Access Token(Fine-grained / Contents: Read and write)을 설정하세요.
+      설정하지 않으면 이 브라우저에만 저장됩니다. 시세는 30분마다 자동으로 갱신됩니다.
+    </p>
+    <div class="d-flex gap-2">
+      <input id="gh-token-input" type="password" class="form-control form-control-sm"
+             placeholder="github_pat_..." autocomplete="off"
+             onkeydown="if(event.key==='Enter')saveToken()">
+      <button class="btn btn-primary btn-sm flex-shrink-0" onclick="saveToken()">저장</button>
+      <button class="btn btn-outline-danger btn-sm flex-shrink-0" onclick="clearToken()" title="토큰 삭제">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+    <div id="token-status" class="small mt-1"></div>
+  </div>
+</div>
+
+<div class="card categories card-section">
   <div class="card-header hide-border-bottom">
-    <span class="ms-2 fw-bold"><i class="fas fa-plus-circle fa-fw me-1"></i>새 탭 추가</span>
+    <span class="ms-2 fw-bold"><i class="fas fa-star fa-fw me-1"></i>관심종목 추가</span>
   </div>
   <div class="card-body py-3">
-    <p class="small text-muted mb-3">사이드바에 새 탭을 추가합니다. GitHub 토큰이 필요합니다. (<span class="fw-bold">글 편집 모드</span>에서 설정)</p>
-    <div class="row g-2">
-      <div class="col-sm-4">
-        <label class="form-label small fw-bold mb-1">탭 이름</label>
-        <input id="new-tab-title" type="text" class="form-control form-control-sm" placeholder="Linux">
+    <div class="wl-add-row">
+      <div class="form-group">
+        <label>심볼</label>
+        <input id="add-symbol" type="text" class="form-control form-control-sm" placeholder="AAPL / 005930.KS">
       </div>
-      <div class="col-sm-4">
-        <label class="form-label small fw-bold mb-1">카테고리 키 <span class="text-muted fw-normal">(영문)</span></label>
-        <input id="new-tab-cat" type="text" class="form-control form-control-sm" placeholder="Linux">
+      <div class="form-group">
+        <label>이름</label>
+        <input id="add-name" type="text" class="form-control form-control-sm" placeholder="삼성전자">
       </div>
-      <div class="col-sm-4">
-        <label class="form-label small fw-bold mb-1">아이콘 <span class="text-muted fw-normal">(Font Awesome 클래스)</span></label>
-        <input id="new-tab-icon" type="text" class="form-control form-control-sm" placeholder="fas fa-terminal">
+      <div class="form-group" style="flex:0 0 110px;">
+        <label>시장</label>
+        <select id="add-market" class="form-select form-select-sm">
+          <option value="KR">국내</option>
+          <option value="US">해외</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:0 0 auto;">
+        <button class="btn btn-success btn-sm" onclick="addSymbol()">
+          <i class="fas fa-plus fa-fw me-1"></i>추가
+        </button>
       </div>
     </div>
-    <div class="d-flex align-items-center gap-2 mt-3">
-      <button class="btn btn-success btn-sm" onclick="createTab()">
-        <i class="fas fa-plus fa-fw me-1"></i>탭 생성 (GitHub 커밋)
-      </button>
-      <span id="tab-create-status" class="small"></span>
-    </div>
+    <p class="small text-muted mt-2 mb-0">국내 종목은 <code>.KS</code>(코스피)/<code>.KQ</code>(코스닥) 접미사를 붙여주세요. 예: 삼성전자 <code>005930.KS</code></p>
+    <div id="wl-status" class="small mt-1"></div>
   </div>
 </div>
 
-<ul class="nav reorder-tabs mb-4 border-bottom">
-  {% for cat in cat_keys %}
-  <li class="nav-item">
-    <a class="nav-link {% if forloop.first %}active{% endif %}"
-       href="#" data-cat="{{ cat }}">{{ cat_names[forloop.index0] }}</a>
-  </li>
-  {% endfor %}
-</ul>
-
-<div id="postLists"></div>
-
-<div class="save-area d-flex gap-2 mt-3">
-  <button id="saveBtn" class="btn btn-primary btn-sm" onclick="saveOrder()">
-    <i class="fas fa-save fa-fw me-1"></i>순서 저장
-  </button>
-  <button class="btn btn-outline-secondary btn-sm" onclick="resetOrder()">
-    <i class="fas fa-undo fa-fw me-1"></i>순서 초기화
-  </button>
-  <button class="btn btn-outline-secondary btn-sm" onclick="resetTitles()">
-    <i class="fas fa-font fa-fw me-1"></i>제목 초기화
-  </button>
+<div class="card categories card-section">
+  <div class="card-header hide-border-bottom">
+    <span class="ms-2 fw-bold"><i class="fas fa-list fa-fw me-1"></i>내 관심종목</span>
+  </div>
+  <div class="card-body">
+    <div class="wl-columns">
+      <div>
+        <div class="wl-col-title"><i class="fas fa-flag"></i>국내</div>
+        <div id="wl-kr"></div>
+      </div>
+      <div>
+        <div class="wl-col-title"><i class="fas fa-globe-americas"></i>해외</div>
+        <div id="wl-us"></div>
+      </div>
+    </div>
+  </div>
 </div>
-
-</div><!-- #section-order -->
-
-<!-- ═══════════════════════════════════
-     SECTION 2: 글 편집 · 작성
-════════════════════════════════════ -->
-<div id="section-posts" class="hidden">
-
-  <!-- GitHub Token 설정 -->
-  <div class="card mb-3">
-    <div class="card-header hide-border-bottom d-flex justify-content-between align-items-center">
-      <span><i class="fab fa-github fa-fw me-1"></i><span class="fw-bold">GitHub 연동</span></span>
-      <span id="token-badge" class="badge bg-secondary token-badge">미설정</span>
-    </div>
-    <div class="card-body py-2">
-      <p class="small text-muted mb-2">
-        GitHub Personal Access Token (Fine-grained / Contents: Read and write)
-      </p>
-      <div class="d-flex gap-2">
-        <input id="gh-token-input" type="password" class="form-control form-control-sm"
-               placeholder="github_pat_..." autocomplete="off"
-               onkeydown="if(event.key==='Enter')saveToken()">
-        <button class="btn btn-primary btn-sm flex-shrink-0" onclick="saveToken()">저장</button>
-        <button class="btn btn-outline-danger btn-sm flex-shrink-0" onclick="clearToken()" title="토큰 삭제">
-          <i class="fas fa-trash-alt"></i>
-        </button>
-      </div>
-      <div id="token-status" class="small mt-1"></div>
-    </div>
-  </div>
-
-  <!-- 글 목록 -->
-  <div id="post-list-panel">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <button class="btn btn-success btn-sm" onclick="newPost()">
-        <i class="fas fa-plus fa-fw me-1"></i>새 글 작성
-      </button>
-      <button class="btn btn-outline-secondary btn-sm" onclick="fetchPostList()">
-        <i class="fas fa-sync fa-fw me-1"></i>목록 새로고침
-      </button>
-    </div>
-    <div id="post-file-list" class="card">
-      <div class="card-body text-muted small text-center py-4">
-        GitHub 토큰을 설정하면 글 목록이 표시됩니다.
-      </div>
-    </div>
-  </div>
-
-  <!-- 에디터 -->
-  <div id="editor-panel" class="hidden">
-    <div class="card">
-      <div class="card-header hide-border-bottom d-flex justify-content-between align-items-center">
-        <span><i class="fas fa-file-alt fa-fw me-1"></i><span id="editor-title-bar" class="fw-bold">글 편집</span></span>
-        <button class="btn btn-link btn-sm py-0 text-muted" onclick="closeEditor()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="card-body">
-
-        <!-- Front matter 필드 -->
-        <div class="row g-2 mb-3">
-          <div class="col-12">
-            <label class="form-label small fw-bold mb-1">제목</label>
-            <input id="f-title" type="text" class="form-control form-control-sm"
-                   placeholder="[Feature] GPU Instance 생성 및 모니터링">
-          </div>
-          <div class="col-sm-5">
-            <label class="form-label small fw-bold mb-1">날짜</label>
-            <input id="f-date" type="text" class="form-control form-control-sm"
-                   placeholder="2026-07-01 12:00:00">
-          </div>
-          <div class="col-sm-7">
-            <label class="form-label small fw-bold mb-1">
-              파일명 슬러그 <span class="text-muted fw-normal">(영문, 하이픈)</span>
-            </label>
-            <input id="f-slug" type="text" class="form-control form-control-sm"
-                   placeholder="gpu-instance">
-          </div>
-          <div class="col-sm-4">
-            <label class="form-label small fw-bold mb-1">카테고리</label>
-            <select id="f-cat" class="form-select form-select-sm">
-              <option>GPU</option><option>Infra</option>
-              <option>Openstack</option><option>Network</option>
-              <option>Linux</option><option>Docker & Kubernetes</option>
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <label class="form-label small fw-bold mb-1">서브카테고리</label>
-            <select id="f-sub" class="form-select form-select-sm">
-              <option>Feature</option><option>Troubleshooting</option>
-              <option>Project</option><option>Hands-on</option><option>Study</option>
-            </select>
-          </div>
-          <div class="col-sm-4">
-            <label class="form-label small fw-bold mb-1">
-              태그 <span class="text-muted fw-normal">(쉼표 구분)</span>
-            </label>
-            <input id="f-tags" type="text" class="form-control form-control-sm"
-                   placeholder="openstack, gpu, mig">
-          </div>
-        </div>
-
-        <!-- WYSIWYG 에디터 -->
-        <div id="editor-container"></div>
-        <div id="img-uploading-indicator">
-          <i class="fas fa-spinner fa-spin me-1"></i>이미지 업로드 중...
-        </div>
-
-        <!-- 저장 버튼 -->
-        <div class="d-flex align-items-center gap-2 mt-3">
-          <button class="btn btn-primary btn-sm" onclick="submitPost()">
-            <i class="fas fa-save fa-fw me-1"></i>저장 (GitHub 커밋)
-          </button>
-          <button class="btn btn-outline-secondary btn-sm" onclick="closeEditor()">취소</button>
-          <span id="save-status" class="small ms-1"></span>
-        </div>
-
-      </div>
-    </div>
-  </div><!-- #editor-panel -->
-
-</div><!-- #section-posts -->
 
 </div><!-- #main-content -->
 
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-
 <script>
 /* ════════════════════════════════════
-   DATA (Liquid-embedded)
+   CONFIG
 ════════════════════════════════════ */
-var ALL_POSTS = {
-  {% for cat in cat_keys %}
-  {{ cat | jsonify }}: {
-    {% for sub in sub_order %}
-    {{ sub | jsonify }}: [
-      {% if site.categories[cat] %}{% assign filtered = site.categories[cat] | where: "subcategory", sub %}{% else %}{% assign filtered = "" | split: "," %}{% endif %}
-      {% assign _has_order = false %}
-      {% for p in filtered %}{% if p.order %}{% assign _has_order = true %}{% endif %}{% endfor %}
-      {% if _has_order %}{% assign filtered = filtered | sort: "order" %}{% else %}{% assign filtered = filtered | sort: "date" %}{% endif %}
-      {% for post in filtered %}
-      {"title": {{ post.title | jsonify }}, "url": {{ post.url | relative_url | jsonify }}, "hidden": {{ post.hidden | default: false | jsonify }}}{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ]{% unless forloop.last %},{% endunless %}
-    {% endfor %}
-  }{% unless forloop.last %},{% endunless %}
-  {% endfor %}
-};
-var CAT_KEYS  = {{ cat_keys  | jsonify }};
-var CAT_NAMES = {{ cat_names | jsonify }};
-var SUB_ORDER = {{ sub_order | jsonify }};
-var SUB_ICONS = {
-  "Feature":"fas fa-star","Project":"fas fa-code","Hands-on":"fas fa-terminal",
-  "Study":"fas fa-book-open","Troubleshooting":"fas fa-wrench"
-};
-var SUB_LABELS = {
-  "Feature":'Openstack 기반 Private Cloud 자원 관리 플랫폼 "콘트라베이스" 기능 개발'
-};
-function subLabel(cat,sub){
-  return SUB_LABELS[sub] || sub;
-}
-var TAB_LIST = [
-  {% for tab in site.tabs %}
-  {"title": {{ tab.title | jsonify }}, "url": {{ tab.url | relative_url | jsonify }}, "icon": {{ tab.icon | jsonify }}}{% unless forloop.last %},{% endunless %}
-  {% endfor %}
-];
-var ORDER_KEY  = 'bbdawn-post-order';
-var TITLE_KEY  = 'bbdawn-post-titles';
-var HIDDEN_KEY = 'bbdawn-hidden-posts';
-var TAB_ORDER_KEY = 'bbdawn-tab-order';
-var TOKEN_KEY  = 'bbdawn-github-token';
-var REPO       = 'bbdawn/bbdawn.github.io';
-var API_BASE   = 'https://api.github.com/repos/' + REPO;
+var REPO      = 'bbdawn/bbdawn.github.io';
+var API_BASE  = 'https://api.github.com/repos/' + REPO;
+var RAW_BASE  = 'https://raw.githubusercontent.com/' + REPO + '/main/assets/data/';
+var TOKEN_KEY = 'bbdawn-github-token';
+var WL_CACHE_KEY = 'bbdawn-watchlist-cache';
+
+var watchlist  = [];                          // [{symbol,name,market}]
+var quotesData = { updatedAt: null, quotes: {} };
 
 /* ════════════════════════════════════
    HELPERS
 ════════════════════════════════════ */
-function loadOrders(){ try{return JSON.parse(localStorage.getItem(ORDER_KEY)||'{}');}catch(e){return{};} }
-function loadTitles(){ try{return JSON.parse(localStorage.getItem(TITLE_KEY)||'{}');}catch(e){return{};} }
-function loadHidden(){ try{return JSON.parse(localStorage.getItem(HIDDEN_KEY)||'[]');}catch(e){return[];} }
-function saveHidden(arr){ localStorage.setItem(HIDDEN_KEY,JSON.stringify(arr)); }
-function toggleHidden(url){
-  var arr=loadHidden(), idx=arr.indexOf(url);
-  if(idx===-1) arr.push(url); else arr.splice(idx,1);
-  saveHidden(arr);
-  return arr.indexOf(url)!==-1;
-}
-function saveTitles(o){ localStorage.setItem(TITLE_KEY, JSON.stringify(o)); }
-function getToken()  { return localStorage.getItem(TOKEN_KEY) || ''; }
-
+function getToken(){ return localStorage.getItem(TOKEN_KEY) || ''; }
 function escHtml(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function setSelectVal(id, val){
-  var el = document.getElementById(id); if(!el) return;
-  for(var i=0;i<el.options.length;i++){
-    if(el.options[i].value===val||el.options[i].text===val){el.selectedIndex=i;return;}
-  }
-}
-function flashBtn(id, html, fromCls, toCls){
-  var btn=document.getElementById(id); if(!btn) return;
-  var orig=btn.innerHTML; btn.innerHTML=html; btn.classList.replace(fromCls,toCls);
-  setTimeout(function(){btn.innerHTML=orig;btn.classList.replace(toCls,fromCls);},2000);
-}
-
-/* ── Base64 ── */
 function strToB64(str){
   var bytes=new TextEncoder().encode(str), bin='';
   bytes.forEach(function(b){bin+=String.fromCharCode(b);}); return btoa(bin);
@@ -425,623 +255,288 @@ function b64ToStr(b64){
   for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
   return new TextDecoder().decode(bytes);
 }
+function timeAgo(iso){
+  if(!iso) return '-';
+  var diffMs = Date.now() - new Date(iso).getTime();
+  var min = Math.floor(diffMs/60000);
+  if(min < 1) return '방금 전';
+  if(min < 60) return min+'분 전';
+  var hr = Math.floor(min/60);
+  if(hr < 24) return hr+'시간 전';
+  return Math.floor(hr/24)+'일 전';
+}
+function fmtCurrency(n, currency){
+  if(n==null || isNaN(n)) return '-';
+  if(currency === 'KRW') return Math.round(n).toLocaleString('ko-KR')+'원';
+  return '$'+Number(n).toLocaleString('en-US',{maximumFractionDigits:2});
+}
 
 /* ════════════════════════════════════
-   GITHUB PERSISTENCE (배포 반영용 커밋 헬퍼)
-   순서·제목·숨김 변경을 로컬(localStorage)뿐 아니라
-   실제 저장소 파일(front matter)에도 커밋해 전체 방문자에게 배포되도록 한다.
+   GITHUB (watchlist persistence)
 ════════════════════════════════════ */
-async function fetchFile(path){
-  var res=await ghFetch('/contents/'+path);
-  if(!res.ok) throw new Error(path+' 조회 실패 ('+res.status+')');
-  var data=await res.json();
-  return {content:b64ToStr(data.content), sha:data.sha};
+function ghFetch(path, opts){
+  var headers={'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
+  return fetch(API_BASE+path, Object.assign({headers:headers}, opts||{}));
 }
-async function commitFile(path, content, sha, message){
-  var reqBody={message:message, content:strToB64(content)};
-  if(sha) reqBody.sha=sha;
-  var res=await ghFetch('/contents/'+path,{method:'PUT', body:JSON.stringify(reqBody)});
+async function fetchWatchlistFile(){
+  var res = await ghFetch('/contents/assets/data/watchlist.json');
+  if(!res.ok) throw new Error('watchlist.json 조회 실패 ('+res.status+')');
+  var data = await res.json();
+  return { arr: JSON.parse(b64ToStr(data.content)), sha: data.sha };
+}
+async function commitWatchlist(arr, sha, message){
+  var body = JSON.stringify(arr, null, 2) + '\n';
+  var reqBody = { message: message, content: strToB64(body) };
+  if(sha) reqBody.sha = sha;
+  var res = await ghFetch('/contents/assets/data/watchlist.json', {method:'PUT', body:JSON.stringify(reqBody)});
   if(!res.ok){
-    var err=await res.json().catch(function(){return{};});
-    throw new Error(err.message||('저장 실패 ('+res.status+')'));
+    var err = await res.json().catch(function(){return{};});
+    throw new Error(err.message || ('저장 실패 ('+res.status+')'));
   }
   return res.json();
 }
-function setFrontMatterField(raw, key, value){
-  var m=raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-  if(!m) return raw;
-  var found=false;
-  var re=new RegExp('^'+key+'\\s*:');
-  var lines=m[1].split('\n').map(function(line){
-    if(re.test(line)){ found=true; return (value===null)?null:(key+': '+value); }
-    return line;
-  }).filter(function(l){ return l!==null; });
-  if(!found && value!==null) lines.push(key+': '+value);
-  return '---\n'+lines.join('\n')+'\n---\n'+m[2];
-}
-var _postFilesCache=null;
-async function listPostFiles(force){
-  if(_postFilesCache && !force) return _postFilesCache;
-  var res=await ghFetch('/contents/_posts');
-  if(!res.ok) throw new Error('_posts 목록 조회 실패 ('+res.status+')');
-  var files=await res.json();
-  _postFilesCache=files.filter(function(f){return f.name.endsWith('.md');});
-  return _postFilesCache;
-}
-function urlToPostSlug(url){
-  var m=url.match(/^\/posts\/(.+?)\/?$/);
-  return m?m[1]:null;
-}
-async function findPostFile(url){
-  var slug=urlToPostSlug(url); if(!slug) return null;
-  var files=await listPostFiles();
-  var re=new RegExp('^\\d{4}-\\d{2}-\\d{2}-'+slug.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'\\.md$');
-  return files.find(function(f){return re.test(f.name);})||null;
-}
-
-/* ════════════════════════════════════
-   MODE SWITCHER
-════════════════════════════════════ */
-function setMode(mode){
-  var isOrder=(mode==='order');
-  document.getElementById('section-order').classList.toggle('hidden',!isOrder);
-  document.getElementById('section-posts').classList.toggle('hidden',isOrder);
-  document.getElementById('mode-btn-order').className='btn btn-sm '+(isOrder?'btn-primary':'btn-outline-secondary');
-  document.getElementById('mode-btn-posts').className='btn btn-sm '+(!isOrder?'btn-primary':'btn-outline-secondary');
-  if(!isOrder){ updateTokenBadge(); if(getToken()) fetchPostList(); }
-}
-
-/* ════════════════════════════════════
-   TAB ORDER
-════════════════════════════════════ */
-function loadTabOrder(){ try{return JSON.parse(localStorage.getItem(TAB_ORDER_KEY)||'null');}catch(e){return null;} }
-function renderTabSortList(){
-  var ul=document.getElementById('tabSortList'); if(!ul) return;
-  ul.innerHTML='';
-  var order=loadTabOrder();
-  var tabs=TAB_LIST.slice();
-  if(order&&order.length){
-    var map={}; tabs.forEach(function(t){map[t.url]=t;});
-    var sorted=[]; order.forEach(function(url){if(map[url])sorted.push(map[url]);});
-    tabs.forEach(function(t){if(!order.includes(t.url))sorted.push(t);}); tabs=sorted;
-  }
-  tabs.forEach(function(tab){
-    var li=document.createElement('li');
-    li.className='list-group-item sortable-item'; li.dataset.url=tab.url;
-    var grip=document.createElement('i'); grip.className='fas fa-grip-vertical fa-fw drag-handle';
-    var ico=document.createElement('i'); ico.className=tab.icon+' fa-fw text-muted small flex-shrink-0 mx-1';
-    var span=document.createElement('span'); span.className='mx-1'; span.textContent=(tab.title||tab.url).toUpperCase();
-    li.append(grip,ico,span); ul.appendChild(li);
-  });
-  Sortable.create(ul,{animation:150,handle:'.drag-handle',ghostClass:'sortable-ghost',chosenClass:'sortable-chosen'});
-}
-async function saveTabOrder(){
-  var ul=document.getElementById('tabSortList'); if(!ul) return;
-  var urls=Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){return li.dataset.url;});
-  localStorage.setItem(TAB_ORDER_KEY,JSON.stringify(urls));
-  if(!getToken()){
-    alert('탭 순서가 이 브라우저에만 저장됐습니다.\n모든 방문자에게 배포하려면 "글 편집 · 작성" 모드에서 GitHub 토큰을 설정한 뒤 다시 저장해주세요.');
-    return;
-  }
-  var btn=document.querySelector('button[onclick="saveTabOrder()"]');
-  var origHtml=btn?btn.innerHTML:null;
-  if(btn){ btn.innerHTML='<i class="fas fa-spinner fa-spin fa-fw me-1"></i>배포 중...'; btn.disabled=true; }
+async function syncWatchlistToGitHub(message){
+  var statusEl = document.getElementById('wl-status');
+  statusEl.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>저장 중...';
   try{
-    for(var i=0;i<urls.length;i++){
-      var slug=urls[i].replace(/^\/|\/$/g,''); if(!slug) continue;
-      var path='_tabs/'+slug+'.md';
-      var file;
-      try{ file=await fetchFile(path); }catch(e){ continue; }
-      var updated=setFrontMatterField(file.content,'order',String(i));
-      if(updated!==file.content){
-        await commitFile(path, updated, file.sha, 'Reorder tab: '+slug);
-      }
-    }
-    alert('탭 순서가 저장되어 배포됩니다. (GitHub Actions 배포에 1~2분 소요)');
+    var file = await fetchWatchlistFile().catch(function(){ return null; });
+    await commitWatchlist(watchlist, file ? file.sha : undefined, message);
+    statusEl.innerHTML = '<span class="text-success"><i class="fas fa-check me-1"></i>저장됨 — 시세는 최대 30분 내 자동 반영</span>';
   }catch(e){
-    alert('탭 순서 저장 중 오류: '+e.message);
-  }finally{
-    if(btn){ btn.disabled=false; btn.innerHTML=origHtml; }
+    statusEl.innerHTML = '<span class="text-danger">저장 실패: '+escHtml(e.message)+'</span>';
   }
-}
-function resetTabOrder(){
-  localStorage.removeItem(TAB_ORDER_KEY);
-  renderTabSortList();
-  alert('탭 순서가 초기화됐습니다.');
-}
-async function createTab(){
-  var title=document.getElementById('new-tab-title').value.trim();
-  var cat  =document.getElementById('new-tab-cat').value.trim();
-  var icon =document.getElementById('new-tab-icon').value.trim()||'fas fa-folder';
-  var statusEl=document.getElementById('tab-create-status');
-  if(!title){alert('탭 이름을 입력해주세요.');return;}
-  if(!cat)  {alert('카테고리 키를 입력해주세요.');return;}
-  if(!getToken()){alert('GitHub 토큰을 먼저 설정해주세요. (글 편집 모드에서 설정)');return;}
-  var slug=title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  var order=TAB_LIST.length+1;
-  var content='---\nlayout: filtered-posts\ntitle: '+title+'\nicon: '+icon+'\norder: '+order+'\nfilter_category: '+cat+'\n---\n';
-  var path='_tabs/'+slug+'.md';
-  statusEl.innerHTML='<i class="fas fa-spinner fa-spin me-1"></i>생성 중...';
-  try{
-    var res=await ghFetch('/contents/'+path,{
-      method:'PUT',
-      body:JSON.stringify({message:'Add tab: '+title,content:strToB64(content)})
-    });
-    if(res.ok){
-      statusEl.innerHTML='<span class="text-success"><i class="fas fa-check me-1"></i>탭이 생성됐습니다. 배포 후 사이드바에 나타납니다.</span>';
-      document.getElementById('new-tab-title').value='';
-      document.getElementById('new-tab-cat').value='';
-      document.getElementById('new-tab-icon').value='';
-    }else{
-      var err=await res.json();
-      statusEl.innerHTML='<span class="text-danger">실패: '+escHtml(err.message||res.status)+'</span>';
-    }
-  }catch(e){statusEl.innerHTML='<span class="text-danger">오류: '+escHtml(e.message)+'</span>';}
 }
 
-/* ════════════════════════════════════
-   SECTION 1 : ORDER / TITLE
-════════════════════════════════════ */
-function activeCat(){
-  var el=document.querySelector('.reorder-tabs .nav-link.active');
-  return el?el.dataset.cat:CAT_KEYS[0];
-}
-function startEdit(li,url,origTitle){
-  var span=li.querySelector('.post-title-text'),btn=li.querySelector('.edit-title-btn');
-  var input=document.createElement('input');
-  input.type='text'; input.className='form-control form-control-sm post-title-input';
-  input.value=span.textContent; span.replaceWith(input); input.focus(); input.select();
-  btn.innerHTML='<i class="fas fa-check fa-xs"></i>'; btn.classList.add('is-editing');
-  btn.onclick=function(){confirmEdit(li,url,origTitle,input,btn);};
-  input.addEventListener('keydown',function(e){
-    if(e.key==='Enter'){e.preventDefault();confirmEdit(li,url,origTitle,input,btn);}
-    if(e.key==='Escape'){cancelEdit(li,url,origTitle,input,btn);}
-  });
-}
-async function confirmEdit(li,url,origTitle,input,btn){
-  var newTitle=input.value.trim()||origTitle, titles=loadTitles();
-  if(newTitle===origTitle) delete titles[url]; else titles[url]=newTitle;
-  saveTitles(titles); replaceInputWithSpan(li,url,origTitle,newTitle,input,btn);
-  if(newTitle===origTitle) return;
-  if(!getToken()){
-    alert('GitHub 토큰이 없어 이 브라우저에만 제목이 저장됐습니다.\n배포하려면 "글 편집 · 작성" 모드에서 토큰을 설정해주세요.');
-    return;
-  }
-  try{
-    var file=await findPostFile(url);
-    if(!file) throw new Error('파일을 찾을 수 없습니다.');
-    var current=await fetchFile(file.path);
-    var updated=setFrontMatterField(current.content,'title',JSON.stringify(newTitle));
-    await commitFile(file.path, updated, current.sha, 'Update title: '+file.name);
-  }catch(e){
-    alert('제목 배포 저장 실패: '+e.message);
-  }
-}
-function cancelEdit(li,url,origTitle,input,btn){
-  var t=loadTitles(); replaceInputWithSpan(li,url,origTitle,t[url]||origTitle,input,btn);
-}
-function replaceInputWithSpan(li,url,origTitle,displayTitle,input,btn){
-  var span=document.createElement('span');
-  span.className='mx-1 post-title-text'+(displayTitle!==origTitle?' is-custom':'');
-  span.textContent=displayTitle; input.replaceWith(span);
-  btn.innerHTML='<i class="fas fa-pen fa-xs"></i>'; btn.classList.remove('is-editing');
-  btn.onclick=function(){startEdit(li,url,origTitle);};
-}
-function renderCategory(cat){
-  var savedAll=loadOrders(),savedCat=savedAll[cat]||{},customTitles=loadTitles(),hiddenList=loadHidden();
-  var container=document.getElementById('postLists'); container.innerHTML='';
-  SUB_ORDER.forEach(function(sub){
-    var posts=(ALL_POSTS[cat]||{})[sub]; if(!posts||!posts.length) return;
-    var savedSub=savedCat[sub]||[];
-    if(savedSub.length){
-      var map={}; posts.forEach(function(p){map[p.url]=p;});
-      var ordered=[]; savedSub.forEach(function(url){if(map[url])ordered.push(map[url]);});
-      posts.forEach(function(p){if(!savedSub.includes(p.url))ordered.push(p);}); posts=ordered;
-    }
-    var icon=SUB_ICONS[sub]||'far fa-folder-open';
-    var card=document.createElement('div'); card.className='card categories mb-4';
-    card.innerHTML=
-      '<div class="card-header d-flex justify-content-between hide-border-bottom">'+
-      '<span class="ms-2"><i class="'+icon+' fa-fw"></i>'+
-      '<span class="mx-2 fw-bold">'+escHtml(subLabel(cat,sub))+'</span>'+
-      '<span class="text-muted small">'+posts.length+' posts</span></span>'+
-      '<span class="hint-text align-self-center me-2">'+
-      '<i class="fas fa-grip-lines fa-fw"></i> 순서 &nbsp;|&nbsp; '+
-      '<i class="fas fa-pen fa-fw"></i> 제목 &nbsp;|&nbsp; '+
-      '<i class="fas fa-eye-slash fa-fw"></i> 비활성화</span></div>'+
-      '<ul class="list-group list-group-flush" data-sub="'+escHtml(sub)+'"></ul>';
-    var ul=card.querySelector('ul');
-    posts.forEach(function(post){
-      var displayTitle=customTitles[post.url]||post.title;
-      var isHidden=post.hidden||hiddenList.includes(post.url);
-      var li=document.createElement('li');
-      li.className='list-group-item sortable-item'+(isHidden?' post-hidden':'');
-      li.dataset.url=post.url;
-      var grip=document.createElement('i'); grip.className='fas fa-grip-vertical fa-fw drag-handle';
-      var fileIco=document.createElement('i'); fileIco.className='far fa-file-alt fa-fw text-muted small flex-shrink-0';
-      var span=document.createElement('span');
-      span.className='mx-1 post-title-text'+(displayTitle!==post.title?' is-custom':'');
-      span.textContent=displayTitle;
-      var editBtn=document.createElement('button'); editBtn.className='edit-title-btn'; editBtn.title='제목 수정';
-      editBtn.innerHTML='<i class="fas fa-pen fa-xs"></i>';
-      editBtn.addEventListener('click',function(){startEdit(li,post.url,post.title);});
-      var visBtn=document.createElement('button');
-      visBtn.className='visibility-btn'+(isHidden?' is-hidden':'');
-      visBtn.title=isHidden?'활성화':'비활성화';
-      visBtn.innerHTML='<i class="fas fa-eye'+(isHidden?'-slash':'')+' fa-xs"></i>';
-      visBtn.addEventListener('click',async function(){
-        var nowHidden=toggleHidden(post.url);
-        li.classList.toggle('post-hidden',nowHidden);
-        visBtn.classList.toggle('is-hidden',nowHidden);
-        visBtn.title=nowHidden?'활성화':'비활성화';
-        visBtn.innerHTML='<i class="fas fa-eye'+(nowHidden?'-slash':'')+' fa-xs"></i>';
-        if(!getToken()){
-          alert('GitHub 토큰이 없어 이 브라우저에만 적용됐습니다.\n배포하려면 "글 편집 · 작성" 모드에서 토큰을 설정해주세요.');
-          return;
-        }
-        try{
-          var file=await findPostFile(post.url);
-          if(!file) throw new Error('파일을 찾을 수 없습니다.');
-          var current=await fetchFile(file.path);
-          var updated=setFrontMatterField(current.content,'hidden',nowHidden?'true':null);
-          await commitFile(file.path, updated, current.sha, (nowHidden?'Hide: ':'Unhide: ')+file.name);
-        }catch(e){
-          alert('숨김 상태 배포 저장 실패: '+e.message);
-        }
-      });
-      li.append(grip,fileIco,span,editBtn,visBtn); ul.appendChild(li);
-    });
-    container.appendChild(card);
-    Sortable.create(ul,{animation:150,handle:'.drag-handle',ghostClass:'sortable-ghost',chosenClass:'sortable-chosen'});
-  });
-}
-async function saveOrder(){
-  var cat=activeCat(),savedAll=loadOrders(); savedAll[cat]={};
-  var subLists={};
-  document.querySelectorAll('#postLists ul[data-sub]').forEach(function(ul){
-    var urls=Array.from(ul.querySelectorAll('li[data-url]')).map(function(li){return li.dataset.url;});
-    savedAll[cat][ul.dataset.sub]=urls;
-    subLists[ul.dataset.sub]=urls;
-  });
-  localStorage.setItem(ORDER_KEY,JSON.stringify(savedAll));
-  if(!getToken()){
-    flashBtn('saveBtn','<i class="fas fa-check fa-fw me-1"></i>저장 완료! (로컬)','btn-primary','btn-success');
-    alert('GitHub 토큰이 없어 이 브라우저에만 순서가 저장됐습니다.\n배포하려면 "글 편집 · 작성" 모드에서 토큰을 설정해주세요.');
-    return;
-  }
-  var btn=document.getElementById('saveBtn'), origHtml=btn?btn.innerHTML:null;
-  if(btn){ btn.innerHTML='<i class="fas fa-spinner fa-spin fa-fw me-1"></i>배포 중...'; btn.disabled=true; }
-  try{
-    for(var sub in subLists){
-      var urls=subLists[sub];
-      for(var i=0;i<urls.length;i++){
-        var file=await findPostFile(urls[i]);
-        if(!file) continue;
-        var current=await fetchFile(file.path);
-        var updated=setFrontMatterField(current.content,'order',String(i));
-        if(updated!==current.content){
-          await commitFile(file.path, updated, current.sha, 'Reorder post: '+file.name);
-        }
-      }
-    }
-    if(btn){ btn.disabled=false; btn.innerHTML=origHtml; }
-    flashBtn('saveBtn','<i class="fas fa-check fa-fw me-1"></i>배포됨!','btn-primary','btn-success');
-  }catch(e){
-    if(btn){ btn.disabled=false; btn.innerHTML=origHtml; }
-    alert('순서 배포 저장 중 오류: '+e.message);
-  }
-}
-async function resetOrder(){
-  var cat=activeCat(),s=loadOrders(); delete s[cat];
-  localStorage.setItem(ORDER_KEY,JSON.stringify(s)); renderCategory(cat);
-  if(!getToken()) return;
-  if(!confirm('배포된 순서(날짜순으로 되돌리기)도 초기화할까요?')) return;
-  try{
-    for(var sub in (ALL_POSTS[cat]||{})){
-      var posts=(ALL_POSTS[cat]||{})[sub]||[];
-      for(var i=0;i<posts.length;i++){
-        var file=await findPostFile(posts[i].url);
-        if(!file) continue;
-        var current=await fetchFile(file.path);
-        var updated=setFrontMatterField(current.content,'order',null);
-        if(updated!==current.content){
-          await commitFile(file.path, updated, current.sha, 'Reset order: '+file.name);
-        }
-      }
-    }
-    alert('순서가 초기화되어 배포됩니다.');
-  }catch(e){ alert('순서 초기화 배포 실패: '+e.message); }
-}
-function resetTitles(){
-  var cat=activeCat(),titles=loadTitles();
-  SUB_ORDER.forEach(function(sub){((ALL_POSTS[cat]||{})[sub]||[]).forEach(function(p){delete titles[p.url];});});
-  saveTitles(titles); renderCategory(cat);
-}
-
-/* ════════════════════════════════════
-   SECTION 2 : POST EDITOR
-════════════════════════════════════ */
-
-/* ── Token ── */
+/* ── Token UI ── */
 function updateTokenBadge(){
   var badge=document.getElementById('token-badge'); if(!badge) return;
-  if(getToken()){badge.className='badge bg-success token-badge';badge.textContent='연결됨';}
-  else{badge.className='badge bg-secondary token-badge';badge.textContent='미설정';}
+  if(getToken()){ badge.className='badge bg-success token-badge'; badge.textContent='연결됨'; }
+  else{ badge.className='badge bg-secondary token-badge'; badge.textContent='미설정'; }
 }
 function saveToken(){
   var val=document.getElementById('gh-token-input').value.trim(); if(!val) return;
   localStorage.setItem(TOKEN_KEY,val);
   document.getElementById('gh-token-input').value='';
   document.getElementById('token-status').innerHTML='<span class="text-success"><i class="fas fa-check me-1"></i>저장되었습니다.</span>';
-  updateTokenBadge(); fetchPostList();
+  updateTokenBadge();
 }
 function clearToken(){
   localStorage.removeItem(TOKEN_KEY);
   document.getElementById('token-status').innerHTML='<span class="text-muted">토큰이 삭제되었습니다.</span>';
-  document.getElementById('post-file-list').innerHTML=
-    '<div class="card-body text-muted small text-center py-4">GitHub 토큰을 설정하면 글 목록이 표시됩니다.</div>';
   updateTokenBadge();
 }
 
-/* ── GitHub API ── */
-function ghFetch(path,opts){
-  var headers={'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'};
-  return fetch(API_BASE+path,Object.assign({headers:headers},opts||{}));
-}
-async function fetchPostList(){
+/* ════════════════════════════════════
+   WATCHLIST
+════════════════════════════════════ */
+function loadWatchlistLocal(){ try{ return JSON.parse(localStorage.getItem(WL_CACHE_KEY)||'null'); }catch(e){ return null; } }
+function saveWatchlistLocal(arr){ localStorage.setItem(WL_CACHE_KEY, JSON.stringify(arr)); }
+
+async function addSymbol(){
+  var symbol = document.getElementById('add-symbol').value.trim();
+  var name   = document.getElementById('add-name').value.trim();
+  var market = document.getElementById('add-market').value;
+  if(!symbol){ alert('심볼을 입력해주세요 (예: AAPL, 005930.KS)'); return; }
+  if(watchlist.some(function(w){ return w.symbol===symbol; })){ alert('이미 등록된 심볼입니다.'); return; }
+  watchlist.push({ symbol: symbol, name: name || symbol, market: market });
+  saveWatchlistLocal(watchlist);
+  renderWatchlist();
+  document.getElementById('add-symbol').value='';
+  document.getElementById('add-name').value='';
   if(!getToken()){
-    document.getElementById('post-file-list').innerHTML=
-      '<div class="card-body text-warning small text-center py-4"><i class="fas fa-exclamation-triangle me-1"></i>GitHub 토큰을 먼저 설정해주세요.</div>';
+    document.getElementById('wl-status').innerHTML =
+      '<span class="text-muted">GitHub 토큰이 없어 이 브라우저에만 추가됐습니다.</span>';
     return;
   }
-  document.getElementById('post-file-list').innerHTML=
-    '<div class="card-body text-muted small text-center py-3"><i class="fas fa-spinner fa-spin me-1"></i>불러오는 중...</div>';
-  try{
-    var res=await ghFetch('/contents/_posts');
-    if(res.status===401){
-      document.getElementById('post-file-list').innerHTML=
-        '<div class="card-body text-danger small text-center py-4">토큰이 유효하지 않습니다.</div>'; return;
-    }
-    var files=await res.json();
-    var mdFiles=files.filter(function(f){return f.name.endsWith('.md');})
-                     .sort(function(a,b){return b.name.localeCompare(a.name);});
-    if(!mdFiles.length){
-      document.getElementById('post-file-list').innerHTML='<div class="card-body text-muted small text-center py-4">글이 없습니다.</div>'; return;
-    }
-    var wrap=document.createElement('div'); wrap.className='card';
-    mdFiles.forEach(function(file){
-      var item=document.createElement('div'); item.className='post-file-item';
-      item.innerHTML=
-        '<i class="far fa-file-alt fa-fw text-muted me-2 small flex-shrink-0"></i>'+
-        '<span class="flex-grow-1 text-truncate small" style="font-family:monospace">'+escHtml(file.name)+'</span>'+
-        '<button class="btn btn-outline-primary btn-sm ms-2 flex-shrink-0" style="font-size:.75rem">편집</button>';
-      item.querySelector('button').addEventListener('click',function(){openPost(file.path,file.sha,file.name);});
-      wrap.appendChild(item);
-    });
-    document.getElementById('post-file-list').innerHTML='';
-    document.getElementById('post-file-list').appendChild(wrap);
-  }catch(e){
-    document.getElementById('post-file-list').innerHTML='<div class="card-body text-danger small text-center py-4">목록을 불러올 수 없습니다.</div>';
+  await syncWatchlistToGitHub('Add watchlist symbol: '+symbol);
+}
+async function removeSymbol(symbol){
+  watchlist = watchlist.filter(function(w){ return w.symbol!==symbol; });
+  saveWatchlistLocal(watchlist);
+  renderWatchlist();
+  if(!getToken()) return;
+  await syncWatchlistToGitHub('Remove watchlist symbol: '+symbol);
+}
+
+function renderWatchlist(){
+  var krList = document.getElementById('wl-kr'), usList = document.getElementById('wl-us');
+  krList.innerHTML=''; usList.innerHTML='';
+  if(!watchlist.length){
+    krList.innerHTML = '<div class="text-muted small py-3 text-center">등록된 국내 종목이 없습니다.</div>';
+    usList.innerHTML  = '<div class="text-muted small py-3 text-center">등록된 해외 종목이 없습니다.</div>';
+    return;
   }
-}
-
-function parseFrontMatter(raw){
-  var m=raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/); if(!m) return{fm:{},body:raw};
-  var fm={};
-  m[1].split('\n').forEach(function(line){
-    var col=line.indexOf(':'); if(col===-1) return;
-    var key=line.slice(0,col).trim(), val=line.slice(col+1).trim().replace(/^["']|["']$/g,'');
-    fm[key]=val;
-  });
-  return{fm:fm,body:m[2]};
-}
-
-/* ── Liquid 태그 보호 ──
-   Toast UI 에디터는 마크다운을 파싱→직렬화하면서 Liquid 태그 안의 특수문자(_,-,(,) 등)를
-   이스케이프해버려 post_url 태그가 깨진다. 에디터에 넣기 전에 태그를
-   플레이스홀더로 치환하고, 꺼낼 때 원래 태그로 복원해 이 손상을 막는다.
-   (아래 블록은 Jekyll이 자기 자신을 Liquid 태그로 오인해 파싱하지 않도록 raw로 감싼다) */
-{% raw %}
-function protectLiquidTags(text){
-  var tags=[];
-  var protectedText=text.replace(/\{%[\s\S]*?%\}/g,function(m){
-    tags.push(m);
-    return 'LIQUIDTAGPLACEHOLDER'+(tags.length-1);
-  });
-  return {text:protectedText, tags:tags};
-}
-function restoreLiquidTags(text, tags){
-  if(!tags||!tags.length) return text;
-  return text.replace(/LIQUIDTAGPLACEHOLDER(\d+)/g,function(m,i){
-    var idx=parseInt(i,10);
-    return (idx>=0&&idx<tags.length)?tags[idx]:m;
-  });
-}
-{% endraw %}
-
-/* ── Toast UI WYSIWYG ── */
-var tuiEditor=null, tuiLoadPromise=null;
-
-function loadToastUI(){
-  if(tuiLoadPromise) return tuiLoadPromise;
-  tuiLoadPromise=new Promise(function(resolve){
-    if(window.toastui && window.toastui.Editor){resolve();return;}
-    /* CSS */
-    ['https://uicdn.toast.com/editor/latest/toastui-editor.min.css',
-     'https://uicdn.toast.com/editor/latest/theme/toastui-editor-dark.min.css']
-    .forEach(function(href){
-      var l=document.createElement('link'); l.rel='stylesheet'; l.href=href;
-      document.head.appendChild(l);
+  var any = { KR:false, US:false };
+  watchlist.forEach(function(w){
+    var isKR = w.market === 'KR';
+    var target = isKR ? krList : usList;
+    any[isKR?'KR':'US'] = true;
+    var q = quotesData.quotes[w.symbol];
+    var item = document.createElement('div'); item.className='stock-item';
+    if(q && q.price!=null){
+      var change = q.price - q.previousClose;
+      var pct = q.previousClose ? (change/q.previousClose*100) : 0;
+      var up = change > 0.0000001, down = change < -0.0000001;
+      var cls = up?'stock-up':(down?'stock-down':'stock-flat');
+      var sign = up?'+':'';
+      item.innerHTML =
+        '<div class="stock-main">'+
+          '<div class="stock-name">'+escHtml(w.name||q.name||w.symbol)+'<span class="stock-symbol">'+escHtml(w.symbol)+'</span></div>'+
+          '<div class="stock-price '+cls+'">'+fmtCurrency(q.price,q.currency)+'</div>'+
+        '</div>'+
+        '<div class="stock-sub">'+
+          '<span class="'+cls+'"><i class="fas fa-caret-'+(up?'up':(down?'down':'right'))+' me-1"></i>'+
+          sign+fmtCurrency(change,q.currency)+' ('+sign+pct.toFixed(2)+'%)</span>'+
+          '<span class="text-muted small ms-2">'+timeAgo(quotesData.updatedAt)+'</span>'+
+        '</div>';
+    } else {
+      item.innerHTML =
+        '<div class="stock-main">'+
+          '<div class="stock-name">'+escHtml(w.name||w.symbol)+'<span class="stock-symbol">'+escHtml(w.symbol)+'</span></div>'+
+          '<div class="stock-price text-muted">-</div>'+
+        '</div>'+
+        '<div class="stock-sub"><span class="text-muted small">가격 정보 대기 중 (최대 30분)</span></div>';
+    }
+    var delBtn = document.createElement('button'); delBtn.className='stock-del-btn'; delBtn.title='삭제';
+    delBtn.innerHTML = '<i class="fas fa-times"></i>';
+    delBtn.addEventListener('click', function(){
+      if(confirm(w.symbol+' 을(를) 관심종목에서 삭제할까요?')) removeSymbol(w.symbol);
     });
-    /* JS */
-    var s=document.createElement('script');
-    s.src='https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js';
-    s.onload=resolve; document.head.appendChild(s);
+    item.appendChild(delBtn);
+    target.appendChild(item);
   });
-  return tuiLoadPromise;
+  if(!any.KR) krList.innerHTML = '<div class="text-muted small py-3 text-center">등록된 국내 종목이 없습니다.</div>';
+  if(!any.US) usList.innerHTML  = '<div class="text-muted small py-3 text-center">등록된 해외 종목이 없습니다.</div>';
 }
 
-async function ensureEditor(){
-  await loadToastUI();
-  if(tuiEditor) return;
-  var isDark=document.documentElement.getAttribute('data-mode')==='dark'||
-             document.body.classList.contains('dark');
-  tuiEditor=new toastui.Editor({
-    el:document.getElementById('editor-container'),
-    height:'520px',
-    initialEditType:'wysiwyg',
-    previewStyle:'tab',
-    theme:isDark?'dark':'default',
-    language:'ko-KR',
-    toolbarItems:[
-      ['heading','bold','italic','strike'],
-      ['hr','quote'],
-      ['ul','ol','task','indent','outdent'],
-      ['table','image','link'],
-      ['code','codeblock'],
-    ],
-    hooks:{
-      addImageBlobHook:async function(blob,callback){
-        if(!getToken()){alert('GitHub 토큰을 먼저 설정해주세요.');return;}
-        document.getElementById('img-uploading-indicator').style.display='block';
-        try{
-          var path=await uploadImageToGitHub(blob);
-          callback(path,blob.name||'image');
-        }catch(e){alert('이미지 업로드 실패: '+e.message);}
-        finally{document.getElementById('img-uploading-indicator').style.display='none';}
-      }
-    }
+/* ════════════════════════════════════
+   FEAR & GREED GAUGE
+════════════════════════════════════ */
+var FNG_LABELS = {
+  'extreme fear':'극단적 공포', 'fear':'공포', 'neutral':'중립', 'greed':'탐욕', 'extreme greed':'극단적 탐욕'
+};
+var FNG_COLORS = {
+  'extreme fear':'#e64545', 'fear':'#f2994a', 'neutral':'#c9b458', 'greed':'#8bc34a', 'extreme greed':'#2e7d32'
+};
+var FNG_COMPONENT_LABELS = {
+  market_momentum_sp500:'S&amp;P500 모멘텀', stock_price_strength:'주가 강도', stock_price_breadth:'주가 폭',
+  put_call_options:'풋/콜 옵션', market_volatility_vix:'변동성(VIX)',
+  junk_bond_demand:'정크본드 수요', safe_haven_demand:'안전자산 수요'
+};
+function ratingColor(rating){ return FNG_COLORS[rating] || '#999'; }
+function ratingLabel(rating){ return FNG_LABELS[rating] || rating || '-'; }
+
+function fngPolar(cx,cy,r,scoreDeg){
+  var rad = scoreDeg*Math.PI/180;
+  return { x: cx - r*Math.cos(rad), y: cy - r*Math.sin(rad) };
+}
+function fngArcPath(cx,cy,r,s1,s2){
+  var a1 = s1/100*180, a2 = s2/100*180;
+  var p1 = fngPolar(cx,cy,r,a1), p2 = fngPolar(cx,cy,r,a2);
+  var large = (a2-a1) > 180 ? 1 : 0;
+  return 'M '+p1.x.toFixed(2)+' '+p1.y.toFixed(2)+' A '+r+' '+r+' 0 '+large+' 1 '+p2.x.toFixed(2)+' '+p2.y.toFixed(2);
+}
+function renderGauge(score){
+  var cx=100, cy=100, r=82;
+  var bands = [[0,25,'#e64545'],[25,45,'#f2994a'],[45,55,'#c9b458'],[55,75,'#8bc34a'],[75,100,'#2e7d32']];
+  var svg = document.getElementById('fng-gauge-arcs');
+  svg.innerHTML = bands.map(function(b){
+    return '<path d="'+fngArcPath(cx,cy,r,b[0],b[1])+'" stroke="'+b[2]+'" stroke-width="16" fill="none" stroke-linecap="butt"/>';
+  }).join('');
+  var s = Math.max(0, Math.min(100, score||0));
+  var tip = fngPolar(cx,cy,66, s/100*180);
+  document.getElementById('fng-needle').setAttribute('x2', tip.x.toFixed(2));
+  document.getElementById('fng-needle').setAttribute('y2', tip.y.toFixed(2));
+}
+function renderSparkline(hist){
+  var wrap = document.getElementById('fng-history');
+  if(!hist || !hist.length){ wrap.innerHTML=''; return; }
+  var w=600, h=90, pad=6;
+  var xs = hist.map(function(p){ return p.x; });
+  var minX = Math.min.apply(null,xs), maxX = Math.max.apply(null,xs);
+  function px(x){ return pad + (w-2*pad) * ((x-minX)/((maxX-minX)||1)); }
+  function py(y){ return h-pad - (h-2*pad) * (Math.max(0,Math.min(100,y))/100); }
+  var pts = hist.map(function(p){ return px(p.x).toFixed(1)+','+py(p.y).toFixed(1); }).join(' ');
+  var gridYs = [25,45,55,75].map(function(v){ return py(v).toFixed(1); });
+  wrap.innerHTML =
+    '<svg viewBox="0 0 '+w+' '+h+'" class="fng-history-svg" preserveAspectRatio="none">'+
+    gridYs.map(function(y){ return '<line x1="0" x2="'+w+'" y1="'+y+'" y2="'+y+'" class="fng-grid"/>'; }).join('')+
+    '<polyline points="'+pts+'" class="fng-history-line"/>'+
+    '</svg>';
+}
+function renderComponents(components){
+  var wrap = document.getElementById('fng-components'); wrap.innerHTML='';
+  Object.keys(FNG_COMPONENT_LABELS).forEach(function(key){
+    var c = components && components[key]; if(!c || c.score==null) return;
+    var color = ratingColor(c.rating);
+    var row = document.createElement('div'); row.className='fng-comp-row';
+    row.innerHTML =
+      '<span class="fng-comp-label">'+FNG_COMPONENT_LABELS[key]+'</span>'+
+      '<span class="fng-comp-bar"><span class="fng-comp-fill" style="width:'+Math.max(0,Math.min(100,c.score))+'%;background:'+color+'"></span></span>'+
+      '<span class="fng-comp-score" style="color:'+color+'">'+Math.round(c.score)+'</span>';
+    wrap.appendChild(row);
   });
 }
+function renderFearGreed(data){
+  document.getElementById('fng-error').textContent = '';
+  document.getElementById('fng-score').textContent = data.score!=null ? Math.round(data.score) : '-';
+  var lbl = document.getElementById('fng-rating');
+  lbl.textContent = ratingLabel(data.rating);
+  lbl.style.color = ratingColor(data.rating);
+  renderGauge(data.score);
+  renderSparkline(data.historical);
+  renderComponents(data.components);
+  var items = [
+    ['어제', data.previousClose], ['1주일 전', data.previousWeek],
+    ['1개월 전', data.previousMonth], ['1년 전', data.previousYear]
+  ];
+  document.getElementById('fng-compare').innerHTML = items.map(function(it){
+    return '<div class="fng-compare-item"><span class="fng-compare-label">'+it[0]+'</span>'+
+      '<span class="fng-compare-val">'+(it[1]!=null?Math.round(it[1]):'-')+'</span></div>';
+  }).join('');
+  document.getElementById('fng-updated').textContent = data.updatedAt ? ('갱신: '+timeAgo(data.updatedAt)) : '';
+}
 
-async function openPost(path,sha,name){
-  window._editingPath=path; window._editingSha=sha; window._isNewPost=false;
-  document.getElementById('editor-title-bar').textContent='편집 중: '+name;
-  document.getElementById('editor-panel').classList.remove('hidden');
-  document.getElementById('post-list-panel').classList.add('hidden');
-  document.getElementById('save-status').textContent='';
-  await ensureEditor();
-  tuiEditor.setMarkdown('파일을 불러오는 중...');
+/* ════════════════════════════════════
+   DATA LOAD
+════════════════════════════════════ */
+async function fetchRaw(name){
+  var res = await fetch(RAW_BASE + name + '?t=' + Date.now(), { cache: 'no-store' });
+  if(!res.ok) throw new Error(name + ' 조회 실패 ('+res.status+')');
+  return res.json();
+}
+async function loadAll(){
   try{
-    var res=await ghFetch('/contents/'+path), data=await res.json();
-    window._editingSha=data.sha;
-    var raw=b64ToStr(data.content), parsed=parseFrontMatter(raw), fm=parsed.fm;
-    document.getElementById('f-title').value=fm.title||'';
-    document.getElementById('f-date').value=(fm.date||'').replace(/\s*\+0900$/,'').trim();
-    document.getElementById('f-tags').value=(fm.tags||'').replace(/^\[|\]$/g,'');
-    var catMatch=(fm.categories||'').match(/\[([^,\]]+),?\s*([^\]]*)\]/);
-    var stripQuotes=function(s){return s.trim().replace(/^["']|["']$/g,'');};
-    if(catMatch){setSelectVal('f-sub',stripQuotes(catMatch[1]));setSelectVal('f-cat',stripQuotes(catMatch[2]));}
-    var slugMatch=name.match(/^\d{4}-\d{2}-\d{2}-(.+)\.md$/);
-    document.getElementById('f-slug').value=slugMatch?slugMatch[1]:name.replace('.md','');
-    var protectedRes=protectLiquidTags(parsed.body.replace(/^\n/,''));
-    window._liquidTags=protectedRes.tags;
-    tuiEditor.setMarkdown(protectedRes.text);
-  }catch(e){tuiEditor.setMarkdown('파일을 불러올 수 없습니다: '+e.message);}
-}
+    watchlist = await fetchRaw('watchlist.json');
+    saveWatchlistLocal(watchlist);
+  }catch(e){
+    watchlist = loadWatchlistLocal() || [];
+  }
+  renderWatchlist();
 
-async function newPost(){
-  window._editingPath=null; window._editingSha=null; window._isNewPost=true; window._liquidTags=[];
-  var now=new Date(), pad=function(n){return String(n).padStart(2,'0');};
-  var ds=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':00:00';
-  document.getElementById('f-title').value=''; document.getElementById('f-date').value=ds;
-  document.getElementById('f-slug').value='';  document.getElementById('f-tags').value='';
-  document.getElementById('f-cat').selectedIndex=0; document.getElementById('f-sub').selectedIndex=0;
-  document.getElementById('editor-title-bar').textContent='새 글 작성';
-  document.getElementById('save-status').textContent='';
-  document.getElementById('editor-panel').classList.remove('hidden');
-  document.getElementById('post-list-panel').classList.add('hidden');
-  await ensureEditor();
-  tuiEditor.setMarkdown('');
-  document.getElementById('f-title').focus();
-}
-
-function closeEditor(){
-  document.getElementById('editor-panel').classList.add('hidden');
-  document.getElementById('post-list-panel').classList.remove('hidden');
-}
-
-async function submitPost(){
-  var title=document.getElementById('f-title').value.trim();
-  var date =document.getElementById('f-date').value.trim();
-  var cat  =document.getElementById('f-cat').value;
-  var sub  =document.getElementById('f-sub').value;
-  var tags =document.getElementById('f-tags').value.trim();
-  var slug =document.getElementById('f-slug').value.trim();
-  var body =tuiEditor?tuiEditor.getMarkdown():'';
-  body=restoreLiquidTags(body, window._liquidTags||[]);
-  if(!title){alert('제목을 입력해주세요.');return;}
-  var datePrefix=date.substring(0,10);
-  var finalSlug=slug||title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  var filePath='_posts/'+datePrefix+'-'+finalSlug+'.md';
-  var tagArr=tags.split(',').map(function(t){return t.trim();}).filter(Boolean);
-  var prefix=sub==='Feature'?'Feature':sub==='Project'?'Project':sub;
-  var fmTitle=title.startsWith('[')?title:'['+prefix+'] '+title;
-  var fm=['---',
-    'title: '+JSON.stringify(fmTitle),
-    'date: '+date+' +0900',
-    'categories: ['+sub+', '+JSON.stringify(cat)+']',
-    'subcategory: '+sub,
-    'tags: ['+tagArr.join(', ')+']',
-    '---',''].join('\n');
-  var fullContent=fm+'\n'+body;
-  var path=window._isNewPost?filePath:window._editingPath;
-  var sha=window._editingSha;
-  var statusEl=document.getElementById('save-status');
-  statusEl.innerHTML='<i class="fas fa-spinner fa-spin me-1"></i>저장 중...';
   try{
-    var reqBody={message:(sha?'Update: ':'Create: ')+path,content:strToB64(fullContent)};
-    if(sha) reqBody.sha=sha;
-    var res=await ghFetch('/contents/'+path,{method:'PUT',body:JSON.stringify(reqBody)});
-    if(res.ok){
-      var data=await res.json();
-      window._editingSha=data.content.sha; window._editingPath=path; window._isNewPost=false;
-      document.getElementById('editor-title-bar').textContent='편집 중: '+path.split('/').pop();
-      document.getElementById('f-slug').value=finalSlug;
-      statusEl.innerHTML='<span class="text-success"><i class="fas fa-check me-1"></i>저장 완료 — GitHub Actions 배포 중</span>';
-    }else{
-      var err=await res.json();
-      statusEl.innerHTML='<span class="text-danger">저장 실패: '+escHtml(err.message||res.status)+'</span>';
-    }
-  }catch(e){statusEl.innerHTML='<span class="text-danger">오류: '+escHtml(e.message)+'</span>';}
-}
+    quotesData = await fetchRaw('stocks.json');
+  }catch(e){
+    quotesData = { updatedAt:null, quotes:{} };
+  }
+  renderWatchlist();
+  document.getElementById('stocks-updated').textContent =
+    quotesData.updatedAt ? ('갱신: '+timeAgo(quotesData.updatedAt)) : '데이터 없음';
 
-async function uploadImageToGitHub(file){
-  return new Promise(function(resolve,reject){
-    var reader=new FileReader();
-    reader.onload=async function(){
-      var base64=reader.result.split(',')[1];
-      var ext=file.name.split('.').pop().toLowerCase();
-      var name=file.name.replace(/\.[^.]+$/,'').replace(/[^a-z0-9]/gi,'-').toLowerCase();
-      var imgPath='assets/img/posts/'+Date.now()+'-'+name+'.'+ext;
-      try{
-        var res=await ghFetch('/contents/'+imgPath,{
-          method:'PUT',
-          body:JSON.stringify({message:'Upload image: '+file.name,content:base64})
-        });
-        if(res.ok) resolve('/'+imgPath);
-        else{var err=await res.json();reject(new Error(err.message||'Upload failed'));}
-      }catch(e){reject(e);}
-    };
-    reader.onerror=function(){reject(new Error('파일 읽기 실패'));};
-    reader.readAsDataURL(file);
-  });
+  try{
+    var fng = await fetchRaw('fear-greed.json');
+    renderFearGreed(fng);
+  }catch(e){
+    document.getElementById('fng-error').textContent = '공포탐욕지수 데이터를 불러올 수 없습니다: '+e.message;
+  }
 }
 
 /* ════════════════════════════════════
    INIT
 ════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(link){
-    link.addEventListener('click',function(e){
-      e.preventDefault();
-      document.querySelectorAll('.reorder-tabs .nav-link').forEach(function(l){l.classList.remove('active');});
-      this.classList.add('active'); renderCategory(this.dataset.cat);
-    });
-  });
-  renderTabSortList();
-  renderCategory(CAT_KEYS[0]);
+document.addEventListener('DOMContentLoaded', function(){
   updateTokenBadge();
+  loadAll();
 });
 </script>
 
