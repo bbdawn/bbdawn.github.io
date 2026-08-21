@@ -37,6 +37,11 @@ sitemap: false
   .page-header h4 { margin: 0; font-weight: 700; }
   .updated-hint { font-size: 0.78rem; color: var(--text-muted-color, #6c757d); }
   .card-section { margin-bottom: 1.75rem; }
+  #refresh-btn:disabled { opacity: 0.6; cursor: default; }
+  #refresh-icon.spinning { animation: refresh-spin 0.8s linear infinite; }
+  @keyframes refresh-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  #refresh-status { min-height: 1.1em; }
+  #refresh-status.refresh-error { color: #dc3545; }
 
   /* Fear & Greed gauge */
   .fng-top { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
@@ -139,10 +144,11 @@ sitemap: false
 <div class="page-header">
   <h4><i class="fas fa-chart-line me-2"></i>관심종목 대시보드</h4>
   <div class="text-end">
-    <button class="btn btn-outline-secondary btn-sm" onclick="loadAll()">
-      <i class="fas fa-sync fa-fw me-1"></i>새로고침
+    <button class="btn btn-outline-secondary btn-sm" id="refresh-btn" onclick="loadAll()">
+      <i class="fas fa-sync fa-fw me-1" id="refresh-icon"></i>새로고침
     </button>
     <div class="updated-hint mt-1" id="stocks-updated">불러오는 중...</div>
+    <div class="updated-hint" id="refresh-status"></div>
   </div>
 </div>
 
@@ -483,11 +489,22 @@ async function fetchRaw(name){
   return res.json();
 }
 async function loadAll(){
+  var btn = document.getElementById('refresh-btn');
+  var icon = document.getElementById('refresh-icon');
+  var status = document.getElementById('refresh-status');
+  btn.disabled = true;
+  icon.classList.add('spinning');
+  status.className = 'updated-hint';
+  status.textContent = '새로고침 중...';
+
+  var errors = [];
+
   try{
     watchlist = await fetchRaw('watchlist.json');
     saveWatchlistLocal(watchlist);
   }catch(e){
     watchlist = loadWatchlistLocal() || [];
+    errors.push('관심종목');
   }
   renderWatchlist();
 
@@ -495,6 +512,7 @@ async function loadAll(){
     quotesData = await fetchRaw('stocks.json');
   }catch(e){
     quotesData = { updatedAt:null, quotes:{} };
+    errors.push('시세');
   }
   renderWatchlist();
   document.getElementById('stocks-updated').textContent =
@@ -505,6 +523,19 @@ async function loadAll(){
     renderFearGreed(fng);
   }catch(e){
     document.getElementById('fng-error').textContent = '공포탐욕지수 데이터를 불러올 수 없습니다: '+e.message;
+    errors.push('공포탐욕지수');
+  }
+
+  btn.disabled = false;
+  icon.classList.remove('spinning');
+  if(errors.length){
+    status.classList.add('refresh-error');
+    status.textContent = errors.join(', ')+' 갱신 실패';
+  } else {
+    status.textContent = '새로고침 완료 · 방금 전';
+    setTimeout(function(){
+      if(status.textContent === '새로고침 완료 · 방금 전') status.textContent = '';
+    }, 4000);
   }
 }
 
