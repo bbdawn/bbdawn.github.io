@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-22T05:22:56Z",
+  "updatedAt": "2026-08-22T05:50:32Z",
   "quotes": {
     "005930.KS": {
       "price": 281500.0,
@@ -1317,11 +1317,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 76798.68,
+      "price": 77398.98,
       "previousClose": 78326.97,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1787376173,
+      "time": 1787377827,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1691,7 +1691,7 @@
         },
         {
           "x": 1787356800000,
-          "y": 76798.68
+          "y": 77398.98
         }
       ]
     },
