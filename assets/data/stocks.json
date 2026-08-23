@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-23T21:42:56Z",
+  "updatedAt": "2026-08-23T22:12:07Z",
   "quotes": {
     "005930.KS": {
       "price": 281500.0,
@@ -1058,7 +1058,7 @@
       "previousClose": 4680.6,
       "currency": "USD",
       "name": "Gold Dec 26",
-      "time": 1787345998,
+      "time": 1787522522,
       "fiftyTwoWeekHigh": 5586.2,
       "fiftyTwoWeekLow": 3366.0,
       "history": [
@@ -1308,16 +1308,20 @@
         },
         {
           "x": 1787284800000,
+          "y": 4624.1
+        },
+        {
+          "x": 1787522522000,
           "y": 4680.6
         }
       ]
     },
     "BTC-USD": {
-      "price": 77618.58,
+      "price": 77716.66,
       "previousClose": 77076.06,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1787521376,
+      "time": 1787523123,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1691,7 +1695,7 @@
         },
         {
           "x": 1787443200000,
-          "y": 77618.58
+          "y": 77716.66
         }
       ]
     },
@@ -3282,11 +3286,11 @@
       ]
     },
     "KRW=X": {
-      "price": 1385.79,
+      "price": 1385.91,
       "previousClose": 1393.74,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1787521378,
+      "time": 1787522900,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1322.42,
       "history": [
@@ -3559,8 +3563,8 @@
           "y": 1390.79
         },
         {
-          "x": 1787521378000,
-          "y": 1385.79
+          "x": 1787522900000,
+          "y": 1385.91
         }
       ]
     },
@@ -3569,7 +3573,7 @@
       "previousClose": 87.06,
       "currency": "USD",
       "name": "Crude Oil Oct 26",
-      "time": 1787345999,
+      "time": 1787522524,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
@@ -3819,6 +3823,10 @@
         },
         {
           "x": 1787284800000,
+          "y": 87.06
+        },
+        {
+          "x": 1787522528000,
           "y": 87.06
         }
       ]
