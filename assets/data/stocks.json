@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-23T17:12:55Z",
+  "updatedAt": "2026-08-23T17:42:10Z",
   "quotes": {
     "005930.KS": {
       "price": 281500.0,
@@ -8,7 +8,7 @@
       "name": "Samsung Electronics Co., Ltd.",
       "time": 1787293823,
       "fiftyTwoWeekHigh": 374500.0,
-      "fiftyTwoWeekLow": 67500.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1779321600000,
@@ -271,7 +271,7 @@
       "name": "SK hynix Inc.",
       "time": 1787293803,
       "fiftyTwoWeekHigh": 2987000.0,
-      "fiftyTwoWeekLow": 253000.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1779321600000,
@@ -534,7 +534,7 @@
       "name": "Hyundai Motor Company",
       "time": 1787293820,
       "fiftyTwoWeekHigh": 783000.0,
-      "fiftyTwoWeekLow": 213000.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1779321600000,
@@ -797,7 +797,7 @@
       "name": "KOSPI Composite Index",
       "time": 1787303140,
       "fiftyTwoWeekHigh": 9385.59,
-      "fiftyTwoWeekLow": 3135.02,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1779321600000,
@@ -1313,11 +1313,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 77298.16,
+      "price": 77227.08,
       "previousClose": 77076.06,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1787505163,
+      "time": 1787506922,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1691,7 +1691,7 @@
         },
         {
           "x": 1787443200000,
-          "y": 77297.59
+          "y": 77226.1
         }
       ]
     },
@@ -2489,7 +2489,7 @@
       "previousClose": 26067.2,
       "currency": "USD",
       "name": "NASDAQ Composite",
-      "time": 1787346960,
+      "time": 1787346959,
       "fiftyTwoWeekHigh": 27190.21,
       "fiftyTwoWeekLow": 20690.25,
       "history": [
