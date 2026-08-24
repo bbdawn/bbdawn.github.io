@@ -16,6 +16,8 @@ tags: [rack, topology, visualization, openstack, snmp, java, spring]
 
 ### 랙 구성도
 
+랙에서 호스트, 스위치, 스토리지의 위치 및 서버 상태 정보를 표시합니다.
+
 - Server, Storage, Switch 등 물리 자원 등록 및 관리
 - 랙 단위 자원 배치 시각화
 
@@ -23,6 +25,8 @@ tags: [rack, topology, visualization, openstack, snmp, java, spring]
 _랙 목록과 개별 장비의 상태·온도·팬 속도 등 상세 정보를 확인하는 랙 구성도 화면_
 
 ### 물리 네트워크 토폴로지
+
+랙 구성도에 등록한 정보를 기반으로 호스트 및 스위치 연결정보를 표시합니다.
 
 서버와 스위치 간 포트 단위 연결을 시각화합니다.
 
@@ -36,6 +40,8 @@ IPMI/SNMP 수집 데이터를 활용해 실제 연결 상태를 반영합니다.
 _스위치와 서버 간 포트 연결을 시각화하고, 스위치 클릭 시 제조사·SNMP·APIC 등 상세 정보를 확인하는 화면_
 
 ### 가상 네트워크 구성도
+
+물리 호스트에 설치된 Contrabass Engine에 구성된 가상 네트워크(VLAN) 기반 외부 네트워크에 존재하는 VM 정보를 시각적으로 표시합니다.
 
 OpenStack 기반으로 VLAN별 연결된 인스턴스를 매핑·시각화합니다.
 
