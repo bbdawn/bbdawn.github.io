@@ -52,6 +52,9 @@ nvidia-smi
 
 GPU가 인스턴스에 정상적으로 전달됐다면 모델명과 메모리 크기가 출력됩니다. Passthrough/MIG 모드에 따라 보이는 디바이스 개수와 형태가 다르므로, (1)~(3)편에서 설정한 모드와 일치하는지 함께 확인합니다.
 
+![인스턴스 내부에서 nvidia-smi 실행 결과 - MIG 디바이스 및 lspci 확인](/assets/img/posts/gpu-instance-verification-tools-nvidia-smi.png)
+_MIG 모드로 할당된 GPU가 nvidia-smi에 정상 인식되고, lspci로도 디바이스가 확인되는 모습_
+
 ### DCGM Exporter 설치
 
 GPU 메트릭을 외부에서 수집할 수 있도록 인스턴스에 DCGM Exporter를 설치하고 실행합니다. 인스턴스 내부의 메트릭은 Prometheus가 직접 접근할 수 없어, 호스트에 설치된 Contrabass agent **mole**이 qemu-guest-agent를 통해 인스턴스 내부로 접근해 이 메트릭을 수집합니다. 이 데이터는 (5)편의 모니터링 API에서 사용됩니다.
