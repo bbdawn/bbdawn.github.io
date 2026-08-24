@@ -48,6 +48,9 @@ Barbican API로 Secret 목록을 조회한 뒤, 인증서(`application/octet-str
 
 Listener 생성 요청 시 프로토콜을 `TERMINATED_HTTPS`, 포트를 443으로 지정하고, 선택된 Barbican Secret의 참조 URL을 `default_tls_container_ref`에 담아 Octavia에 전달합니다.
 
+![로드밸런서 리스너 생성 화면 - TERMINATED_HTTPS 프로토콜 및 SSL 인증서 선택](/assets/img/posts/octavia-ssl-offloading-listener-create.png)
+_리스너 생성 화면에서 TERMINATED_HTTPS 프로토콜 선택 시 SSL 인증서 목록이 노출되는 모습_
+
 ---
 
 ## 사용자 친화적 .p12 업로드 구현
@@ -56,9 +59,15 @@ Listener 생성 요청 시 프로토콜을 `TERMINATED_HTTPS`, 포트를 443으�
 
 Barbican에 인증서를 등록하려면 `.p12` 파일을 **직접 base64로 인코딩**한 뒤 API로 전송해야 합니다. 실제 사용자 입장에서는 번거롭고 실수가 생기기 쉬운 과정입니다.
 
+![SSL 인증서 등록 화면 - Payload 데이터 직접 입력](/assets/img/posts/octavia-ssl-offloading-cert-manual-input.png)
+_기존 방식: base64로 인코딩한 Payload 데이터를 직접 입력해야 하는 SSL 인증서 등록 화면_
+
 ### 개선: 포탈에서 .p12 직접 업로드
 
 포탈에서 `.p12` 파일을 업로드하면, **백엔드가 base64 변환 및 Barbican 등록까지 자동으로 처리**합니다.
+
+![SSL 인증서 등록 화면 - pkcs#12 파일 업로드](/assets/img/posts/octavia-ssl-offloading-cert-p12-upload.png)
+_개선된 방식: pkcs#12(.p12) 파일을 그대로 업로드하면 백엔드가 base64 변환 및 Barbican 등록을 처리_
 
 ```
 [사용자]
