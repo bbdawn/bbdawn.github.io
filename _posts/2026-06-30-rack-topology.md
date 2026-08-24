@@ -20,6 +20,14 @@ tags: [rack, topology, visualization, openstack, snmp, java, spring]
 
 - Server, Storage, Switch 등 물리 자원 등록 및 관리
 - 랙 단위 자원 배치 시각화
+- IPMI를 통해 각 서버의 실시간 자원 상태 정보(전원 상태, 센서 정보 등) 수집 및 표시
+- 실제 랙 이미지 위에 서버/스위치/스토리지 박스를 배치하고, 시스템 상태에 따라 색상 변화로 표시
+- 호스트 사양 및 관리 정보 제공
+
+**활용**
+
+- 물리적 장비 위치 파악 용이
+- 원격에서 서버 상태 확인 및 이상 감지
 
 ![랙 구성도 화면 - 랙별 장비 배치 및 서버 상세 정보](/assets/img/posts/rack-topology-rack-view.png)
 _랙 목록과 개별 장비의 상태·온도·팬 속도 등 상세 정보를 확인하는 랙 구성도 화면_
