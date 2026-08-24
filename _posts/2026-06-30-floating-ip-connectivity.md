@@ -6,6 +6,9 @@ subcategory: Feature
 tags: [openstack, neutron, floating-ip, network, router, java, spring]
 ---
 
+![유동 IP 자원 연동 화면 - 연동 가능 여부 표출](/assets/img/posts/floating-ip-connectivity-associate-dialog.png)
+_유동 IP 자원 연동 화면에서 고정 IP별 연동 가능 여부를 표시한 예시_
+
 ## 문제 상황
 
 OpenStack Neutron에서 Floating IP를 포트에 연동할 때, **라우터가 연결되지 않은 네트워크의 포트**와 연동을 시도하면 실패합니다.
@@ -44,6 +47,9 @@ Floating IP 연동이 성공하려면 아래 경로가 모두 연결되어 있�
 ---
 
 ## 구현 방법
+
+![유동 IP 자원 연동 화면 - 연동 가능 여부 표출](/assets/img/posts/floating-ip-connectivity-associate-dialog.png)
+_유동 IP 자원 연동 화면에서 고정 IP별 연동 가능 여부를 표시한 예시_
 
 ### 1. 라우팅 가능한 네트워크 목록 추출
 
