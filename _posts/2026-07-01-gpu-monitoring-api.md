@@ -6,6 +6,9 @@ subcategory: Feature
 tags: [openstack, gpu, dcgm-exporter, prometheus, monitoring, api]
 ---
 
+![Prometheus에서 DCGM_FI_DEV_SM_CLOCK 메트릭을 조회한 결과 - job 라벨로 baremetal_dcgm_exporter와 dcgm_exporter가 구분됨](/assets/img/posts/gpu-monitoring-api-prometheus-query.png)
+_Prometheus에 적재된 DCGM 메트릭. job 라벨로 GPU Host(baremetal_dcgm_exporter)와 GPU VM(dcgm_exporter) 수집 경로가 구분된다._
+
 이전 글([4편]({% post_url 2026-07-01-gpu-instance-verification-tools %}))에서 인스턴스에 DCGM Exporter를 설치했다면, 이번 글은 그 메트릭을 실제로 조회 가능한 API로 만드는 과정입니다.
 
 ## 개발 배경
