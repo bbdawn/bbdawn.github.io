@@ -12,6 +12,10 @@ tags: [openstack, gpu, mig, passthrough, nova, precheck, validation]
 
 ![인스턴스 생성 화면 - 호스트별 GPU 인스턴스 생성 가능 여부(Yes/No) 표시](/assets/img/posts/gpu-instance-host-precheck-result.png)
 
+인스턴스 유형 선택 단계에서도 GPU 프로파일(MIG/Passthrough)별로 현재 호스트 상태 기준 "GPU 사용 가능 여부"를 Yes/No로 함께 보여줍니다.
+
+![인스턴스 생성 화면 - 인스턴스 유형별 GPU 프로파일 및 사용 가능 여부 표시](/assets/img/posts/gpu-instance-host-precheck-instance-type-list.png)
+
 ## 개발 배경
 
 (2)편에서 만든 자동 생성 기능으로 설정을 내려보내도, 다음과 같은 이유로 실제 호스트 상태가 기대와 다를 수 있습니다.
