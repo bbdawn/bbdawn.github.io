@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-08-24T20:19:38Z",
-  "score": 54.7428571428571,
-  "rating": "neutral",
+  "updatedAt": "2026-08-24T20:55:49Z",
+  "score": 55.0285714285714,
+  "rating": "greed",
   "previousClose": 55.1714285714286,
   "previousWeek": 58.4,
   "previousMonth": 41.3428571428571,
@@ -20,7 +20,7 @@
       "rating": "greed"
     },
     "put_call_options": {
-      "score": 51.2,
+      "score": 50.6,
       "rating": "neutral"
     },
     "market_volatility_vix": {
@@ -511,11 +511,11 @@
     },
     {
       "x": 1787529600000,
-      "y": 54.74
+      "y": 55.03
     },
     {
-      "x": 1787601916000,
-      "y": 54.74
+      "x": 1787603792000,
+      "y": 55.03
     }
   ]
 }
