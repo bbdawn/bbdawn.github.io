@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-24T20:55:49Z",
+  "updatedAt": "2026-08-24T21:21:35Z",
   "quotes": {
     "005930.KS": {
       "price": 257000.0,
@@ -1022,11 +1022,11 @@
       ]
     },
     "GC=F": {
-      "price": 4704.9,
+      "price": 4710.0,
       "previousClose": 4680.6,
       "currency": "USD",
       "name": "Gold Dec 26",
-      "time": 1787604349,
+      "time": 1787605197,
       "fiftyTwoWeekHigh": 5586.2,
       "fiftyTwoWeekLow": 3366.0,
       "history": [
@@ -1280,16 +1280,16 @@
         },
         {
           "x": 1787544000000,
-          "y": 4704.9
+          "y": 4710
         }
       ]
     },
     "BTC-USD": {
-      "price": 78897.0,
+      "price": 78860.32,
       "previousClose": 77727.62,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1787604945,
+      "time": 1787606493,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1663,7 +1663,7 @@
         },
         {
           "x": 1787529600000,
-          "y": 78897
+          "y": 78860.32
         }
       ]
     },
@@ -2461,7 +2461,7 @@
       "previousClose": 26180.455,
       "currency": "USD",
       "name": "NASDAQ Composite",
-      "time": 1787604948,
+      "time": 1787606159,
       "fiftyTwoWeekHigh": 27190.21,
       "fiftyTwoWeekLow": 20690.25,
       "history": [
@@ -3250,11 +3250,11 @@
       ]
     },
     "KRW=X": {
-      "price": 1382.76,
+      "price": 1381.69,
       "previousClose": 1385.0,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1787604943,
+      "time": 1787606281,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1322.42,
       "history": [
@@ -3523,17 +3523,17 @@
           "y": 1384.98
         },
         {
-          "x": 1787604943000,
-          "y": 1382.76
+          "x": 1787606281000,
+          "y": 1381.69
         }
       ]
     },
     "CL=F": {
-      "price": 84.86,
+      "price": 84.98,
       "previousClose": 87.06,
       "currency": "USD",
       "name": "Crude Oil Oct 26",
-      "time": 1787604349,
+      "time": 1787605198,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
@@ -3787,7 +3787,7 @@
         },
         {
           "x": 1787544000000,
-          "y": 84.86
+          "y": 84.98
         }
       ]
     }
