@@ -77,6 +77,9 @@ strings $(which sshd) | grep hosts
 
 ### /etc/hosts.allow
 
+![IP 접근 제어 화면 - 허용 IP 탭에서 호스트별 /etc/hosts.allow 내용 확인](/assets/img/posts/linux-tcp-wrappers-hosts-allow-ui.png)
+_포탈의 IP 접근 제어 화면에서 호스트별 /etc/hosts.allow 내용을 확인하는 모습_
+
 ```
 # 특정 IP만 SSH 허용
 sshd : 192.168.1.100
@@ -91,10 +94,10 @@ sshd : 192.168.1. 10.0.0.
 ALL : 127.0.0.1 192.168.0.
 ```
 
-![IP 접근 제어 화면 - 허용 IP 탭에서 호스트별 /etc/hosts.allow 내용 확인](/assets/img/posts/linux-tcp-wrappers-hosts-allow-ui.png)
-_포탈의 IP 접근 제어 화면에서 호스트별 /etc/hosts.allow 내용을 확인하는 모습_
-
 ### /etc/hosts.deny
+
+![IP 접근 제어 화면 - 차단 IP 탭에서 호스트별 /etc/hosts.deny 내용 확인](/assets/img/posts/linux-tcp-wrappers-hosts-deny-ui.png)
+_포탈의 IP 접근 제어 화면에서 호스트별 /etc/hosts.deny 내용을 확인하는 모습_
 
 ```
 # 허용 목록에 없는 SSH는 전부 차단 (화이트리스트 방식)
@@ -103,9 +106,6 @@ sshd : ALL
 # 모든 서비스 기본 차단 (hosts.allow로만 선택 허용)
 ALL : ALL
 ```
-
-![IP 접근 제어 화면 - 차단 IP 탭에서 호스트별 /etc/hosts.deny 내용 확인](/assets/img/posts/linux-tcp-wrappers-hosts-deny-ui.png)
-_포탈의 IP 접근 제어 화면에서 호스트별 /etc/hosts.deny 내용을 확인하는 모습_
 
 ### 접속 차단 시 로그 남기기 (spawn 옵션)
 
