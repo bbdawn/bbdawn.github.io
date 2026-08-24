@@ -71,6 +71,9 @@ GPU 모드에 따라 flavor metadata 항목이 자동으로 채워집니다.
 - GPU 리소스 요청 extra_specs (모드별로 키/값 형식이 다름)
 - PCI alias 또는 리소스 클래스 매핑
 
+![인스턴스 유형 생성 화면 - GPU 모드(PCI Pass-Thru/MIG), 리소스 클래스, 할당 GPU 수 설정](/assets/img/posts/gpu-flavor-metadata-automation-flavor-create.png)
+_인스턴스 유형 생성 화면에서 GPU 모드와 리소스 클래스를 선택하면 해당 조합의 extra_specs가 자동으로 생성되는 화면_
+
 ---
 
 ## 효과
