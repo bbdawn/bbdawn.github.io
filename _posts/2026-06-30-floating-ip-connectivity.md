@@ -12,6 +12,9 @@ OpenStack Neutron에서 Floating IP를 포트에 연동할 때, **라우터가 �
 
 기존 UI에서는 포트 목록을 그대로 보여줬기 때문에, 사용자가 연동 불가능한 포트를 선택해 오류를 만나는 상황이 반복됐습니다.
 
+![유동 IP 자원 연동 화면 - 연동 가능 여부 표출](/assets/img/posts/floating-ip-connectivity-associate-dialog.png)
+_유동 IP 자원 연동 화면에서 고정 IP별 연동 가능 여부를 표시한 예시_
+
 ---
 
 ## 연동 가능 조건 분석
