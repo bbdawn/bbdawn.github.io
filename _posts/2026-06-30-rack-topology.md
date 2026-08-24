@@ -19,6 +19,9 @@ tags: [rack, topology, visualization, openstack, snmp, java, spring]
 - Server, Storage, Switch 등 물리 자원 등록 및 관리
 - 랙 단위 자원 배치 시각화
 
+![랙 구성도 화면 - 랙별 장비 배치 및 서버 상세 정보](/assets/img/posts/rack-topology-rack-view.png)
+_랙 목록과 개별 장비의 상태·온도·팬 속도 등 상세 정보를 확인하는 랙 구성도 화면_
+
 ### 물리 네트워크 토폴로지
 
 서버와 스위치 간 포트 단위 연결을 시각화합니다.
