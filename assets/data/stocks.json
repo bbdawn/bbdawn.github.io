@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-08-25T00:43:09Z",
+  "updatedAt": "2026-08-25T02:13:01Z",
   "quotes": {
     "005930.KS": {
-      "price": 247000.0,
+      "price": 252250.0,
       "previousClose": 257000.0,
       "currency": "KRW",
       "name": "Samsung Electronics Co., Ltd.",
-      "time": 1787617388,
+      "time": 1787622780,
       "fiftyTwoWeekHigh": 374500.0,
       "fiftyTwoWeekLow": 67500.0,
       "history": [
@@ -260,16 +260,16 @@
         },
         {
           "x": 1787616000000,
-          "y": 247000
+          "y": 252250
         }
       ]
     },
     "000660.KS": {
-      "price": 1579000.0,
+      "price": 1598000.0,
       "previousClose": 1671000.0,
       "currency": "KRW",
       "name": "SK hynix Inc.",
-      "time": 1787617389,
+      "time": 1787622780,
       "fiftyTwoWeekHigh": 2987000.0,
       "fiftyTwoWeekLow": 253000.0,
       "history": [
@@ -523,16 +523,16 @@
         },
         {
           "x": 1787616000000,
-          "y": 1579000
+          "y": 1598000
         }
       ]
     },
     "005380.KS": {
-      "price": 411000.0,
+      "price": 415000.0,
       "previousClose": 414000.0,
       "currency": "KRW",
       "name": "Hyundai Motor Company",
-      "time": 1787617388,
+      "time": 1787622781,
       "fiftyTwoWeekHigh": 783000.0,
       "fiftyTwoWeekLow": 213000.0,
       "history": [
@@ -786,16 +786,16 @@
         },
         {
           "x": 1787616000000,
-          "y": 411000
+          "y": 415000
         }
       ]
     },
     "^KS11": {
-      "price": 6464.25,
+      "price": 6579.6,
       "previousClose": 6696.96,
       "currency": "KRW",
       "name": "KOSPI Composite Index",
-      "time": 1787617380,
+      "time": 1787622780,
       "fiftyTwoWeekHigh": 9385.59,
       "fiftyTwoWeekLow": 3135.02,
       "history": [
@@ -1044,19 +1044,23 @@
           "y": 6912.95
         },
         {
+          "x": 1787529600000,
+          "y": 6696.96
+        },
+        {
           "x": 1787616000000,
-          "y": 6464.25
+          "y": 6579.6
         }
       ]
     },
     "GC=F": {
-      "price": 4746.5,
+      "price": 4712.3,
       "previousClose": 4697.8,
       "currency": "USD",
       "name": "Gold Dec 26",
-      "time": 1787617988,
+      "time": 1787623380,
       "fiftyTwoWeekHigh": 5586.2,
-      "fiftyTwoWeekLow": 3366.0,
+      "fiftyTwoWeekLow": 3371.1,
       "history": [
         {
           "x": 1779768000000,
@@ -1307,17 +1311,21 @@
           "y": 4624.1
         },
         {
-          "x": 1787617988000,
-          "y": 4746.5
+          "x": 1787544000000,
+          "y": 4640.8
+        },
+        {
+          "x": 1787623380000,
+          "y": 4712.3
         }
       ]
     },
     "BTC-USD": {
-      "price": 79020.0,
+      "price": 79820.46,
       "previousClose": 78982.266,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1787618586,
+      "time": 1787623981,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1687,7 +1695,7 @@
         },
         {
           "x": 1787616000000,
-          "y": 79020
+          "y": 79820.46
         }
       ]
     },
@@ -3274,11 +3282,11 @@
       ]
     },
     "KRW=X": {
-      "price": 1381.58,
+      "price": 1381.42,
       "previousClose": 1382.1,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1787618591,
+      "time": 1787623982,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1322.42,
       "history": [
@@ -3547,17 +3555,17 @@
           "y": 1384.98
         },
         {
-          "x": 1787618591000,
-          "y": 1381.58
+          "x": 1787623982000,
+          "y": 1381.42
         }
       ]
     },
     "CL=F": {
-      "price": 85.09,
+      "price": 85.65,
       "previousClose": 85.01,
       "currency": "USD",
       "name": "Crude Oil Oct 26",
-      "time": 1787617981,
+      "time": 1787623384,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
@@ -3810,8 +3818,12 @@
           "y": 87.06
         },
         {
-          "x": 1787617981000,
-          "y": 85.09
+          "x": 1787544000000,
+          "y": 85.01
+        },
+        {
+          "x": 1787623384000,
+          "y": 85.65
         }
       ]
     }
