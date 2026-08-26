@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-08-26T18:10:44Z",
-  "score": 55.4,
+  "updatedAt": "2026-08-26T20:23:00Z",
+  "score": 55.1714285714286,
   "rating": "greed",
   "previousClose": 58.8,
   "previousWeek": 57.2,
@@ -20,7 +20,7 @@
       "rating": "greed"
     },
     "put_call_options": {
-      "score": 63.6,
+      "score": 63.2,
       "rating": "greed"
     },
     "market_volatility_vix": {
@@ -28,11 +28,11 @@
       "rating": "neutral"
     },
     "junk_bond_demand": {
-      "score": 89.2,
+      "score": 87.4,
       "rating": "extreme greed"
     },
     "safe_haven_demand": {
-      "score": 59.8,
+      "score": 59.4,
       "rating": "greed"
     }
   },
@@ -511,11 +511,11 @@
     },
     {
       "x": 1787702400000,
-      "y": 55.43
+      "y": 55.17
     },
     {
-      "x": 1787767742000,
-      "y": 55.4
+      "x": 1787774983000,
+      "y": 55.17
     }
   ]
 }
