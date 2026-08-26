@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-26T20:23:00Z",
+  "updatedAt": "2026-08-26T23:52:11Z",
   "score": 55.1714285714286,
   "rating": "greed",
   "previousClose": 58.8,
@@ -28,7 +28,7 @@
       "rating": "neutral"
     },
     "junk_bond_demand": {
-      "score": 87.4,
+      "score": 88.4,
       "rating": "extreme greed"
     },
     "safe_haven_demand": {
@@ -514,7 +514,7 @@
       "y": 55.17
     },
     {
-      "x": 1787774983000,
+      "x": 1787787321000,
       "y": 55.17
     }
   ]
