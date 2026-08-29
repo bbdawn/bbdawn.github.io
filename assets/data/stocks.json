@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-29T11:14:48Z",
+  "updatedAt": "2026-08-29T15:41:59Z",
   "quotes": {
     "005930.KS": {
       "price": 257000.0,
@@ -1329,11 +1329,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 77708.89,
+      "price": 77872.01,
       "previousClose": 77838.39,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1788002084,
+      "time": 1788018118,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1703,7 +1703,7 @@
         },
         {
           "x": 1787961600000,
-          "y": 77708.89
+          "y": 77872.01
         }
       ]
     },
@@ -2764,7 +2764,7 @@
       "previousClose": 7730.99,
       "currency": "USD",
       "name": "S&P 500",
-      "time": 1787947200,
+      "time": 1787949420,
       "fiftyTwoWeekHigh": 7816.7,
       "fiftyTwoWeekLow": 6316.91,
       "history": [
@@ -3027,7 +3027,7 @@
       "previousClose": 14.51,
       "currency": "USD",
       "name": "CBOE Volatility Index",
-      "time": 1787948100,
+      "time": 1787948101,
       "fiftyTwoWeekHigh": 35.3,
       "fiftyTwoWeekLow": 13.38,
       "history": [
@@ -3294,7 +3294,7 @@
       "previousClose": 1380.43,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1787974249,
+      "time": 1787974248,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1322.42,
       "history": [
@@ -3567,7 +3567,7 @@
           "y": 1380.45
         },
         {
-          "x": 1787974249000,
+          "x": 1787974248000,
           "y": 1371.5
         }
       ]
