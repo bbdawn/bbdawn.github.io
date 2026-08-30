@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-30T14:07:12Z",
+  "updatedAt": "2026-08-30T18:06:23Z",
   "quotes": {
     "005930.KS": {
       "price": 257000.0,
@@ -8,7 +8,7 @@
       "name": "Samsung Electronics Co., Ltd.",
       "time": 1787898611,
       "fiftyTwoWeekHigh": 374500.0,
-      "fiftyTwoWeekLow": 67500.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1779926400000,
@@ -270,12 +270,12 @@
     },
     "000660.KS": {
       "price": 1653000.0,
-      "previousClose": 1729625.0,
+      "previousClose": 1729620.0,
       "currency": "KRW",
       "name": "SK hynix Inc.",
       "time": 1787898629,
       "fiftyTwoWeekHigh": 2987000.0,
-      "fiftyTwoWeekLow": 255000.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1779926400000,
@@ -542,7 +542,7 @@
       "name": "Hyundai Motor Company",
       "time": 1787898607,
       "fiftyTwoWeekHigh": 783000.0,
-      "fiftyTwoWeekLow": 213000.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1779926400000,
@@ -809,7 +809,7 @@
       "name": "KOSPI Composite Index",
       "time": 1787907940,
       "fiftyTwoWeekHigh": 9385.59,
-      "fiftyTwoWeekLow": 3135.02,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1779926400000,
@@ -1333,11 +1333,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 78838.94,
+      "price": 78943.34,
       "previousClose": 78234.75,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1788098830,
+      "time": 1788113179,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1707,7 +1707,7 @@
         },
         {
           "x": 1788048000000,
-          "y": 78835.22
+          "y": 78943.34
         }
       ]
     },
@@ -2514,7 +2514,7 @@
     },
     "^IXIC": {
       "price": 26402.424,
-      "previousClose": 26541.352,
+      "previousClose": 26541.4,
       "currency": "USD",
       "name": "NASDAQ Composite",
       "time": 1787951759,
