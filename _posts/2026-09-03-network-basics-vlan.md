@@ -115,4 +115,4 @@ ip -d link show eth0.10
 
 ---
 
-여기까지 IP/MAC 기본기(1) → ARP(2) → Routing(3) → TCP 3-Way Handshake(4) → VLAN(5)으로 이어지는 네트워크 기초 시리즈였습니다.
+다음 글에서는 지금까지 다룬 개념들을 실제로 확인할 때 쓰는 **Linux 네트워크 명령어**를 정리합니다.
