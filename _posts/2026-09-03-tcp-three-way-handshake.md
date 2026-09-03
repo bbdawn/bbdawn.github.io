@@ -1,5 +1,5 @@
 ---
-title: "[Study] TCP 3-Way Handshake — 연결 수립 과정 정리"
+title: "[Study] 네트워크 기초 (4) — TCP 3-Way Handshake"
 date: 2026-09-03 10:00:00 +0900
 categories: [Study, Network]
 subcategory: Study
@@ -189,3 +189,7 @@ sudo tcpdump -i any 'tcp port 8888' -n
 | 상대방 인지 | "더 보낼 데이터 없음" | "연결 상태가 유효하지 않음" |
 
 RST는 시퀀스 번호나 연결 상태가 예상과 다를 때 커널이 즉시 정리하는 용도이기 때문에, 애플리케이션 레벨에서 남은 데이터가 있어도 그대로 버려질 수 있습니다.
+
+---
+
+지금까지는 L3(IP)/L4(TCP) 계층이었다면, 다음 글에서는 한 단계 아래인 L2(스위치) 계층에서 네트워크를 논리적으로 분리하는 **VLAN**을 다룹니다.
