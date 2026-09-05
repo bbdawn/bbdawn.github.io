@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-05T11:19:21Z",
+  "updatedAt": "2026-09-05T13:56:09Z",
   "quotes": {
     "005930.KS": {
       "price": 255500.0,
@@ -821,7 +821,7 @@
       "name": "KOSPI Composite Index",
       "time": 1788512730,
       "fiftyTwoWeekHigh": 9385.59,
-      "fiftyTwoWeekLow": 3196.19,
+      "fiftyTwoWeekLow": 3206.34,
       "history": [
         {
           "x": 1780531200000,
@@ -1353,11 +1353,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 79628.57,
+      "price": 79636.5,
       "previousClose": 79676.33,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1788607157,
+      "time": 1788616567,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1731,7 +1731,7 @@
         },
         {
           "x": 1788566400000,
-          "y": 79628.57
+          "y": 79636.5
         }
       ]
     },
