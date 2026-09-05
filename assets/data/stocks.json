@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-04T23:42:14Z",
+  "updatedAt": "2026-09-05T02:06:31Z",
   "quotes": {
     "005930.KS": {
       "price": 255500.0,
@@ -8,7 +8,7 @@
       "name": "Samsung Electronics Co., Ltd.",
       "time": 1788503405,
       "fiftyTwoWeekHigh": 374500.0,
-      "fiftyTwoWeekLow": 69500.0,
+      "fiftyTwoWeekLow": 69600.0,
       "history": [
         {
           "x": 1780531200000,
@@ -279,7 +279,7 @@
       "name": "SK hynix Inc.",
       "time": 1788503423,
       "fiftyTwoWeekHigh": 2987000.0,
-      "fiftyTwoWeekLow": 272000.0,
+      "fiftyTwoWeekLow": 274000.0,
       "history": [
         {
           "x": 1780531200000,
@@ -1078,6 +1078,10 @@
         {
           "x": 1788393600000,
           "y": 6579.48
+        },
+        {
+          "x": 1788480000000,
+          "y": 6687.21
         }
       ]
     },
@@ -1088,7 +1092,7 @@
       "name": "Gold Dec 26",
       "time": 1788555598,
       "fiftyTwoWeekHigh": 5586.2,
-      "fiftyTwoWeekLow": 3567.8,
+      "fiftyTwoWeekLow": 3590.0,
       "history": [
         {
           "x": 1780545600000,
@@ -1353,18 +1357,14 @@
       ]
     },
     "BTC-USD": {
-      "price": 79689.32,
-      "previousClose": 81271.92,
+      "price": 79537.54,
+      "previousClose": 79676.33,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1788565330,
+      "time": 1788573989,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
-        {
-          "x": 1780531200000,
-          "y": 63801.57
-        },
         {
           "x": 1780617600000,
           "y": 60922.67
@@ -1730,8 +1730,8 @@
           "y": 81271.74
         },
         {
-          "x": 1788480000000,
-          "y": 79689.32
+          "x": 1788566400000,
+          "y": 79537.54
         }
       ]
     },
@@ -3346,7 +3346,7 @@
       "previousClose": 1355.83,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1788555590,
+      "time": 1788567967,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1322.42,
       "history": [
@@ -3619,7 +3619,7 @@
           "y": 1355.41
         },
         {
-          "x": 1788555590000,
+          "x": 1788567967000,
           "y": 1345.99
         }
       ]
