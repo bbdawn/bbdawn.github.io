@@ -107,7 +107,7 @@ order: 0
   </a>
   <a class="ph-card" href="/octavia-manager/">
     <div class="ph-title"><i class="fas fa-random"></i> Octavia Manager</div>
-    <div class="ph-desc">안 지워지는 로드밸런서 삭제부터 CLI 운영, 트러블슈팅까지 정리한 인터랙티브 운영 도구</div>
+    <div class="ph-desc">CLI 운영, 서비스 관리, 트러블슈팅, 리소스 구조까지 정리한 인터랙티브 운영 도구</div>
   </a>
   <a class="ph-card" href="{% post_url 2026-06-30-octavia-ssl-offloading %}">
     <div class="ph-title"><i class="fas fa-lock"></i> Octavia SSL Offloading</div>

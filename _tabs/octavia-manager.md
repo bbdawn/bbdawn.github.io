@@ -55,20 +55,6 @@ permalink: /octavia-manager/
   }
   #octavia-manager .om-card h3 i { color: var(--link-color); opacity: 0.85; }
   #octavia-manager .om-card p { font-size: 0.92rem; line-height: 1.75; opacity: 0.85; }
-  #octavia-manager .om-note {
-    font-size: 0.85rem;
-    line-height: 1.8;
-    padding: 0.7rem 1rem;
-    border-left: 3px solid #dc3545;
-    background: rgba(220,53,69,0.06);
-    border-radius: 4px;
-    margin: 0.75rem 0;
-  }
-  #octavia-manager .om-note.info {
-    border-left-color: var(--link-color);
-    background: rgba(var(--bs-primary-rgb, 13,110,253), 0.06);
-  }
-
   #octavia-manager pre {
     overflow-x: auto;
     font-size: 0.82rem;
@@ -88,16 +74,6 @@ permalink: /octavia-manager/
   }
   #octavia-manager table.om-table th { background: rgba(0,0,0,0.03); }
 
-  #octavia-manager .om-copy-wrap { position: relative; }
-  #octavia-manager .om-copy-btn {
-    position: absolute; top: 0.5rem; right: 0.5rem;
-    font-size: 0.75rem; padding: 0.2rem 0.55rem;
-    border: 1px solid var(--border-color, #dee2e6);
-    background: var(--main-bg, #fff); border-radius: 5px; cursor: pointer;
-    opacity: 0.7;
-  }
-  #octavia-manager .om-copy-btn:hover { opacity: 1; }
-
   #octavia-manager .om-step {
     display: flex; gap: 0.8rem; margin-bottom: 1rem;
   }
@@ -108,25 +84,6 @@ permalink: /octavia-manager/
   }
   #octavia-manager .om-step-body { font-size: 0.92rem; line-height: 1.7; }
   #octavia-manager .om-step-body code { font-size: 0.85rem; }
-
-  #octavia-manager .om-id-form {
-    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;
-  }
-  #octavia-manager .om-id-form input {
-    flex: 1; min-width: 220px;
-    border: 1.5px solid var(--border-color, #dee2e6);
-    border-radius: 6px;
-    padding: 0.45rem 0.75rem;
-    font-size: 0.9rem;
-    background: var(--main-bg, #fff);
-    color: var(--text-color, #333);
-  }
-  #octavia-manager .om-id-form input:focus { outline: none; border-color: var(--link-color); }
-  #octavia-manager .om-generated-badge {
-    display: inline-block; font-size: 0.75rem; padding: 0.15rem 0.5rem;
-    border-radius: 4px; background: rgba(var(--bs-primary-rgb, 13,110,253), 0.12);
-    color: var(--link-color); margin-bottom: 0.5rem;
-  }
 
   #octavia-manager .om-cmd-list {
     display: flex; flex-direction: column; gap: 0.4rem;
@@ -194,10 +151,6 @@ permalink: /octavia-manager/
     font-size: 0.8rem; line-height: 1.85;
   }
 
-  #octavia-manager .om-sql-step { margin-bottom: 1rem; }
-  #octavia-manager .om-sql-step:last-child { margin-bottom: 0; }
-  #octavia-manager .om-sql-step .om-cmd-label { min-width: 0; margin-bottom: 0.3rem; font-weight: 600; opacity: 0.75; }
-
   @media (max-width: 576px) {
     #octavia-manager .om-cmd-label { min-width: 68px; font-size: 0.72rem; }
   }
@@ -206,80 +159,14 @@ permalink: /octavia-manager/
 <div id="octavia-manager">
 
   <div class="om-tabs">
-    <button class="om-tab-btn active" data-panel="cleanup">안 지워지는 LB 삭제</button>
-    <button class="om-tab-btn" data-panel="cli">CLI 명령어 / 로그</button>
+    <button class="om-tab-btn active" data-panel="cli">CLI 명령어 / 로그</button>
     <button class="om-tab-btn" data-panel="service">서비스 상태/재시작</button>
     <button class="om-tab-btn" data-panel="troubleshoot">트러블슈팅</button>
     <button class="om-tab-btn" data-panel="structure">리소스 구조</button>
   </div>
 
-  <!-- 안 지워지는 LB 삭제 -->
-  <div class="om-panel active" id="panel-cleanup">
-    <div class="om-note info">
-      아래 절차는 순서대로 진행합니다.<br>
-      ① PENDING_* 상태를 ERROR로 전환<br>
-      ② 포탈/CLI로 cascade 삭제 시도<br>
-      ③ 그래도 안 지워지면 DB 직접 삭제 (최후 수단)
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-exchange-alt"></i> ① PENDING_* 상태를 ERROR로 전환</h3>
-      <p>생성/수정/삭제 도중 멈춰서 <code>PENDING_CREATE</code> / <code>PENDING_UPDATE</code> / <code>PENDING_DELETE</code>에 계속 머물러 있는 LB는, 상태를 <code>ERROR</code>로 바꿔줘야 이후 삭제가 가능합니다.</p>
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code>mysql -u octavia -p
-# 비밀번호 입력
-
-use octavia;
-
-UPDATE load_balancer
-SET provisioning_status = 'ERROR'
-WHERE provisioning_status IN (
-    'PENDING_CREATE',
-    'PENDING_UPDATE',
-    'PENDING_DELETE'
-);
-
--- 확인
-SELECT id, name, operating_status, provisioning_status
-FROM load_balancer
-WHERE provisioning_status != 'DELETED';</code></pre>
-      </div>
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-trash-alt"></i> ② 포탈 / Horizon / CLI로 삭제</h3>
-      <p>상태가 <code>ERROR</code>로 바뀌면 콘트라베이스 포탈이나 Horizon에서 삭제하거나, CLI로 cascade 삭제합니다. LB ID를 입력하면 아래 명령어가 자동으로 채워집니다.</p>
-
-      <div class="om-id-form">
-        <input id="om-lb-id" type="text" placeholder="로드밸런서 ID 입력 (예: 91470ce0-f690-44d7-b26c-788fa1d4de89)" oninput="omRenderAll()">
-      </div>
-
-      <div class="om-copy-wrap">
-        <button class="om-copy-btn" onclick="omCopy(this)">복사</button>
-        <pre><code id="om-cascade-cmd">openstack loadbalancer delete --cascade &lt;lb-id&gt;</code></pre>
-      </div>
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-search"></i> ③ 삭제 전 확인 — 대상 리소스 조회</h3>
-      <p>DB를 직접 삭제하기 전에, 이 LB에 딸린 리소스가 실제로 몇 개나 있는지 하나씩 조회해서 확인합니다. 각 쿼리는 개별적으로 복사할 수 있습니다.</p>
-      <span class="om-generated-badge" id="om-select-badge">위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)</span>
-      <div class="om-cmd-list" id="om-select-list"></div>
-    </div>
-
-    <div class="om-card">
-      <h3><i class="fas fa-database"></i> ④ 그래도 안 지워지면: DB 직접 삭제</h3>
-      <div class="om-note">
-        최후 수단입니다. 아래 순서(1→10)를 반드시 지켜야 참조 무결성 오류가 나지 않습니다. 한 단계씩 복사해서 실행하며 결과를 확인하는 걸 권장합니다. 실행 전 반드시 백업하고, 위 ③ 조회 결과로 대상이 맞는지 먼저 확인하세요.
-      </div>
-      <span class="om-generated-badge" id="om-sql-badge">위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)</span>
-      <div class="om-cmd-list" id="om-delete-list"></div>
-    </div>
-  </div>
-
   <!-- CLI 명령어 / 로그 -->
-  <div class="om-panel" id="panel-cli">
+  <div class="om-panel active" id="panel-cli">
     <div class="om-card">
       <h3><i class="fas fa-terminal"></i> OpenStack CLI 사용 방법</h3>
       <div class="om-cmd-list">
@@ -554,10 +441,6 @@ WHERE provisioning_status != 'DELETED';</code></pre>
       <table class="om-table">
         <tr><th>증상</th><th>참고</th></tr>
         <tr>
-          <td><code>PENDING_*</code>에서 멈춘 LB</td>
-          <td>"안 지워지는 LB 삭제" 탭 참고</td>
-        </tr>
-        <tr>
           <td>o-hm0 인터페이스 없어서 생성 실패</td>
           <td><a href="{% post_url 2026-07-01-octavia-o-hm0-missing %}">Loadbalancer 생성 실패 원인(2)</a></td>
         </tr>
@@ -676,18 +559,7 @@ WHERE provisioning_status != 'DELETED';</code></pre>
       document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
     });
   });
-  omRenderAll();
 })();
-
-function omCopy(btn) {
-  var pre = btn.parentElement.querySelector('pre');
-  var text = pre.innerText;
-  navigator.clipboard.writeText(text).then(function () {
-    var orig = btn.textContent;
-    btn.textContent = '복사됨';
-    setTimeout(function () { btn.textContent = orig; }, 1200);
-  });
-}
 
 function omCopyInline(btn) {
   var code = btn.previousElementSibling;
@@ -700,81 +572,6 @@ function omCopyInline(btn) {
       btn.innerHTML = orig;
       btn.classList.remove('copied');
     }, 1000);
-  });
-}
-
-function omRenderAll() {
-  var input = document.getElementById('om-lb-id');
-  var raw = input ? input.value.trim() : '';
-  var id = raw || '91470ce0-f690-44d7-b26c-788fa1d4de89';
-  var badgeText = raw
-    ? '입력하신 ID(' + raw + ')로 생성됨'
-    : '위 입력창의 ID로 자동 생성됨 (미입력 시 예시 ID 사용)';
-  ['om-sql-badge', 'om-select-badge'].forEach(function (bid) {
-    var b = document.getElementById(bid);
-    if (b) b.textContent = badgeText;
-  });
-
-  omRenderSteps('om-select-list', [
-    { label: 'LoadBalancer', sql: "SELECT * FROM load_balancer WHERE id = '" + id + "';" },
-    { label: 'Listener', sql: "SELECT * FROM listener WHERE load_balancer_id = '" + id + "';" },
-    { label: 'Pool', sql: "SELECT * FROM pool WHERE load_balancer_id = '" + id + "';" },
-    { label: 'Pool Member', sql: "SELECT * FROM member\nWHERE pool_id IN (SELECT id FROM pool WHERE load_balancer_id = '" + id + "');" },
-    { label: 'Health Monitor', sql: "SELECT * FROM health_monitor\nWHERE pool_id IN (SELECT id FROM pool WHERE load_balancer_id = '" + id + "');" },
-    { label: 'Amphora', sql: "SELECT * FROM amphora WHERE load_balancer_id = '" + id + "';" },
-    { label: 'VIP', sql: "SELECT * FROM vip WHERE load_balancer_id = '" + id + "';" },
-    { label: 'VRRP Group', sql: "SELECT * FROM vrrp_group WHERE load_balancer_id = '" + id + "';" }
-  ]);
-
-  var cascadeEl = document.getElementById('om-cascade-cmd');
-  if (cascadeEl) {
-    cascadeEl.textContent = 'openstack loadbalancer delete --cascade ' + id;
-  }
-
-  omRenderSteps('om-delete-list', [
-    { label: 'Health Monitor 삭제', sql: "DELETE FROM health_monitor\nWHERE pool_id IN (\n    SELECT id FROM pool\n    WHERE load_balancer_id = '" + id + "'\n);" },
-    { label: 'Pool Member 삭제', sql: "DELETE FROM member\nWHERE pool_id IN (\n    SELECT id FROM pool\n    WHERE load_balancer_id = '" + id + "'\n);" },
-    { label: 'Listener → default_pool_id 참조 끊기', sql: "UPDATE listener\nSET default_pool_id = NULL\nWHERE default_pool_id IN (\n    SELECT id FROM pool\n    WHERE load_balancer_id = '" + id + "'\n);" },
-    { label: 'Pool 삭제', sql: "DELETE FROM pool\nWHERE load_balancer_id = '" + id + "';" },
-    { label: 'Listener 삭제', sql: "DELETE FROM listener\nWHERE load_balancer_id = '" + id + "';" },
-    { label: 'amphora_health 삭제', sql: "DELETE FROM amphora_health\nWHERE amphora_id IN (\n    SELECT id FROM amphora\n    WHERE load_balancer_id = '" + id + "'\n);" },
-    { label: 'amphora 삭제', sql: "DELETE FROM amphora\nWHERE load_balancer_id = '" + id + "';" },
-    { label: 'VIP 삭제', sql: "DELETE FROM vip\nWHERE load_balancer_id = '" + id + "';" },
-    { label: 'vrrp_group 삭제 (Amphora HA 메타 테이블)', sql: "DELETE FROM vrrp_group\nWHERE load_balancer_id = '" + id + "';" },
-    { label: 'LoadBalancer 삭제', sql: "DELETE FROM load_balancer\nWHERE id = '" + id + "';" }
-  ]);
-}
-
-function omRenderSteps(containerId, steps) {
-  var container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = '';
-  steps.forEach(function (step, i) {
-    var wrap = document.createElement('div');
-    wrap.className = 'om-sql-step';
-
-    var label = document.createElement('div');
-    label.className = 'om-cmd-label';
-    label.textContent = (i + 1) + '. ' + step.label;
-
-    var copyWrap = document.createElement('div');
-    copyWrap.className = 'om-copy-wrap';
-
-    var btn = document.createElement('button');
-    btn.className = 'om-copy-btn';
-    btn.textContent = '복사';
-    btn.onclick = function () { omCopy(btn); };
-
-    var pre = document.createElement('pre');
-    var code = document.createElement('code');
-    code.textContent = step.sql;
-    pre.appendChild(code);
-
-    copyWrap.appendChild(btn);
-    copyWrap.appendChild(pre);
-    wrap.appendChild(label);
-    wrap.appendChild(copyWrap);
-    container.appendChild(wrap);
   });
 }
 </script>
