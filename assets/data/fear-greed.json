@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-09-08T23:04:04Z",
-  "score": 40.8,
+  "updatedAt": "2026-09-09T01:19:30Z",
+  "score": 40.6285714285714,
   "rating": "fear",
   "previousClose": 41.8571428571429,
   "previousWeek": 30.9142857142857,
@@ -16,7 +16,7 @@
       "rating": "extreme fear"
     },
     "stock_price_breadth": {
-      "score": 41.8,
+      "score": 40.6,
       "rating": "fear"
     },
     "put_call_options": {
@@ -511,11 +511,11 @@
     },
     {
       "x": 1788825600000,
-      "y": 40.8
+      "y": 40.63
     },
     {
-      "x": 1788907460000,
-      "y": 40.8
+      "x": 1788911990000,
+      "y": 40.63
     }
   ]
 }
