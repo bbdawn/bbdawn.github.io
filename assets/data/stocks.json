@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-10T21:18:51Z",
+  "updatedAt": "2026-09-10T23:17:11Z",
   "quotes": {
     "005930.KS": {
       "price": 269000.0,
@@ -1082,11 +1082,11 @@
       ]
     },
     "GC=F": {
-      "price": 4358.5,
-      "previousClose": 4460.7,
+      "price": 4359.5,
+      "previousClose": 4407.3,
       "currency": "USD",
       "name": "Gold Dec 26",
-      "time": 1789073999,
+      "time": 1789081591,
       "fiftyTwoWeekHigh": 5586.2,
       "fiftyTwoWeekLow": 3618.4,
       "history": [
@@ -1344,16 +1344,16 @@
         },
         {
           "x": 1789012800000,
-          "y": 4358.5
+          "y": 4359.5
         }
       ]
     },
     "BTC-USD": {
-      "price": 77172.4,
+      "price": 76624.89,
       "previousClose": 78291.64,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1789075130,
+      "time": 1789082226,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1727,7 +1727,7 @@
         },
         {
           "x": 1788998400000,
-          "y": 77172.4
+          "y": 76624.89
         }
       ]
     },
@@ -2525,7 +2525,7 @@
       "previousClose": 26253.34,
       "currency": "USD",
       "name": "NASDAQ Composite",
-      "time": 1789074961,
+      "time": 1789074959,
       "fiftyTwoWeekHigh": 27190.21,
       "fiftyTwoWeekLow": 20690.25,
       "history": [
@@ -3318,18 +3318,14 @@
       ]
     },
     "KRW=X": {
-      "price": 1348.79,
-      "previousClose": 1339.55,
+      "price": 1349.57,
+      "previousClose": 1349.15,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1789075118,
+      "time": 1789082231,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1322.42,
       "history": [
-        {
-          "x": 1781046000000,
-          "y": 1525.81
-        },
         {
           "x": 1781132400000,
           "y": 1525.05
@@ -3595,17 +3591,17 @@
           "y": 1339.17
         },
         {
-          "x": 1789075118000,
-          "y": 1348.79
+          "x": 1789081200000,
+          "y": 1349.57
         }
       ]
     },
     "CL=F": {
-      "price": 103.93,
-      "previousClose": 96.05,
+      "price": 103.81,
+      "previousClose": 102.48,
       "currency": "USD",
       "name": "Crude Oil Oct 26",
-      "time": 1789073998,
+      "time": 1789081630,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
@@ -3863,7 +3859,7 @@
         },
         {
           "x": 1789012800000,
-          "y": 103.93
+          "y": 103.81
         }
       ]
     }
