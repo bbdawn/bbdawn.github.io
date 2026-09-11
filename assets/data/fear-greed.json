@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-09-11T18:52:43Z",
-  "score": 34.0571428571429,
+  "updatedAt": "2026-09-11T21:27:00Z",
+  "score": 33.3428571428571,
   "rating": "fear",
   "previousClose": 33.1142857142857,
   "previousWeek": 45.228571428571435,
@@ -8,19 +8,19 @@
   "previousYear": 60.34285714285715,
   "components": {
     "market_momentum_sp500": {
-      "score": 29.6,
+      "score": 28.8,
       "rating": "fear"
     },
     "stock_price_strength": {
-      "score": 5.2,
+      "score": 5,
       "rating": "extreme fear"
     },
     "stock_price_breadth": {
-      "score": 12.2,
+      "score": 12.6,
       "rating": "extreme fear"
     },
     "put_call_options": {
-      "score": 39.4,
+      "score": 38.4,
       "rating": "fear"
     },
     "market_volatility_vix": {
@@ -28,11 +28,11 @@
       "rating": "neutral"
     },
     "junk_bond_demand": {
-      "score": 70.2,
+      "score": 68,
       "rating": "greed"
     },
     "safe_haven_demand": {
-      "score": 31.8,
+      "score": 30.6,
       "rating": "fear"
     }
   },
@@ -511,11 +511,11 @@
     },
     {
       "x": 1789084800000,
-      "y": 34.06
+      "y": 33.34
     },
     {
-      "x": 1789152545000,
-      "y": 34.06
+      "x": 1789160977000,
+      "y": 33.34
     }
   ]
 }
