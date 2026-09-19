@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T07:26:21Z",
+  "updatedAt": "2026-09-19T11:59:27Z",
   "quotes": {
     "005930.KS": {
       "price": 261000.0,
@@ -1092,7 +1092,7 @@
       "name": "Gold Dec 26",
       "time": 1789765199,
       "fiftyTwoWeekHigh": 5586.2,
-      "fiftyTwoWeekLow": 3664.4,
+      "fiftyTwoWeekLow": 3718.1,
       "history": [
         {
           "x": 1782100800000,
@@ -1349,11 +1349,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 81075.25,
+      "price": 81284.28,
       "previousClose": 80877.27,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1789802781,
+      "time": 1789819162,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1722,8 +1722,12 @@
           "y": 76403.77
         },
         {
+          "x": 1789689600000,
+          "y": 80901.46
+        },
+        {
           "x": 1789776000000,
-          "y": 81075.25
+          "y": 81284.28
         }
       ]
     },
