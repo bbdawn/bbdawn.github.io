@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-24T05:39:23Z",
+  "updatedAt": "2026-09-24T10:46:24Z",
   "quotes": {
     "005930.KS": {
       "price": 285500.0,
@@ -1082,11 +1082,11 @@
       ]
     },
     "GC=F": {
-      "price": 4324.5,
+      "price": 4292.1,
       "previousClose": 4318.4,
       "currency": "USD",
       "name": "Gold Dec 26",
-      "time": 1790227755,
+      "time": 1790246182,
       "fiftyTwoWeekHigh": 5586.2,
       "fiftyTwoWeekLow": 3749.7,
       "history": [
@@ -1348,16 +1348,16 @@
         },
         {
           "x": 1790222400000,
-          "y": 4324.5
+          "y": 4292.1
         }
       ]
     },
     "BTC-USD": {
-      "price": 84172.88,
+      "price": 83365.92,
       "previousClose": 84370.41,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1790228358,
+      "time": 1790246783,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1726,8 +1726,12 @@
           "y": 86172.28
         },
         {
+          "x": 1790121600000,
+          "y": 84383.01
+        },
+        {
           "x": 1790208000000,
-          "y": 84172.88
+          "y": 83365.92
         }
       ]
     },
@@ -3059,18 +3063,14 @@
       ]
     },
     "^VIX": {
-      "price": 15.18,
-      "previousClose": 14.21,
+      "price": 16.39,
+      "previousClose": 15.18,
       "currency": "USD",
       "name": "CBOE Volatility Index",
-      "time": 1790194501,
+      "time": 1790245876,
       "fiftyTwoWeekHigh": 35.3,
-      "fiftyTwoWeekLow": 0.0,
+      "fiftyTwoWeekLow": 13.38,
       "history": [
-        {
-          "x": 1782198000000,
-          "y": 19.49
-        },
         {
           "x": 1782284400000,
           "y": 18.63
@@ -3326,15 +3326,19 @@
         {
           "x": 1790146800000,
           "y": 15.18
+        },
+        {
+          "x": 1790233200000,
+          "y": 16.39
         }
       ]
     },
     "KRW=X": {
-      "price": 1368.13,
+      "price": 1370.18,
       "previousClose": 1365.91,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1790228358,
+      "time": 1790246783,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1322.42,
       "history": [
@@ -3603,17 +3607,17 @@
           "y": 1350.36
         },
         {
-          "x": 1790228358000,
-          "y": 1368.13
+          "x": 1790246783000,
+          "y": 1370.18
         }
       ]
     },
     "CL=F": {
-      "price": 91.54,
+      "price": 93.08,
       "previousClose": 92.16,
       "currency": "USD",
       "name": "Crude Oil Nov 26",
-      "time": 1790227747,
+      "time": 1790246181,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
@@ -3875,7 +3879,7 @@
         },
         {
           "x": 1790222400000,
-          "y": 91.54
+          "y": 93.08
         }
       ]
     }
