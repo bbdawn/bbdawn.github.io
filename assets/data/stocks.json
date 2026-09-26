@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T23:42:06Z",
+  "updatedAt": "2026-09-26T02:38:56Z",
   "quotes": {
     "005930.KS": {
       "price": 285500.0,
@@ -8,7 +8,7 @@
       "name": "Samsung Electronics Co., Ltd.",
       "time": 1790145006,
       "fiftyTwoWeekHigh": 374500.0,
-      "fiftyTwoWeekLow": 82400.0,
+      "fiftyTwoWeekLow": 83200.0,
       "history": [
         {
           "x": 1782172800000,
@@ -279,7 +279,7 @@
       "name": "SK hynix Inc.",
       "time": 1790145008,
       "fiftyTwoWeekHigh": 2987000.0,
-      "fiftyTwoWeekLow": 333000.0,
+      "fiftyTwoWeekLow": 339000.0,
       "history": [
         {
           "x": 1782172800000,
@@ -550,7 +550,7 @@
       "name": "Hyundai Motor Company",
       "time": 1790145024,
       "fiftyTwoWeekHigh": 783000.0,
-      "fiftyTwoWeekLow": 213000.0,
+      "fiftyTwoWeekLow": 214000.0,
       "history": [
         {
           "x": 1782172800000,
@@ -1092,7 +1092,7 @@
       "name": "Gold Dec 26",
       "time": 1790369999,
       "fiftyTwoWeekHigh": 5586.2,
-      "fiftyTwoWeekLow": 3764.0,
+      "fiftyTwoWeekLow": 3785.5,
       "history": [
         {
           "x": 1782360000000,
@@ -1357,18 +1357,14 @@
       ]
     },
     "BTC-USD": {
-      "price": 84059.98,
-      "previousClose": 84378.125,
+      "price": 84024.39,
+      "previousClose": 84081.914,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1790379723,
+      "time": 1790390334,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
-        {
-          "x": 1782345600000,
-          "y": 59721.68
-        },
         {
           "x": 1782432000000,
           "y": 60016.43
@@ -1734,8 +1730,8 @@
           "y": 84379.06
         },
         {
-          "x": 1790294400000,
-          "y": 84059.98
+          "x": 1790380800000,
+          "y": 84024.39
         }
       ]
     },
