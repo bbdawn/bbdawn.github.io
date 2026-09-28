@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-09-28T02:41:16Z",
+  "updatedAt": "2026-09-28T09:08:47Z",
   "score": 37,
   "rating": "fear",
-  "previousClose": 36.1142857142857,
-  "previousWeek": 30.4285714285714,
-  "previousMonth": 59.60000000000001,
-  "previousYear": 50.65714285714286,
+  "previousClose": 37.0,
+  "previousWeek": 34.1714285714286,
+  "previousMonth": 53.74285714285714,
+  "previousYear": 51.28571428571428,
   "components": {
     "market_momentum_sp500": {
       "score": 36.4,
@@ -37,10 +37,6 @@
     }
   },
   "historical": [
-    {
-      "x": 1775606400000,
-      "y": 29.17
-    },
     {
       "x": 1775692800000,
       "y": 33.8
@@ -514,7 +510,11 @@
       "y": 37
     },
     {
-      "x": 1790380799000,
+      "x": 1790553600000,
+      "y": 37
+    },
+    {
+      "x": 1790585281000,
       "y": 37
     }
   ]
