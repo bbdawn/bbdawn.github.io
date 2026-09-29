@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-09-29T20:05:00Z",
-  "score": 31.8571428571429,
+  "updatedAt": "2026-09-29T23:50:01Z",
+  "score": 31.6285714285714,
   "rating": "fear",
   "previousClose": 33.8285714285714,
   "previousWeek": 35.0285714285714,
@@ -8,7 +8,7 @@
   "previousYear": 50.97142857142857,
   "components": {
     "market_momentum_sp500": {
-      "score": 29.2,
+      "score": 28.6,
       "rating": "fear"
     },
     "stock_price_strength": {
@@ -511,11 +511,11 @@
     },
     {
       "x": 1790640000000,
-      "y": 31.69
+      "y": 31.63
     },
     {
-      "x": 1790711999000,
-      "y": 31.86
+      "x": 1790724680000,
+      "y": 31.63
     }
   ]
 }
