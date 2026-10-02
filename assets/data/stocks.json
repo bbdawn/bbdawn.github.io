@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-02T15:12:17Z",
+  "updatedAt": "2026-10-02T20:01:14Z",
   "quotes": {
     "005930.KS": {
       "price": 276000.0,
@@ -256,6 +256,10 @@
         },
         {
           "x": 1790812800000,
+          "y": 276000
+        },
+        {
+          "x": 1790899200000,
           "y": 276000
         }
       ]
@@ -516,6 +520,10 @@
         {
           "x": 1790812800000,
           "y": 1833000
+        },
+        {
+          "x": 1790899200000,
+          "y": 1841000
         }
       ]
     },
@@ -775,6 +783,10 @@
         {
           "x": 1790812800000,
           "y": 349000
+        },
+        {
+          "x": 1790899200000,
+          "y": 346500
         }
       ]
     },
@@ -1038,11 +1050,11 @@
       ]
     },
     "GC=F": {
-      "price": 4181.3,
+      "price": 4170.7,
       "previousClose": 4202.3,
       "currency": "USD",
       "name": "Gold Dec 26",
-      "time": 1790953337,
+      "time": 1790970668,
       "fiftyTwoWeekHigh": 5586.2,
       "fiftyTwoWeekLow": 3861.1,
       "history": [
@@ -1304,16 +1316,16 @@
         },
         {
           "x": 1790913600000,
-          "y": 4181.3
+          "y": 4170.7
         }
       ]
     },
     "BTC-USD": {
-      "price": 85573.64,
+      "price": 84344.55,
       "previousClose": 84849.93,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1790953931,
+      "time": 1790971270,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1687,23 +1699,19 @@
         },
         {
           "x": 1790899200000,
-          "y": 85557.26
+          "y": 84344.55
         }
       ]
     },
     "QQQ": {
-      "price": 749.55,
+      "price": 749.58,
       "previousClose": 742.03,
       "currency": "USD",
       "name": "Invesco QQQ Trust",
-      "time": 1790953938,
+      "time": 1790971200,
       "fiftyTwoWeekHigh": 754.53,
       "fiftyTwoWeekLow": 555.6,
       "history": [
-        {
-          "x": 1782999000000,
-          "y": 712.6
-        },
         {
           "x": 1783344600000,
           "y": 722.82
@@ -1958,23 +1966,19 @@
         },
         {
           "x": 1790947800000,
-          "y": 749.55
+          "y": 749.58
         }
       ]
     },
     "QLD": {
-      "price": 98.14,
+      "price": 98.13,
       "previousClose": 96.24,
       "currency": "USD",
       "name": "ProShares Ultra QQQ",
-      "time": 1790953937,
+      "time": 1790971199,
       "fiftyTwoWeekHigh": 101.19,
       "fiftyTwoWeekLow": 56.6,
       "history": [
-        {
-          "x": 1782999000000,
-          "y": 90.61
-        },
         {
           "x": 1783344600000,
           "y": 93.14
@@ -2229,23 +2233,19 @@
         },
         {
           "x": 1790947800000,
-          "y": 98.14
+          "y": 98.13
         }
       ]
     },
     "GDXU": {
-      "price": 102.98,
+      "price": 105.32,
       "previousClose": 102.14,
       "currency": "USD",
       "name": "MicroSectors Gold Miners 3X Leveraged ETNs",
-      "time": 1790953900,
+      "time": 1790971187,
       "fiftyTwoWeekHigh": 540.78,
       "fiftyTwoWeekLow": 64.45,
       "history": [
-        {
-          "x": 1782999000000,
-          "y": 95.79
-        },
         {
           "x": 1783344600000,
           "y": 97.23
@@ -2500,23 +2500,19 @@
         },
         {
           "x": 1790947800000,
-          "y": 102.98
+          "y": 105.32
         }
       ]
     },
     "^IXIC": {
-      "price": 27178.89,
+      "price": 27190.863,
       "previousClose": 26871.596,
       "currency": "USD",
       "name": "NASDAQ Composite",
-      "time": 1790953936,
+      "time": 1790971275,
       "fiftyTwoWeekHigh": 27353.68,
       "fiftyTwoWeekLow": 20690.25,
       "history": [
-        {
-          "x": 1782999000000,
-          "y": 25832.67
-        },
         {
           "x": 1783344600000,
           "y": 26121.16
@@ -2771,23 +2767,19 @@
         },
         {
           "x": 1790947800000,
-          "y": 27178.89
+          "y": 27190.86
         }
       ]
     },
     "^GSPC": {
-      "price": 7715.64,
+      "price": 7722.93,
       "previousClose": 7666.45,
       "currency": "USD",
       "name": "S&P 500",
-      "time": 1790953937,
+      "time": 1790971276,
       "fiftyTwoWeekHigh": 7816.7,
       "fiftyTwoWeekLow": 6316.91,
       "history": [
-        {
-          "x": 1782999000000,
-          "y": 7483.24
-        },
         {
           "x": 1783344600000,
           "y": 7537.43
@@ -3042,16 +3034,16 @@
         },
         {
           "x": 1790947800000,
-          "y": 7715.6
+          "y": 7722.93
         }
       ]
     },
     "^VIX": {
-      "price": 15.49,
+      "price": 15.38,
       "previousClose": 16.39,
       "currency": "USD",
       "name": "CBOE Volatility Index",
-      "time": 1790953021,
+      "time": 1790970376,
       "fiftyTwoWeekHigh": 35.3,
       "fiftyTwoWeekLow": 13.38,
       "history": [
@@ -3317,16 +3309,16 @@
         },
         {
           "x": 1790924400000,
-          "y": 15.48
+          "y": 15.38
         }
       ]
     },
     "KRW=X": {
-      "price": 1346.08,
+      "price": 1343.62,
       "previousClose": 1359.84,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1790953936,
+      "time": 1790971273,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1322.42,
       "history": [
@@ -3595,17 +3587,21 @@
           "y": 1356.84
         },
         {
-          "x": 1790953936000,
-          "y": 1346.08
+          "x": 1790895600000,
+          "y": 1360.59
+        },
+        {
+          "x": 1790971273000,
+          "y": 1343.62
         }
       ]
     },
     "CL=F": {
-      "price": 89.57,
+      "price": 91.53,
       "previousClose": 92.87,
       "currency": "USD",
       "name": "Crude Oil Nov 26",
-      "time": 1790953339,
+      "time": 1790970676,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
@@ -3867,7 +3863,7 @@
         },
         {
           "x": 1790913600000,
-          "y": 89.58
+          "y": 91.53
         }
       ]
     }
