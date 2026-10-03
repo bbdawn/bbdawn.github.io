@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-03T08:58:26Z",
+  "updatedAt": "2026-10-03T14:09:15Z",
   "quotes": {
     "005930.KS": {
       "price": 276000.0,
@@ -1321,11 +1321,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 84627.89,
+      "price": 84803.15,
       "previousClose": 84506.336,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1791017904,
+      "time": 1791036552,
       "fiftyTwoWeekHigh": 126198.07,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1699,7 +1699,7 @@
         },
         {
           "x": 1790985600000,
-          "y": 84627.89
+          "y": 84803.15
         }
       ]
     },
@@ -1709,7 +1709,7 @@
       "currency": "USD",
       "name": "Invesco QQQ Trust",
       "time": 1790971200,
-      "fiftyTwoWeekHigh": 754.53,
+      "fiftyTwoWeekHigh": 754.54,
       "fiftyTwoWeekLow": 555.6,
       "history": [
         {
@@ -3601,7 +3601,7 @@
       "previousClose": 92.87,
       "currency": "USD",
       "name": "Crude Oil Nov 26",
-      "time": 1790974799,
+      "time": 1790974800,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
