@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18T17:40:32Z",
+  "updatedAt": "2026-10-18T19:53:05Z",
   "quotes": {
     "005930.KS": {
       "price": 215500.0,
@@ -1023,7 +1023,7 @@
     },
     "GC=F": {
       "price": 4181.1,
-      "previousClose": 4170.1,
+      "previousClose": 4181.1,
       "currency": "USD",
       "name": "Gold Dec 26",
       "time": 1792184399,
@@ -1289,11 +1289,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 81060.04,
+      "price": 80802.18,
       "previousClose": 81383.29,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1792345232,
+      "time": 1792353185,
       "fiftyTwoWeekHigh": 116273.31,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1667,7 +1667,7 @@
         },
         {
           "x": 1792281600000,
-          "y": 81060.04
+          "y": 80806.71
         }
       ]
     },
@@ -3590,7 +3590,7 @@
     },
     "CL=F": {
       "price": 99.02,
-      "previousClose": 96.5,
+      "previousClose": 99.02,
       "currency": "USD",
       "name": "Crude Oil Dec 26",
       "time": 1792184398,
