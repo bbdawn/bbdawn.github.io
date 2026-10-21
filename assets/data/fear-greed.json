@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-10-21T06:11:49Z",
-  "score": 27.2,
+  "updatedAt": "2026-10-21T12:06:42Z",
+  "score": 28.7428571428571,
   "rating": "fear",
   "previousClose": 27.2,
   "previousWeek": 26.6566893424036,
@@ -12,15 +12,15 @@
       "rating": "fear"
     },
     "stock_price_strength": {
-      "score": 13.2,
+      "score": 15.6,
       "rating": "extreme fear"
     },
     "stock_price_breadth": {
-      "score": 16,
+      "score": 19.6,
       "rating": "extreme fear"
     },
     "put_call_options": {
-      "score": 14.6,
+      "score": 19.4,
       "rating": "extreme fear"
     },
     "market_volatility_vix": {
@@ -507,15 +507,15 @@
     },
     {
       "x": 1792454400000,
-      "y": 27.2
+      "y": 28.74
     },
     {
       "x": 1792540800000,
-      "y": 27.2
+      "y": 28.74
     },
     {
-      "x": 1792540800000,
-      "y": 27.2
+      "x": 1792583401000,
+      "y": 28.74
     }
   ]
 }
