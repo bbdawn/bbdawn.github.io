@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-24T22:07:53Z",
+  "updatedAt": "2026-10-25T00:24:24Z",
   "quotes": {
     "005930.KS": {
       "price": 215500.0,
@@ -1309,18 +1309,14 @@
       ]
     },
     "BTC-USD": {
-      "price": 80352.23,
-      "previousClose": 81079.98,
+      "price": 80691.3,
+      "previousClose": 80770.71,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1792879668,
+      "time": 1792887860,
       "fiftyTwoWeekHigh": 116273.31,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
-        {
-          "x": 1784851200000,
-          "y": 64098.5
-        },
         {
           "x": 1784937600000,
           "y": 64311.81
@@ -1686,8 +1682,8 @@
           "y": 81074.19
         },
         {
-          "x": 1792800000000,
-          "y": 80352.23
+          "x": 1792886400000,
+          "y": 80691.3
         }
       ]
     },
@@ -2506,7 +2502,7 @@
     },
     "^IXIC": {
       "price": 25955.342,
-      "previousClose": 26008.86,
+      "previousClose": 26008.9,
       "currency": "USD",
       "name": "NASDAQ Composite",
       "time": 1792790159,
