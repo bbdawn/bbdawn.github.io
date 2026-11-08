@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-08T15:26:45Z",
+  "updatedAt": "2026-11-08T19:51:06Z",
   "quotes": {
     "005930.KS": {
       "price": 188700.0,
@@ -8,7 +8,7 @@
       "name": "Samsung Electronics Co., Ltd.",
       "time": 1793946608,
       "fiftyTwoWeekHigh": 374500.0,
-      "fiftyTwoWeekLow": 94500.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1785974400000,
@@ -267,7 +267,7 @@
       "name": "SK hynix Inc.",
       "time": 1793946605,
       "fiftyTwoWeekHigh": 2987000.0,
-      "fiftyTwoWeekLow": 501000.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1785974400000,
@@ -526,7 +526,7 @@
       "name": "Hyundai Motor Company",
       "time": 1793946608,
       "fiftyTwoWeekHigh": 783000.0,
-      "fiftyTwoWeekLow": 253500.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1785974400000,
@@ -785,7 +785,7 @@
       "name": "KOSPI Composite Index",
       "time": 1793963140,
       "fiftyTwoWeekHigh": 9385.59,
-      "fiftyTwoWeekLow": 3833.35,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1785974400000,
@@ -1305,11 +1305,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 75936.15,
+      "price": 75829.19,
       "previousClose": 75753.71,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1794151602,
+      "time": 1794167464,
       "fiftyTwoWeekHigh": 107428.26,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1683,7 +1683,7 @@
         },
         {
           "x": 1794096000000,
-          "y": 75936.15
+          "y": 75829.19
         }
       ]
     },
@@ -2502,7 +2502,7 @@
     },
     "^IXIC": {
       "price": 24579.424,
-      "previousClose": 24314.998,
+      "previousClose": 24315.0,
       "currency": "USD",
       "name": "NASDAQ Composite",
       "time": 1794003359,
@@ -3322,11 +3322,11 @@
       ]
     },
     "KRW=X": {
-      "price": 1363.65,
+      "price": 1363.37,
       "previousClose": 1356.68,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1794150026,
+      "time": 1794161971,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1319.52,
       "history": [
@@ -3595,8 +3595,8 @@
           "y": 1356.34
         },
         {
-          "x": 1794150026000,
-          "y": 1363.65
+          "x": 1794161971000,
+          "y": 1363.37
         }
       ]
     },
