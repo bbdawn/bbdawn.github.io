@@ -1,14 +1,14 @@
 {
-  "updatedAt": "2026-11-09T21:11:54Z",
+  "updatedAt": "2026-11-10T03:40:34Z",
   "quotes": {
     "005930.KS": {
-      "price": 189900.0,
-      "previousClose": 188700.0,
+      "price": 199300.0,
+      "previousClose": 189900.0,
       "currency": "KRW",
       "name": "Samsung Electronics Co., Ltd.",
-      "time": 1794205802,
+      "time": 1794280832,
       "fiftyTwoWeekHigh": 374500.0,
-      "fiftyTwoWeekLow": 0.0,
+      "fiftyTwoWeekLow": 94500.0,
       "history": [
         {
           "x": 1786320000000,
@@ -249,17 +249,25 @@
         {
           "x": 1793923200000,
           "y": 188700
+        },
+        {
+          "x": 1794182400000,
+          "y": 189900
+        },
+        {
+          "x": 1794268800000,
+          "y": 199300
         }
       ]
     },
     "000660.KS": {
-      "price": 1136000.0,
-      "previousClose": 1132000.0,
+      "price": 1216000.0,
+      "previousClose": 1136000.0,
       "currency": "KRW",
       "name": "SK hynix Inc.",
-      "time": 1794205827,
+      "time": 1794280833,
       "fiftyTwoWeekHigh": 2987000.0,
-      "fiftyTwoWeekLow": 0.0,
+      "fiftyTwoWeekLow": 501000.0,
       "history": [
         {
           "x": 1786320000000,
@@ -500,17 +508,25 @@
         {
           "x": 1793923200000,
           "y": 1132000
+        },
+        {
+          "x": 1794182400000,
+          "y": 1136000
+        },
+        {
+          "x": 1794268800000,
+          "y": 1216000
         }
       ]
     },
     "005380.KS": {
-      "price": 271500.0,
-      "previousClose": 279500.0,
+      "price": 275750.0,
+      "previousClose": 271500.0,
       "currency": "KRW",
       "name": "Hyundai Motor Company",
-      "time": 1794205821,
+      "time": 1794280832,
       "fiftyTwoWeekHigh": 783000.0,
-      "fiftyTwoWeekLow": 0.0,
+      "fiftyTwoWeekLow": 253500.0,
       "history": [
         {
           "x": 1786320000000,
@@ -751,17 +767,25 @@
         {
           "x": 1793923200000,
           "y": 279500
+        },
+        {
+          "x": 1794182400000,
+          "y": 271500
+        },
+        {
+          "x": 1794268800000,
+          "y": 275750
         }
       ]
     },
     "^KS11": {
-      "price": 5018.85,
-      "previousClose": 5059.69,
+      "price": 5235.8,
+      "previousClose": 5018.85,
       "currency": "KRW",
       "name": "KOSPI Composite Index",
-      "time": 1794222340,
+      "time": 1794280830,
       "fiftyTwoWeekHigh": 9385.59,
-      "fiftyTwoWeekLow": 0.0,
+      "fiftyTwoWeekLow": 3833.35,
       "history": [
         {
           "x": 1786320000000,
@@ -1002,15 +1026,23 @@
         {
           "x": 1793923200000,
           "y": 5059.69
+        },
+        {
+          "x": 1794182400000,
+          "y": 5018.85
+        },
+        {
+          "x": 1794268800000,
+          "y": 5235.8
         }
       ]
     },
     "GC=F": {
-      "price": 4149.1,
-      "previousClose": 4074.9,
+      "price": 4126.4,
+      "previousClose": 4114.5,
       "currency": "USD",
       "name": "Gold Dec 26",
-      "time": 1794258110,
+      "time": 1794281435,
       "fiftyTwoWeekHigh": 5586.2,
       "fiftyTwoWeekLow": 3879.3,
       "history": [
@@ -1272,23 +1304,23 @@
         },
         {
           "x": 1794200400000,
-          "y": 4149.1
+          "y": 4114.5
+        },
+        {
+          "x": 1794281431000,
+          "y": 4126.4
         }
       ]
     },
     "BTC-USD": {
-      "price": 74758.77,
-      "previousClose": 74719.82,
+      "price": 74424.48,
+      "previousClose": 75253.86,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1794258712,
+      "time": 1794282031,
       "fiftyTwoWeekHigh": 107428.26,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
-        {
-          "x": 1786233600000,
-          "y": 64844.89
-        },
         {
           "x": 1786320000000,
           "y": 63910.59
@@ -1654,8 +1686,8 @@
           "y": 74584.65
         },
         {
-          "x": 1794182400000,
-          "y": 74758.77
+          "x": 1794268800000,
+          "y": 74424.48
         }
       ]
     },
@@ -1931,11 +1963,11 @@
       ]
     },
     "QLD": {
-      "price": 79.17,
+      "price": 79.15,
       "previousClose": 74.11,
       "currency": "USD",
       "name": "ProShares Ultra QQQ",
-      "time": 1794257999,
+      "time": 1794258000,
       "fiftyTwoWeekHigh": 101.62,
       "fiftyTwoWeekLow": 56.6,
       "history": [
@@ -2197,16 +2229,16 @@
         },
         {
           "x": 1794234600000,
-          "y": 79.17
+          "y": 79.15
         }
       ]
     },
     "GDXU": {
-      "price": 103.46,
+      "price": 103.37,
       "previousClose": 91.33,
       "currency": "USD",
       "name": "MicroSectors Gold Miners 3X Leveraged ETNs",
-      "time": 1794257999,
+      "time": 1794258000,
       "fiftyTwoWeekHigh": 540.78,
       "fiftyTwoWeekLow": 60.78,
       "history": [
@@ -2468,16 +2500,16 @@
         },
         {
           "x": 1794234600000,
-          "y": 103.46
+          "y": 103.37
         }
       ]
     },
     "^IXIC": {
       "price": 25253.139,
-      "previousClose": 24579.424,
+      "previousClose": 24579.4,
       "currency": "USD",
       "name": "NASDAQ Composite",
-      "time": 1794258716,
+      "time": 1794262559,
       "fiftyTwoWeekHigh": 27722.75,
       "fiftyTwoWeekLow": 20690.25,
       "history": [
@@ -2748,7 +2780,7 @@
       "previousClose": 7376.86,
       "currency": "USD",
       "name": "S&P 500",
-      "time": 1794258716,
+      "time": 1794262370,
       "fiftyTwoWeekHigh": 7844.52,
       "fiftyTwoWeekLow": 6316.91,
       "history": [
@@ -3015,11 +3047,11 @@
       ]
     },
     "^VIX": {
-      "price": 20.03,
+      "price": 19.92,
       "previousClose": 25.64,
       "currency": "USD",
       "name": "CBOE Volatility Index",
-      "time": 1794257806,
+      "time": 1794258901,
       "fiftyTwoWeekHigh": 35.3,
       "fiftyTwoWeekLow": 13.38,
       "history": [
@@ -3285,16 +3317,16 @@
         },
         {
           "x": 1794211200000,
-          "y": 20.03
+          "y": 19.92
         }
       ]
     },
     "KRW=X": {
-      "price": 1340.06,
-      "previousClose": 1363.65,
+      "price": 1344.69,
+      "previousClose": 1340.28,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1794258709,
+      "time": 1794282032,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1319.52,
       "history": [
@@ -3559,17 +3591,21 @@
           "y": 1356.34
         },
         {
-          "x": 1794258709000,
-          "y": 1340.06
+          "x": 1794182400000,
+          "y": 1362.7
+        },
+        {
+          "x": 1794268800000,
+          "y": 1344.69
         }
       ]
     },
     "CL=F": {
-      "price": 87.08,
-      "previousClose": 90.83,
+      "price": 85.91,
+      "previousClose": 86.85,
       "currency": "USD",
       "name": "Crude Oil Dec 26",
-      "time": 1794258116,
+      "time": 1794281434,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
@@ -3831,7 +3867,11 @@
         },
         {
           "x": 1794200400000,
-          "y": 87.08
+          "y": 86.85
+        },
+        {
+          "x": 1794281434000,
+          "y": 85.91
         }
       ]
     }
