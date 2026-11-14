@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-14T07:12:52Z",
+  "updatedAt": "2026-11-14T14:22:11Z",
   "quotes": {
     "005930.KS": {
       "price": 206000.0,
@@ -1309,12 +1309,12 @@
       ]
     },
     "BTC-USD": {
-      "price": 67319.26,
+      "price": 66528.47,
       "previousClose": 68238.21,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1794640367,
-      "fiftyTwoWeekHigh": 99804.43,
+      "time": 1794666127,
+      "fiftyTwoWeekHigh": 97860.6,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
         {
@@ -1687,7 +1687,7 @@
         },
         {
           "x": 1794614400000,
-          "y": 67319.26
+          "y": 66528.47
         }
       ]
     },
@@ -1964,7 +1964,7 @@
     },
     "QLD": {
       "price": 79.3,
-      "previousClose": 81.24831,
+      "previousClose": 81.3,
       "currency": "USD",
       "name": "ProShares Ultra QQQ",
       "time": 1794603600,
@@ -2506,7 +2506,7 @@
     },
     "^IXIC": {
       "price": 25136.273,
-      "previousClose": 25366.1,
+      "previousClose": 25366.094,
       "currency": "USD",
       "name": "NASDAQ Composite",
       "time": 1794608159,
@@ -3330,7 +3330,7 @@
       "previousClose": 1334.36,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1794627050,
+      "time": 1794627048,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1319.52,
       "history": [
@@ -3599,7 +3599,7 @@
           "y": 1333.78
         },
         {
-          "x": 1794627050000,
+          "x": 1794627048000,
           "y": 1336.2
         }
       ]
