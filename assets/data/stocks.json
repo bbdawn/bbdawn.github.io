@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-14T00:34:06Z",
+  "updatedAt": "2026-11-14T07:12:52Z",
   "quotes": {
     "005930.KS": {
       "price": 206000.0,
@@ -1030,11 +1030,15 @@
         {
           "x": 1794441600000,
           "y": 5342.73
+        },
+        {
+          "x": 1794528000000,
+          "y": 5290.53
         }
       ]
     },
     "GC=F": {
-      "price": 3887.6,
+      "price": 3886.3,
       "previousClose": 3885.3,
       "currency": "USD",
       "name": "Gold Dec 26",
@@ -1042,10 +1046,6 @@
       "fiftyTwoWeekHigh": 5586.2,
       "fiftyTwoWeekLow": 3856.7,
       "history": [
-        {
-          "x": 1786593600000,
-          "y": 4420.4
-        },
         {
           "x": 1786680000000,
           "y": 4437.3
@@ -1304,16 +1304,16 @@
         },
         {
           "x": 1794546000000,
-          "y": 3887.6
+          "y": 3886.3
         }
       ]
     },
     "BTC-USD": {
-      "price": 68109.25,
+      "price": 67319.26,
       "previousClose": 68238.21,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1794616442,
+      "time": 1794640367,
       "fiftyTwoWeekHigh": 99804.43,
       "fiftyTwoWeekLow": 57747.766,
       "history": [
@@ -1682,8 +1682,12 @@
           "y": 71342.97
         },
         {
+          "x": 1794528000000,
+          "y": 68249.27
+        },
+        {
           "x": 1794614400000,
-          "y": 68109.25
+          "y": 67319.26
         }
       ]
     },
@@ -1960,7 +1964,7 @@
     },
     "QLD": {
       "price": 79.3,
-      "previousClose": 81.3,
+      "previousClose": 81.24831,
       "currency": "USD",
       "name": "ProShares Ultra QQQ",
       "time": 1794603600,
@@ -2502,7 +2506,7 @@
     },
     "^IXIC": {
       "price": 25136.273,
-      "previousClose": 25366.094,
+      "previousClose": 25366.1,
       "currency": "USD",
       "name": "NASDAQ Composite",
       "time": 1794608159,
@@ -3322,11 +3326,11 @@
       ]
     },
     "KRW=X": {
-      "price": 1335.11,
+      "price": 1336.2,
       "previousClose": 1334.36,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1794609216,
+      "time": 1794627050,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1319.52,
       "history": [
@@ -3593,11 +3597,15 @@
         {
           "x": 1794528000000,
           "y": 1333.78
+        },
+        {
+          "x": 1794627050000,
+          "y": 1336.2
         }
       ]
     },
     "CL=F": {
-      "price": 88.92,
+      "price": 88.56,
       "previousClose": 88.74,
       "currency": "USD",
       "name": "Crude Oil Dec 26",
@@ -3605,10 +3613,6 @@
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
-        {
-          "x": 1786593600000,
-          "y": 81.25
-        },
         {
           "x": 1786680000000,
           "y": 82.4
@@ -3867,7 +3871,7 @@
         },
         {
           "x": 1794546000000,
-          "y": 88.92
+          "y": 88.56
         }
       ]
     }
