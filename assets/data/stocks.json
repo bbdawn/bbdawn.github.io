@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21T02:55:22Z",
+  "updatedAt": "2026-11-21T10:28:55Z",
   "quotes": {
     "005930.KS": {
       "price": 183100.0,
@@ -1054,18 +1054,14 @@
       ]
     },
     "GC=F": {
-      "price": 3539.0,
+      "price": 3515.4,
       "previousClose": 3685.5,
       "currency": "USD",
       "name": "Gold Dec 26",
       "time": 1795211997,
       "fiftyTwoWeekHigh": 5586.2,
-      "fiftyTwoWeekLow": 3503.2,
+      "fiftyTwoWeekLow": 3502.9,
       "history": [
-        {
-          "x": 1787198400000,
-          "y": 4571.4
-        },
         {
           "x": 1787284800000,
           "y": 4680.6
@@ -1324,18 +1320,18 @@
         },
         {
           "x": 1795150800000,
-          "y": 3539
+          "y": 3515.4
         }
       ]
     },
     "BTC-USD": {
-      "price": 58550.0,
+      "price": 58068.61,
       "previousClose": 58802.6,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1795229719,
+      "time": 1795256933,
       "fiftyTwoWeekHigh": 97860.6,
-      "fiftyTwoWeekLow": 57747.766,
+      "fiftyTwoWeekLow": 55631.574,
       "history": [
         {
           "x": 1787270400000,
@@ -1702,8 +1698,12 @@
           "y": 61901.82
         },
         {
+          "x": 1795132800000,
+          "y": 58798.98
+        },
+        {
           "x": 1795219200000,
-          "y": 58550
+          "y": 58068.61
         }
       ]
     },
@@ -3617,18 +3617,14 @@
       ]
     },
     "CL=F": {
-      "price": 83.62,
+      "price": 83.41,
       "previousClose": 82.44,
       "currency": "USD",
-      "name": "Crude Oil Dec 26",
+      "name": "Crude Oil Jan 27",
       "time": 1795211999,
       "fiftyTwoWeekHigh": 119.48,
       "fiftyTwoWeekLow": 54.98,
       "history": [
-        {
-          "x": 1787198400000,
-          "y": 87.83
-        },
         {
           "x": 1787284800000,
           "y": 87.06
@@ -3887,7 +3883,7 @@
         },
         {
           "x": 1795150800000,
-          "y": 83.62
+          "y": 83.98
         }
       ]
     }
