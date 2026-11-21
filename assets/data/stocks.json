@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21T10:28:55Z",
+  "updatedAt": "2026-11-21T17:43:15Z",
   "quotes": {
     "005930.KS": {
       "price": 183100.0,
@@ -8,7 +8,7 @@
       "name": "Samsung Electronics Co., Ltd.",
       "time": 1795156205,
       "fiftyTwoWeekHigh": 374500.0,
-      "fiftyTwoWeekLow": 94500.0,
+      "fiftyTwoWeekLow": 96200.0,
       "history": [
         {
           "x": 1787184000000,
@@ -1325,11 +1325,11 @@
       ]
     },
     "BTC-USD": {
-      "price": 58068.61,
+      "price": 60003.73,
       "previousClose": 58802.6,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1795256933,
+      "time": 1795282994,
       "fiftyTwoWeekHigh": 97860.6,
       "fiftyTwoWeekLow": 55631.574,
       "history": [
@@ -1703,7 +1703,7 @@
         },
         {
           "x": 1795219200000,
-          "y": 58068.61
+          "y": 60003.73
         }
       ]
     },
