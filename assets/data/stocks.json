@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T10:31:19Z",
+  "updatedAt": "2026-11-22T18:08:54Z",
   "quotes": {
     "005930.KS": {
       "price": 183100.0,
@@ -8,7 +8,7 @@
       "name": "Samsung Electronics Co., Ltd.",
       "time": 1795156205,
       "fiftyTwoWeekHigh": 374500.0,
-      "fiftyTwoWeekLow": 96200.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1787184000000,
@@ -271,7 +271,7 @@
       "name": "SK hynix Inc.",
       "time": 1795156216,
       "fiftyTwoWeekHigh": 2987000.0,
-      "fiftyTwoWeekLow": 501000.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1787184000000,
@@ -534,7 +534,7 @@
       "name": "Hyundai Motor Company",
       "time": 1795156216,
       "fiftyTwoWeekHigh": 783000.0,
-      "fiftyTwoWeekLow": 252000.0,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1787184000000,
@@ -797,7 +797,7 @@
       "name": "KOSPI Composite Index",
       "time": 1795172730,
       "fiftyTwoWeekHigh": 9385.59,
-      "fiftyTwoWeekLow": 3833.35,
+      "fiftyTwoWeekLow": 0.0,
       "history": [
         {
           "x": 1787184000000,
@@ -1321,13 +1321,13 @@
       ]
     },
     "BTC-USD": {
-      "price": 60747.33,
+      "price": 60497.91,
       "previousClose": 60093.008,
       "currency": "USD",
       "name": "Bitcoin USD",
-      "time": 1795343477,
+      "time": 1795370934,
       "fiftyTwoWeekHigh": 97860.6,
-      "fiftyTwoWeekLow": 57708.7,
+      "fiftyTwoWeekLow": 55149.566,
       "history": [
         {
           "x": 1787356800000,
@@ -1699,7 +1699,7 @@
         },
         {
           "x": 1795305600000,
-          "y": 60747.33
+          "y": 60497.91
         }
       ]
     },
@@ -3338,11 +3338,11 @@
       ]
     },
     "KRW=X": {
-      "price": 1337.8,
+      "price": 1346.04,
       "previousClose": 1333.62,
       "currency": "KRW",
       "name": "USD/KRW",
-      "time": 1795318231,
+      "time": 1795367997,
       "fiftyTwoWeekHigh": 1587.7,
       "fiftyTwoWeekLow": 1319.52,
       "history": [
@@ -3611,8 +3611,8 @@
           "y": 1334.79
         },
         {
-          "x": 1795318231000,
-          "y": 1337.8
+          "x": 1795367997000,
+          "y": 1346.04
         }
       ]
     },
