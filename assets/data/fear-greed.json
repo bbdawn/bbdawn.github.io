@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-11-27T20:05:39Z",
-  "score": 24.8285714285714,
+  "updatedAt": "2026-11-28T02:50:57Z",
+  "score": 24.8857142857143,
   "rating": "extreme fear",
   "previousClose": 15.5967450271248,
   "previousWeek": 18.5873840445269,
@@ -32,7 +32,7 @@
       "rating": "extreme fear"
     },
     "safe_haven_demand": {
-      "score": 19,
+      "score": 19.4,
       "rating": "extreme fear"
     }
   },
@@ -511,11 +511,11 @@
     },
     {
       "x": 1795737600000,
-      "y": 24.83
+      "y": 24.89
     },
     {
-      "x": 1795808857000,
-      "y": 24.83
+      "x": 1795823999000,
+      "y": 24.89
     }
   ]
 }
